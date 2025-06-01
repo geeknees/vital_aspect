@@ -41,7 +41,6 @@ gem "thruster", require: false
 # gem "image_processing", "~> 1.2"
 
 gem "dotenv-rails"
-gem "hotwire-rails"
 gem "kaminari"
 gem "nokogiri"
 gem "qdrant-ruby"
