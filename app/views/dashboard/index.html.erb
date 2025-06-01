@@ -3,14 +3,21 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <div class="flex items-center">
-          <h1 class="text-xl font-semibold text-gray-900">Vital Aspect</h1>
+          <h1 class="text-xl font-semibold text-gray-900"><%= t('app_name') %></h1>
         </div>
         <div class="flex items-center space-x-4">
-          <span class="text-gray-700">こんにちは、<%= @user.email_address %>さん</span>
-          <%= link_to "ログアウト", session_path, 
+          <!-- Language switcher -->
+          <div class="flex space-x-2">
+            <%= link_to t('language.switch_to_en'), url_for(locale: :en), 
+                       class: "px-2 py-1 text-xs rounded #{I18n.locale == :en ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}" %>
+            <%= link_to t('language.switch_to_ja'), url_for(locale: :ja), 
+                       class: "px-2 py-1 text-xs rounded #{I18n.locale == :ja ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}" %>
+          </div>
+          <span class="text-gray-700"><%= t('nav.hello', name: @user.email_address) %></span>
+          <%= link_to t('nav.logout'), session_path, 
                       method: :delete, 
                       class: "bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium",
-                      data: { confirm: "ログアウトしますか？" } %>
+                      data: { confirm: t('nav.logout_confirm') } %>
         </div>
       </div>
     </div>
@@ -20,8 +27,8 @@
     <div class="px-4 py-6 sm:px-0">
       <div class="bg-white overflow-hidden shadow rounded-lg">
         <div class="px-4 py-5 sm:p-6">
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">ダッシュボード</h2>
-          <p class="text-gray-600 mb-6">ようこそ、Vital Aspectへ！</p>
+          <h2 class="text-2xl font-bold text-gray-900 mb-4"><%= t('dashboard.title') %></h2>
+          <p class="text-gray-600 mb-6"><%= t('dashboard.welcome') %></p>
           
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- カード1 -->
@@ -35,8 +42,8 @@
                   </div>
                   <div class="ml-5 w-0 flex-1">
                     <dl>
-                      <dt class="text-sm font-medium text-gray-500 truncate">統計</dt>
-                      <dd class="text-lg font-medium text-gray-900">データを確認</dd>
+                      <dt class="text-sm font-medium text-gray-500 truncate"><%= t('dashboard.cards.statistics.title') %></dt>
+                      <dd class="text-lg font-medium text-gray-900"><%= t('dashboard.cards.statistics.description') %></dd>
                     </dl>
                   </div>
                 </div>
@@ -54,8 +61,8 @@
                   </div>
                   <div class="ml-5 w-0 flex-1">
                     <dl>
-                      <dt class="text-sm font-medium text-gray-500 truncate">プロフィール</dt>
-                      <dd class="text-lg font-medium text-gray-900">設定を管理</dd>
+                      <dt class="text-sm font-medium text-gray-500 truncate"><%= t('dashboard.cards.profile.title') %></dt>
+                      <dd class="text-lg font-medium text-gray-900"><%= t('dashboard.cards.profile.description') %></dd>
                     </dl>
                   </div>
                 </div>
@@ -73,8 +80,8 @@
                   </div>
                   <div class="ml-5 w-0 flex-1">
                     <dl>
-                      <dt class="text-sm font-medium text-gray-500 truncate">ヘルプ</dt>
-                      <dd class="text-lg font-medium text-gray-900">サポート</dd>
+                      <dt class="text-sm font-medium text-gray-500 truncate"><%= t('dashboard.cards.help.title') %></dt>
+                      <dd class="text-lg font-medium text-gray-900"><%= t('dashboard.cards.help.description') %></dd>
                     </dl>
                   </div>
                 </div>
@@ -83,9 +90,9 @@
           </div>
 
           <div class="mt-8">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">最近のアクティビティ</h3>
+            <h3 class="text-lg font-medium text-gray-900 mb-4"><%= t('dashboard.recent_activity.title') %></h3>
             <div class="bg-gray-50 p-4 rounded-lg">
-              <p class="text-gray-600">アクティビティはまだありません。</p>
+              <p class="text-gray-600"><%= t('dashboard.recent_activity.no_activity') %></p>
             </div>
           </div>
         </div>

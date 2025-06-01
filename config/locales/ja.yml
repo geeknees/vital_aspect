@@ -1,0 +1,42 @@
+ja:
+  app_name: "Vital Aspect"
+  
+  # Navigation
+  nav:
+    hello: "こんにちは、%{name}さん"
+    logout: "ログアウト"
+    logout_confirm: "ログアウトしますか？"
+  
+  # Authentication
+  auth:
+    sign_in: "ログイン"
+    email_placeholder: "メールアドレスを入力"
+    password_placeholder: "パスワードを入力"
+    invalid_credentials: "メールアドレスまたはパスワードが正しくありません。"
+    rate_limit_exceeded: "しばらくしてから再度お試しください。"
+    forgot_password: "パスワードを忘れた場合"
+    
+  # Dashboard
+  dashboard:
+    title: "ダッシュボード"
+    welcome: "ようこそ、Vital Aspectへ！"
+    
+    cards:
+      statistics:
+        title: "統計"
+        description: "データを確認"
+      profile:
+        title: "プロフィール"
+        description: "設定を管理"
+      help:
+        title: "ヘルプ"
+        description: "サポート"
+    
+    recent_activity:
+      title: "最近のアクティビティ"
+      no_activity: "アクティビティはまだありません。"
+  
+  # Language
+  language:
+    switch_to_en: "English"
+    switch_to_ja: "日本語"

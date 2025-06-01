@@ -29,3 +29,44 @@
 
 en:
   hello: "Hello world"
+  app_name: "Vital Aspect"
+  
+  # Navigation
+  nav:
+    hello: "Hello, %{name}"
+    logout: "Logout"
+    logout_confirm: "Are you sure you want to logout?"
+  
+  # Authentication
+  auth:
+    sign_in: "Sign in"
+    email_placeholder: "Enter your email address"
+    password_placeholder: "Enter your password"
+    invalid_credentials: "Try another email address or password."
+    rate_limit_exceeded: "Try again later."
+    forgot_password: "Forgot password?"
+    
+  # Dashboard
+  dashboard:
+    title: "Dashboard"
+    welcome: "Welcome to Vital Aspect!"
+    
+    cards:
+      statistics:
+        title: "Statistics"
+        description: "Check your data"
+      profile:
+        title: "Profile"
+        description: "Manage settings"
+      help:
+        title: "Help"
+        description: "Support"
+    
+    recent_activity:
+      title: "Recent Activity"
+      no_activity: "No activity yet."
+  
+  # Language
+  language:
+    switch_to_en: "English"
+    switch_to_ja: "日本語"
