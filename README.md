@@ -2,6 +2,8 @@
 AI-powered 360° Feedback & OKR Platform for psychologically safe teams  
 *(Rails + Hotwire + SQLite + OpenAI)*
 
+[![CI](https://github.com/geeknees/vital_aspect/actions/workflows/ci.yml/badge.svg)](https://github.com/geeknees/vital_aspect/actions/workflows/ci.yml)
+
 ---
 
 ## Table of Contents
