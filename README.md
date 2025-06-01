@@ -9,6 +9,7 @@ AI-powered 360° Feedback & OKR Platform for psychologically safe teams
 2. [Key Features](#key-features)
 3. [Tech Stack](#tech-stack)
 4. [Quick Start (5 min)](#quick-start-5-min)
+5. [Usage Walk-through](#usage-walk-through)
 
 ---
 
@@ -54,4 +55,15 @@ bin/dev
 
 # 3. open
 open http://localhost:3000
+```
+
+## Usage Walk-through
+
+1.	Create Cycle – set OKR quarter & invite respondents
+2.	Collect Feedback – anonymous links, reminders via Slack bot
+3.	AI Review – click “Generate Insight” → GPT summary & TrustGauge
+4.	Align & Plan – turn insights into Key Results in one click
+5.	Weekly Check-in – team updates, AI suggests confidence wording
+
+Detailed docs: /docs/user-guide.md
 
