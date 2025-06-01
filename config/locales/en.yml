@@ -31,6 +31,10 @@ en:
   hello: 'Hello world'
   app_name: 'Vital Aspect'
 
+  # Common
+  common:
+    cancel: 'Cancel'
+
   # Navigation
   nav:
     hello: 'Hello, %{name}'
@@ -70,3 +74,57 @@ en:
   language:
     switch_to_en: 'English'
     switch_to_ja: '日本語'
+
+  # Organizations
+  organizations:
+    title: 'Organizations'
+    new: 'New Organization'
+    edit: 'Edit Organization'
+    create: 'Create Organization'
+    update: 'Update Organization'
+    delete: 'Delete Organization'
+    delete_confirm: 'Are you sure you want to delete this organization?'
+    name: 'Organization Name'
+    description: 'Description'
+    owner: 'Owner'
+    members: 'Members'
+    created_successfully: 'Organization was successfully created.'
+    updated_successfully: 'Organization was successfully updated.'
+    deleted_successfully: 'Organization was successfully deleted.'
+    unauthorized: 'You are not authorized to perform this action.'
+    owned_organizations: 'Owned Organizations'
+    member_organizations: 'Member Organizations'
+    no_organizations: 'No organizations found.'
+
+  # Memberships
+  memberships:
+    title: 'Member Management'
+    invite: 'Invite Member'
+    email_address: 'Email Address'
+    role: 'Role'
+    status: 'Status'
+    actions: 'Actions'
+    remove: 'Remove'
+    edit: 'Edit'
+    accept: 'Accept'
+    decline: 'Decline'
+    user_not_found: 'User not found.'
+    invitation_sent: 'Invitation sent.'
+    invitation_accepted: 'Invitation accepted.'
+    invitation_declined: 'Invitation declined.'
+    invitation_not_found: 'Invitation not found.'
+    updated_successfully: 'Membership was successfully updated.'
+    update_failed: 'Failed to update membership.'
+    removed_successfully: 'Member was successfully removed.'
+    unauthorized: 'You are not authorized to perform this action.'
+
+    roles:
+      member: 'Member'
+      admin: 'Admin'
+      owner: 'Owner'
+
+    statuses:
+      pending: 'Pending'
+      active: 'Active'
+      inactive: 'Inactive'
+      suspended: 'Suspended'

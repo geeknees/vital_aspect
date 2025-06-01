@@ -1,0 +1,116 @@
+<% content_for :title, @organization.name %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <nav class="flex items-center space-x-2 text-sm text-gray-500 mb-4">
+        <%= link_to t('organizations.title'), organizations_path, class: "hover:text-gray-700" %>
+        <span>/</span>
+        <span class="text-gray-900"><%= @organization.name %></span>
+      </nav>
+
+      <div class="flex justify-between items-start">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900"><%= @organization.name %></h1>
+          <% if @organization.description.present? %>
+            <p class="mt-2 text-lg text-gray-600"><%= @organization.description %></p>
+          <% end %>
+          <p class="mt-2 text-sm text-gray-500">
+            <%= t('organizations.owner') %>: <%= @organization.owner.email_address %>
+          </p>
+        </div>
+
+        <% if @can_manage %>
+          <div class="flex space-x-3">
+            <%= link_to t('organizations.edit'), edit_organization_path(@organization),
+                class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+            <%= link_to t('memberships.invite'), new_organization_membership_path(@organization),
+                class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Organization Info -->
+      <div class="lg:col-span-2">
+        <div class="bg-white shadow rounded-lg p-6">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">組織情報</h2>
+
+          <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <dt class="text-sm font-medium text-gray-500"><%= t('organizations.name') %></dt>
+              <dd class="mt-1 text-sm text-gray-900"><%= @organization.name %></dd>
+            </div>
+
+            <div>
+              <dt class="text-sm font-medium text-gray-500"><%= t('organizations.members') %></dt>
+              <dd class="mt-1 text-sm text-gray-900"><%= @members.count %></dd>
+            </div>
+
+            <div class="sm:col-span-2">
+              <dt class="text-sm font-medium text-gray-500"><%= t('organizations.description') %></dt>
+              <dd class="mt-1 text-sm text-gray-900">
+                <%= @organization.description.present? ? @organization.description : "説明なし" %>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Members List -->
+      <div>
+        <div class="bg-white shadow rounded-lg p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold text-gray-900"><%= t('organizations.members') %></h2>
+            <% if @can_manage %>
+              <%= link_to organization_memberships_path(@organization),
+                  class: "text-sm text-blue-600 hover:text-blue-800" do %>
+                管理
+              <% end %>
+            <% end %>
+          </div>
+
+          <div class="space-y-3">
+            <% @members.each do |membership| %>
+              <div class="flex items-center justify-between py-2">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center">
+                      <span class="text-sm font-medium text-gray-600">
+                        <%= membership.user.email_address.first.upcase %>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-900">
+                      <%= membership.user.email_address %>
+                    </p>
+                    <p class="text-xs text-gray-500">
+                      <%= t("memberships.roles.#{membership.role}") %>
+                    </p>
+                  </div>
+                </div>
+
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
+                  <%= case membership.status
+                      when 'active' then 'bg-green-100 text-green-800'
+                      when 'pending' then 'bg-yellow-100 text-yellow-800'
+                      when 'inactive' then 'bg-gray-100 text-gray-800'
+                      when 'suspended' then 'bg-red-100 text-red-800'
+                      end %>">
+                  <%= t("memberships.statuses.#{membership.status}") %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+
+          <% if @members.empty? %>
+            <p class="text-gray-500 text-center py-4">メンバーがいません</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

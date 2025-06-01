@@ -1,6 +1,10 @@
 ja:
   app_name: 'Vital Aspect'
 
+  # Common
+  common:
+    cancel: 'キャンセル'
+
   # Navigation
   nav:
     hello: 'こんにちは、%{name}さん'
@@ -40,3 +44,57 @@ ja:
   language:
     switch_to_en: 'English'
     switch_to_ja: '日本語'
+
+  # Organizations
+  organizations:
+    title: '組織管理'
+    new: '新しい組織'
+    edit: '組織を編集'
+    create: '組織を作成'
+    update: '組織を更新'
+    delete: '組織を削除'
+    delete_confirm: 'この組織を削除しますか？'
+    name: '組織名'
+    description: '説明'
+    owner: '所有者'
+    members: 'メンバー'
+    created_successfully: '組織が正常に作成されました。'
+    updated_successfully: '組織が正常に更新されました。'
+    deleted_successfully: '組織が正常に削除されました。'
+    unauthorized: 'この操作を実行する権限がありません。'
+    owned_organizations: '所有している組織'
+    member_organizations: '参加している組織'
+    no_organizations: '組織がありません。'
+
+  # Memberships
+  memberships:
+    title: 'メンバー管理'
+    invite: 'メンバーを招待'
+    email_address: 'メールアドレス'
+    role: '役割'
+    status: 'ステータス'
+    actions: 'アクション'
+    remove: '削除'
+    edit: '編集'
+    accept: '承認'
+    decline: '拒否'
+    user_not_found: 'ユーザーが見つかりません。'
+    invitation_sent: '招待を送信しました。'
+    invitation_accepted: '招待を承認しました。'
+    invitation_declined: '招待を拒否しました。'
+    invitation_not_found: '招待が見つかりません。'
+    updated_successfully: 'メンバーシップが正常に更新されました。'
+    update_failed: 'メンバーシップの更新に失敗しました。'
+    removed_successfully: 'メンバーが正常に削除されました。'
+    unauthorized: 'この操作を実行する権限がありません。'
+
+    roles:
+      member: 'メンバー'
+      admin: '管理者'
+      owner: '所有者'
+
+    statuses:
+      pending: '保留中'
+      active: 'アクティブ'
+      inactive: '非アクティブ'
+      suspended: '停止中'

@@ -1,0 +1,105 @@
+<% content_for :title, t('organizations.title') %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-900"><%= t('organizations.title') %></h1>
+      <%= link_to t('organizations.new'), new_organization_path,
+          class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+    </div>
+
+    <!-- Owned Organizations -->
+    <div class="mb-12">
+      <h2 class="text-xl font-semibold text-gray-900 mb-6"><%= t('organizations.owned_organizations') %></h2>
+
+      <% if @owned_organizations.any? %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <% @owned_organizations.each do |org| %>
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+              <div class="p-6">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-lg font-medium text-gray-900 truncate">
+                    <%= link_to org.name, org, class: "hover:text-blue-600" %>
+                  </h3>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    <%= t('memberships.roles.owner') %>
+                  </span>
+                </div>
+
+                <% if org.description.present? %>
+                  <p class="mt-2 text-sm text-gray-600 line-clamp-2"><%= org.description %></p>
+                <% end %>
+
+                <div class="mt-4 flex items-center justify-between">
+                  <p class="text-sm text-gray-500">
+                    <%= t('organizations.members') %>: <%= org.users.count %>
+                  </p>
+                  <div class="flex space-x-2">
+                    <%= link_to t('organizations.edit'), edit_organization_path(org),
+                        class: "text-sm text-blue-600 hover:text-blue-800" %>
+                    <%= link_to organization_memberships_path(org),
+                        class: "text-sm text-green-600 hover:text-green-800" do %>
+                      <%= t('memberships.title') %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-12">
+          <p class="text-gray-500 text-lg"><%= t('organizations.no_organizations') %></p>
+          <%= link_to t('organizations.new'), new_organization_path,
+              class: "mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700" %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- Member Organizations -->
+    <div>
+      <h2 class="text-xl font-semibold text-gray-900 mb-6"><%= t('organizations.member_organizations') %></h2>
+
+      <% if @member_organizations.any? %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <% @member_organizations.each do |org| %>
+            <% membership = org.memberships.find_by(user: Current.user) %>
+            <div class="bg-white overflow-hidden shadow rounded-lg">
+              <div class="p-6">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-lg font-medium text-gray-900 truncate">
+                    <%= link_to org.name, org, class: "hover:text-blue-600" %>
+                  </h3>
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <%= t("memberships.roles.#{membership.role}") %>
+                  </span>
+                </div>
+
+                <% if org.description.present? %>
+                  <p class="mt-2 text-sm text-gray-600 line-clamp-2"><%= org.description %></p>
+                <% end %>
+
+                <div class="mt-4 flex items-center justify-between">
+                  <p class="text-sm text-gray-500">
+                    <%= t('organizations.members') %>: <%= org.users.count %>
+                  </p>
+                  <% if membership.can_manage_members? %>
+                    <%= link_to organization_memberships_path(org),
+                        class: "text-sm text-green-600 hover:text-green-800" do %>
+                      <%= t('memberships.title') %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-12">
+          <p class="text-gray-500 text-lg"><%= t('organizations.no_organizations') %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

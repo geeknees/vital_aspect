@@ -6,6 +6,16 @@ Rails.application.routes.draw do
     # ダッシュボード
     get "dashboard", to: "dashboard#index"
 
+    # 組織管理
+    resources :organizations do
+      resources :memberships do
+        member do
+          patch :accept
+          delete :decline
+        end
+      end
+    end
+
     # Defines the root path route ("/")
     root "dashboard#index"
   end

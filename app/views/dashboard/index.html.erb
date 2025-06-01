@@ -1,121 +1,102 @@
-<div class="min-h-screen bg-gray-50">
-  <!-- メニューバー -->
-  <nav class="bg-white shadow-lg border-b border-gray-200">
+<main class="flex-1">
+  <div class="py-8">
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16">
-        <!-- ロゴエリア -->
-        <div class="flex items-center">
-          <div class="flex-shrink-0">
-            <h1 class="text-xl sm:text-2xl font-bold text-blue-600"><%= t('app_name') %></h1>
-          </div>
-        </div>
-
-        <!-- 右側のメニュー -->
-        <div class="flex items-center space-x-3 sm:space-x-6">
-          <!-- 言語切り替え -->
-          <div class="flex space-x-1">
-            <%= link_to t('language.switch_to_en'), url_for(locale: :en),
-                       class: "px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full transition-colors duration-200 #{I18n.locale == :en ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}" %>
-            <%= link_to t('language.switch_to_ja'), url_for(locale: :ja),
-                       class: "px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full transition-colors duration-200 #{I18n.locale == :ja ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}" %>
-          </div>
-
-          <!-- ユーザー情報 -->
-          <div class="flex items-center space-x-2 sm:space-x-4">
-            <span class="hidden sm:inline text-gray-700 font-medium"><%= t('nav.hello', name: @user.email_address.split('@').first) %></span>
-            <span class="sm:hidden text-gray-700 font-medium text-sm"><%= @user.email_address.split('@').first %></span>
-            <%= link_to t('nav.logout'), session_path,
-                        method: :delete,
-                        class: "bg-red-500 hover:bg-red-600 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-200 shadow-sm",
-                        data: { confirm: t('nav.logout_confirm') } %>
-          </div>
-        </div>
+      <!-- ヘッダーセクション -->
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2"><%= t('dashboard.title') %></h2>
+        <p class="text-lg text-gray-600"><%= t('dashboard.welcome') %></p>
       </div>
-    </div>
-  </nav>
 
-  <!-- メインコンテンツ -->
-  <main class="flex-1">
-    <div class="py-8">
-      <div class="mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- ヘッダーセクション -->
-        <div class="mb-8">
-          <h2 class="text-3xl font-bold text-gray-900 mb-2"><%= t('dashboard.title') %></h2>
-          <p class="text-lg text-gray-600"><%= t('dashboard.welcome') %></p>
-        </div>
-
-        <!-- ダッシュボードカード -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div class="p-8">
-            <!-- カードグリッド -->
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 mb-12">
-              <!-- 統計カード -->
-              <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200 hover:shadow-md transition-shadow duration-200">
+      <!-- ダッシュボードカード -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="p-8">
+          <!-- カードグリッド -->
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mb-12">
+            <!-- 組織管理カード -->
+            <%= link_to organizations_path, class: "block" do %>
+              <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200 hover:shadow-md transition-shadow duration-200">
                 <div class="flex items-center">
                   <div class="flex-shrink-0">
-                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                    <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
                       <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                       </svg>
                     </div>
                   </div>
                   <div class="ml-6">
-                    <h3 class="text-lg font-semibold text-blue-900"><%= t('dashboard.cards.statistics.title') %></h3>
-                    <p class="text-blue-700 mt-1"><%= t('dashboard.cards.statistics.description') %></p>
+                    <h3 class="text-lg font-semibold text-purple-900"><%= t('organizations.title') %></h3>
+                    <p class="text-purple-700 mt-1">組織とメンバーを管理</p>
                   </div>
                 </div>
               </div>
+            <% end %>
 
-              <!-- プロフィールカード -->
-              <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200 hover:shadow-md transition-shadow duration-200">
-                <div class="flex items-center">
-                  <div class="flex-shrink-0">
-                    <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
-                      <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="ml-6">
-                    <h3 class="text-lg font-semibold text-green-900"><%= t('dashboard.cards.profile.title') %></h3>
-                    <p class="text-green-700 mt-1"><%= t('dashboard.cards.profile.description') %></p>
+            <!-- 統計カード -->
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200 hover:shadow-md transition-shadow duration-200">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
                   </div>
                 </div>
-              </div>
-
-              <!-- ヘルプカード -->
-              <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl p-6 border border-yellow-200 hover:shadow-md transition-shadow duration-200">
-                <div class="flex items-center">
-                  <div class="flex-shrink-0">
-                    <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center">
-                      <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="ml-6">
-                    <h3 class="text-lg font-semibold text-yellow-900"><%= t('dashboard.cards.help.title') %></h3>
-                    <p class="text-yellow-700 mt-1"><%= t('dashboard.cards.help.description') %></p>
-                  </div>
+                <div class="ml-6">
+                  <h3 class="text-lg font-semibold text-blue-900"><%= t('dashboard.cards.statistics.title') %></h3>
+                  <p class="text-blue-700 mt-1"><%= t('dashboard.cards.statistics.description') %></p>
                 </div>
               </div>
             </div>
 
-            <!-- 最近のアクティビティセクション -->
-            <div class="border-t border-gray-200 pt-8">
-              <h3 class="text-xl font-semibold text-gray-900 mb-6"><%= t('dashboard.recent_activity.title') %></h3>
-              <div class="bg-gray-50 rounded-lg p-8 text-center">
-                <div class="mx-auto w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                  <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
+            <!-- プロフィールカード -->
+            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200 hover:shadow-md transition-shadow duration-200">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                    </svg>
+                  </div>
                 </div>
-                <p class="text-gray-600 text-lg"><%= t('dashboard.recent_activity.no_activity') %></p>
+                <div class="ml-6">
+                  <h3 class="text-lg font-semibold text-green-900"><%= t('dashboard.cards.profile.title') %></h3>
+                  <p class="text-green-700 mt-1"><%= t('dashboard.cards.profile.description') %></p>
+                </div>
               </div>
+            </div>
+
+            <!-- ヘルプカード -->
+            <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl p-6 border border-yellow-200 hover:shadow-md transition-shadow duration-200">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center">
+                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </div>
+                </div>
+                <div class="ml-6">
+                  <h3 class="text-lg font-semibold text-yellow-900"><%= t('dashboard.cards.help.title') %></h3>
+                  <p class="text-yellow-700 mt-1"><%= t('dashboard.cards.help.description') %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 最近のアクティビティセクション -->
+          <div class="border-t border-gray-200 pt-8">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6"><%= t('dashboard.recent_activity.title') %></h3>
+            <div class="bg-gray-50 rounded-lg p-8 text-center">
+              <div class="mx-auto w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
+                <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <p class="text-gray-600 text-lg"><%= t('dashboard.recent_activity.no_activity') %></p>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </main>
-</div>
+  </div>
+</main>

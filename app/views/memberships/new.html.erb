@@ -1,0 +1,94 @@
+<% content_for :title, t('memberships.invite') %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <nav class="flex items-center space-x-2 text-sm text-gray-500 mb-4">
+        <%= link_to t('organizations.title'), organizations_path, class: "hover:text-gray-700" %>
+        <span>/</span>
+        <%= link_to @organization.name, @organization, class: "hover:text-gray-700" %>
+        <span>/</span>
+        <%= link_to t('memberships.title'), [@organization, :memberships], class: "hover:text-gray-700" %>
+        <span>/</span>
+        <span class="text-gray-900"><%= t('memberships.invite') %></span>
+      </nav>
+
+      <h1 class="text-3xl font-bold text-gray-900"><%= t('memberships.invite') %></h1>
+      <p class="mt-2 text-sm text-gray-600">
+        <%= @organization.name %> にメンバーを招待
+      </p>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white shadow rounded-lg p-6">
+      <%= form_with model: [@organization, @membership], local: true, class: "space-y-6" do |f| %>
+        <% if @membership.errors.any? %>
+          <div class="rounded-md bg-red-50 p-4">
+            <div class="flex">
+              <div class="ml-3">
+                <h3 class="text-sm font-medium text-red-800">
+                  <%= pluralize(@membership.errors.count, "error") %> prohibited this invitation from being sent:
+                </h3>
+                <div class="mt-2 text-sm text-red-700">
+                  <ul class="list-disc pl-5 space-y-1">
+                    <% @membership.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <div>
+          <%= label_tag :email_address, t('memberships.email_address'), class: "block text-sm font-medium text-gray-700" %>
+          <%= email_field_tag :email_address, params.dig(:membership, :email_address),
+              class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500",
+              placeholder: "招待するユーザーのメールアドレス",
+              required: true %>
+          <p class="mt-2 text-sm text-gray-500">
+            招待するユーザーはすでにシステムに登録済みである必要があります。
+          </p>
+        </div>
+
+        <div>
+          <%= f.label :role, t('memberships.role'), class: "block text-sm font-medium text-gray-700" %>
+          <%= f.select :role,
+              options_for_select([
+                [t('memberships.roles.member'), 'member'],
+                [t('memberships.roles.admin'), 'admin']
+              ], @membership.role),
+              {},
+              { class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" } %>
+          <p class="mt-2 text-sm text-gray-500">
+            管理者は他のメンバーを管理できます。
+          </p>
+        </div>
+
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-blue-700">
+                招待されたユーザーは「保留中」ステータスで追加され、受諾後に「アクティブ」になります。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-3">
+          <%= link_to t('common.cancel'), [@organization, :memberships],
+              class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+          <%= f.submit '招待を送信',
+              class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
