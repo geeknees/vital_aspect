@@ -9,23 +9,23 @@
             <h1 class="text-xl sm:text-2xl font-bold text-blue-600"><%= t('app_name') %></h1>
           </div>
         </div>
-        
+
         <!-- 右側のメニュー -->
         <div class="flex items-center space-x-3 sm:space-x-6">
           <!-- 言語切り替え -->
           <div class="flex space-x-1">
-            <%= link_to t('language.switch_to_en'), url_for(locale: :en), 
+            <%= link_to t('language.switch_to_en'), url_for(locale: :en),
                        class: "px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full transition-colors duration-200 #{I18n.locale == :en ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}" %>
-            <%= link_to t('language.switch_to_ja'), url_for(locale: :ja), 
+            <%= link_to t('language.switch_to_ja'), url_for(locale: :ja),
                        class: "px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-full transition-colors duration-200 #{I18n.locale == :ja ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}" %>
           </div>
-          
+
           <!-- ユーザー情報 -->
           <div class="flex items-center space-x-2 sm:space-x-4">
             <span class="hidden sm:inline text-gray-700 font-medium"><%= t('nav.hello', name: @user.email_address.split('@').first) %></span>
             <span class="sm:hidden text-gray-700 font-medium text-sm"><%= @user.email_address.split('@').first %></span>
-            <%= link_to t('nav.logout'), session_path, 
-                        method: :delete, 
+            <%= link_to t('nav.logout'), session_path,
+                        method: :delete,
                         class: "bg-red-500 hover:bg-red-600 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-200 shadow-sm",
                         data: { confirm: t('nav.logout_confirm') } %>
           </div>
@@ -43,7 +43,7 @@
           <h2 class="text-3xl font-bold text-gray-900 mb-2"><%= t('dashboard.title') %></h2>
           <p class="text-lg text-gray-600"><%= t('dashboard.welcome') %></p>
         </div>
-        
+
         <!-- ダッシュボードカード -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           <div class="p-8">
