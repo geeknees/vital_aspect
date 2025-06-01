@@ -31,7 +31,15 @@
             <!-- ロゴエリア -->
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <h1 class="text-xl sm:text-2xl font-bold text-blue-600"><%= t('app_name') %></h1>
+                <% if Current.session&.user %>
+                  <%= link_to dashboard_path, class: "hover:opacity-80 transition-opacity duration-200" do %>
+                    <h1 class="text-xl sm:text-2xl font-bold text-blue-600"><%= t('app_name') %></h1>
+                  <% end %>
+                <% else %>
+                  <%= link_to new_session_path, class: "hover:opacity-80 transition-opacity duration-200" do %>
+                    <h1 class="text-xl sm:text-2xl font-bold text-blue-600"><%= t('app_name') %></h1>
+                  <% end %>
+                <% end %>
               </div>
             </div>
 
