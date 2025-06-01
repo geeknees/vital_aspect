@@ -4,7 +4,7 @@
   <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Header -->
     <div class="mb-8">
-      <nav class="flex items-center space-x-2 text-sm text-gray-500 mb-4">
+      <nav class="flex items-center space-x-2 text-sm text-gray-500 mb-6">
         <%= link_to t('organizations.title'), organizations_path, class: "hover:text-gray-700" %>
         <span>/</span>
         <%= link_to @organization.name, @organization, class: "hover:text-gray-700" %>
@@ -12,20 +12,20 @@
         <span class="text-gray-900"><%= t('organizations.edit') %></span>
       </nav>
 
-      <h1 class="text-3xl font-bold text-gray-900"><%= t('organizations.edit') %></h1>
+      <h1 class="text-4xl font-bold text-gray-900"><%= t('organizations.edit') %></h1>
     </div>
 
     <!-- Form -->
-    <div class="bg-white shadow rounded-lg p-6">
-      <%= form_with model: @organization, local: true, class: "space-y-6" do |f| %>
+    <div class="bg-white shadow-xl rounded-xl p-8 lg:p-12">
+      <%= form_with model: @organization, local: true, class: "space-y-8" do |f| %>
         <% if @organization.errors.any? %>
-          <div class="rounded-md bg-red-50 p-4">
+          <div class="rounded-lg bg-red-50 p-6 border border-red-200">
             <div class="flex">
               <div class="ml-3">
-                <h3 class="text-sm font-medium text-red-800">
+                <h3 class="text-base font-medium text-red-800">
                   <%= pluralize(@organization.errors.count, "error") %> prohibited this organization from being saved:
                 </h3>
-                <div class="mt-2 text-sm text-red-700">
+                <div class="mt-3 text-sm text-red-700">
                   <ul class="list-disc pl-5 space-y-1">
                     <% @organization.errors.full_messages.each do |message| %>
                       <li><%= message %></li>
@@ -38,35 +38,35 @@
         <% end %>
 
         <div>
-          <%= f.label :name, t('organizations.name'), class: "block text-sm font-medium text-gray-700" %>
+          <%= f.label :name, t('organizations.name'), class: "block text-base font-medium text-gray-700 mb-2" %>
           <%= f.text_field :name,
-              class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500",
+              class: "block w-full text-lg px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors",
               placeholder: "組織名を入力してください" %>
         </div>
 
         <div>
-          <%= f.label :description, t('organizations.description'), class: "block text-sm font-medium text-gray-700" %>
+          <%= f.label :description, t('organizations.description'), class: "block text-base font-medium text-gray-700 mb-2" %>
           <%= f.text_area :description,
-              rows: 4,
-              class: "mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500",
+              rows: 6,
+              class: "block w-full text-base px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none",
               placeholder: "組織の説明を入力してください（任意）" %>
         </div>
 
-        <div class="flex justify-between">
+        <div class="flex justify-between pt-6">
           <div>
             <% if @organization.owner == Current.user %>
               <%= link_to t('organizations.delete'), @organization,
                   method: :delete,
                   data: { confirm: t('organizations.delete_confirm') },
-                  class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700" %>
+                  class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors" %>
             <% end %>
           </div>
 
-          <div class="flex space-x-3">
+          <div class="flex space-x-4">
             <%= link_to 'キャンセル', @organization,
-                class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+                class: "inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors" %>
             <%= f.submit t('organizations.update'),
-                class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+                class: "inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
           </div>
         </div>
       <% end %>
