@@ -1,0 +1,18 @@
+# Membership fixtures
+owner_membership:
+  user_id: 1
+  organization_id: 1
+  role: owner
+  status: active
+
+admin_membership:
+  user_id: 2
+  organization_id: 1  
+  role: admin
+  status: active
+
+member_membership:
+  user_id: 3
+  organization_id: 1
+  role: member
+  status: active

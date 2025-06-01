@@ -117,6 +117,7 @@ en:
     update_failed: 'Failed to update membership.'
     removed_successfully: 'Member was successfully removed.'
     unauthorized: 'You are not authorized to perform this action.'
+    cannot_modify_owner: 'Cannot modify organization owner information.'
 
     roles:
       member: 'Member'

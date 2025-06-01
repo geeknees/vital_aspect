@@ -1,0 +1,10 @@
+# Organization fixtures
+one:
+  name: "Test Organization"
+  description: "A test organization"
+  owner_id: 1
+
+two:
+  name: "Another Organization" 
+  description: "Another test organization"
+  owner_id: 2

@@ -87,6 +87,7 @@ ja:
     update_failed: 'メンバーシップの更新に失敗しました。'
     removed_successfully: 'メンバーが正常に削除されました。'
     unauthorized: 'この操作を実行する権限がありません。'
+    cannot_modify_owner: '組織所有者の情報は変更できません。'
 
     roles:
       member: 'メンバー'
