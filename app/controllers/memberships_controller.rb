@@ -19,10 +19,10 @@ class MembershipsController < ApplicationController
   def create
     # 権限チェック：メンバー管理権限がない場合は拒否
     unless can_manage_members?
-      redirect_to [@organization, :memberships], alert: t("memberships.unauthorized")
+      redirect_to [ @organization, :memberships ], alert: t("memberships.unauthorized")
       return
     end
-    
+
     @user = User.find_by(email_address: membership_params[:email_address])
 
     unless @user
@@ -46,16 +46,16 @@ class MembershipsController < ApplicationController
   def update
     # 権限チェック：メンバー管理権限がない場合は拒否
     unless can_manage_members?
-      redirect_to [@organization, :memberships], alert: t("memberships.unauthorized")
+      redirect_to [ @organization, :memberships ], alert: t("memberships.unauthorized")
       return
     end
-    
+
     # 所有者以外が所有者の情報を変更しようとした場合は拒否
     if @membership.user == @organization.owner && @organization.owner != Current.user
-      redirect_to [@organization, :memberships], alert: t("memberships.cannot_modify_owner")
+      redirect_to [ @organization, :memberships ], alert: t("memberships.cannot_modify_owner")
       return
     end
-    
+
     if @membership.update(membership_update_params)
       redirect_to [ @organization, @membership ], notice: t("memberships.updated_successfully")
     else
@@ -106,39 +106,39 @@ class MembershipsController < ApplicationController
 
   def membership_params
     # 招待時は email_address のみ許可し、role は管理者権限がある場合のみ許可
-    permitted_params = [:email_address]
-    
+    permitted_params = [ :email_address ]
+
     if can_manage_members?
       permitted_params << :role
     end
-    
+
     params.require(:membership).permit(permitted_params)
   end
 
   def membership_update_params
     # 更新時は管理者権限がある場合のみ role と status を許可
     return params.require(:membership).permit() unless can_manage_members?
-    
+
     # 所有者でない場合の追加制限
     permitted_params = []
-    
+
     if can_manage_members?
       # 所有者の場合はすべて許可
       if @organization.owner == Current.user
-        permitted_params = [:role, :status]
+        permitted_params = [ :role, :status ]
       else
         # 管理者の場合は制限付きで許可
         current_membership = @organization.memberships.find_by(user: Current.user)
         target_membership = @membership
-        
+
         # 自分より上位の役割や同じ管理者の役割は変更不可
-        if target_membership.user != @organization.owner && 
+        if target_membership.user != @organization.owner &&
            !(target_membership.admin? && current_membership.admin?)
-          permitted_params = [:role, :status]
+          permitted_params = [ :role, :status ]
         end
       end
     end
-    
+
     params.require(:membership).permit(permitted_params)
   end
 
