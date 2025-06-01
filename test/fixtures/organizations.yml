@@ -1,10 +1,15 @@
 # Organization fixtures
-one:
-  name: "Test Organization"
-  description: "A test organization"
-  owner_id: 1
+test_org:
+  name: 'Test Organization'
+  description: 'A test organization for testing'
+  owner: owner
 
-two:
-  name: "Another Organization" 
-  description: "Another test organization"
-  owner_id: 2
+another_org:
+  name: 'Another Organization'
+  description: 'Another test organization'
+  owner: admin
+
+public_org:
+  name: 'Public Organization'
+  description: 'A public organization for general testing'
+  owner: member

@@ -1,18 +1,36 @@
 # Membership fixtures
 owner_membership:
-  user_id: 1
-  organization_id: 1
+  user: owner
+  organization: test_org
   role: owner
   status: active
 
 admin_membership:
-  user_id: 2
-  organization_id: 1  
+  user: admin
+  organization: test_org
   role: admin
   status: active
 
 member_membership:
-  user_id: 3
-  organization_id: 1
+  user: member
+  organization: test_org
   role: member
   status: active
+
+another_owner:
+  user: admin
+  organization: another_org
+  role: owner
+  status: active
+
+inactive_member:
+  user: member
+  organization: another_org
+  role: member
+  status: inactive
+
+pending_member:
+  user: one
+  organization: test_org
+  role: member
+  status: pending

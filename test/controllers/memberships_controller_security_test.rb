@@ -3,9 +3,9 @@ require "test_helper"
 class MembershipsControllerSecurityTest < ActionDispatch::IntegrationTest
   def setup
     @owner = users(:owner)
-    @admin = users(:admin) 
+    @admin = users(:admin)
     @member = users(:member)
-    @organization = organizations(:one)
+    @organization = organizations(:test_org)
     @membership = memberships(:admin_membership)
   end
 
