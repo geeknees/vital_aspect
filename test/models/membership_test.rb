@@ -139,14 +139,14 @@ class MembershipTest < ActiveSupport::TestCase
     # Create a membership where user is trying to be owner of their own organization
     owner_user = users(:owner)
     owned_org = organizations(:test_org)
-    
+
     membership = Membership.new(
       user: owner_user,
       organization: owned_org,
       role: :owner,
       status: :active
     )
-    
+
     assert_not membership.valid?
     assert_not_empty membership.errors[:user]
   end
@@ -155,14 +155,14 @@ class MembershipTest < ActiveSupport::TestCase
     # User can have owner role in membership if they're not the organization owner
     non_owner_user = users(:two)
     org = organizations(:test_org)
-    
+
     membership = Membership.new(
       user: non_owner_user,
       organization: org,
       role: :owner,
       status: :active
     )
-    
+
     assert membership.valid?
   end
 
@@ -205,7 +205,7 @@ class MembershipTest < ActiveSupport::TestCase
       role: :admin,
       status: :inactive
     )
-    
+
     assert inactive_admin.can_manage_organization?
   end
 
@@ -217,7 +217,7 @@ class MembershipTest < ActiveSupport::TestCase
       role: :owner,
       status: :suspended
     )
-    
+
     assert suspended_owner.can_manage_members?
   end
 
@@ -239,9 +239,9 @@ class MembershipTest < ActiveSupport::TestCase
 
   test "should allow all role and status combinations" do
     # Test all valid combinations
-    roles = [:member, :admin, :owner]
-    statuses = [:pending, :active, :inactive, :suspended]
-    
+    roles = [ :member, :admin, :owner ]
+    statuses = [ :pending, :active, :inactive, :suspended ]
+
     roles.each do |role|
       statuses.each do |status|
         membership = Membership.new(
@@ -250,7 +250,7 @@ class MembershipTest < ActiveSupport::TestCase
           role: role,
           status: status
         )
-        
+
         # Skip the owner validation case
         unless role == :owner && membership.organization&.owner == membership.user
           assert membership.valid?, "Should be valid with role: #{role}, status: #{status}"
@@ -262,7 +262,7 @@ class MembershipTest < ActiveSupport::TestCase
   test "should maintain referential integrity" do
     user = @membership.user
     organization = @membership.organization
-    
+
     assert_equal user, @membership.user
     assert_equal organization, @membership.organization
     assert_includes user.memberships, @membership
@@ -274,11 +274,11 @@ class MembershipTest < ActiveSupport::TestCase
     # Organization owner (from belongs_to :owner in Organization)
     org_owner = organizations(:test_org).owner
     assert_equal users(:owner), org_owner
-    
+
     # Membership with owner role
     membership_with_owner_role = memberships(:owner_membership)
     assert membership_with_owner_role.owner?
-    
+
     # These could be different users in a real scenario
     # But in our fixtures, they happen to be the same user
     assert_equal org_owner, membership_with_owner_role.user
@@ -288,14 +288,14 @@ class MembershipTest < ActiveSupport::TestCase
     # Test string assignment to enums
     @membership.role = "admin"
     assert @membership.admin?
-    
+
     @membership.status = "pending"
     assert @membership.pending?
-    
+
     # Test integer assignment to enums
     @membership.role = 0  # member
     assert @membership.member?
-    
+
     @membership.status = 0  # pending
     assert @membership.pending?
   end

@@ -1,0 +1,234 @@
+<div class="min-h-screen bg-gray-50 py-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="bg-white shadow rounded-lg mb-6">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900"><%= @evaluation.title %></h1>
+            <p class="mt-1 text-sm text-gray-600"><%= @evaluation.description %></p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= status_badge_class(@evaluation.status) %>">
+              <%= t("evaluations.status.#{@evaluation.status}") %>
+            </span>
+            <% if can_manage_evaluation?(@evaluation) %>
+              <div class="flex space-x-2">
+                <% if @evaluation.draft? %>
+                  <%= link_to t('evaluations.start'), start_organization_evaluation_path(@organization, @evaluation),
+                      method: :patch,
+                      data: { confirm: t('evaluations.start_confirmation') },
+                      class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+                <% end %>
+                <% if @evaluation.active? %>
+                  <%= link_to t('evaluations.complete'), complete_organization_evaluation_path(@organization, @evaluation),
+                      method: :patch,
+                      data: { confirm: t('evaluations.complete_confirmation') },
+                      class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+                <% end %>
+                <%= link_to t('evaluations.edit'), edit_organization_evaluation_path(@organization, @evaluation),
+                    class: "bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evaluation Details -->
+      <div class="px-6 py-4">
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
+          <div>
+            <dt class="text-sm font-medium text-gray-500"><%= t('evaluations.start_date') %></dt>
+            <dd class="mt-1 text-sm text-gray-900"><%= l(@evaluation.start_date, format: :long) if @evaluation.start_date %></dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500"><%= t('evaluations.end_date') %></dt>
+            <dd class="mt-1 text-sm text-gray-900"><%= l(@evaluation.end_date, format: :long) if @evaluation.end_date %></dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500"><%= t('evaluations.created_by') %></dt>
+            <dd class="mt-1 text-sm text-gray-900"><%= @evaluation.created_by.name %></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Questions Section -->
+      <div class="lg:col-span-2">
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-medium text-gray-900"><%= t('evaluations.questions') %></h2>
+              <% if can_manage_evaluation?(@evaluation) && @evaluation.draft? %>
+                <%= link_to t('evaluations.add_question'), new_organization_evaluation_question_path(@organization, @evaluation),
+                    class: "bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md text-sm font-medium" %>
+              <% end %>
+            </div>
+          </div>
+          <div class="divide-y divide-gray-200">
+            <% if @evaluation.questions.any? %>
+              <% @evaluation.questions.order(:order_index).each_with_index do |question, index| %>
+                <div class="px-6 py-4">
+                  <div class="flex items-start justify-between">
+                    <div class="flex-1">
+                      <div class="flex items-center">
+                        <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-1 rounded mr-2">
+                          <%= index + 1 %>
+                        </span>
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          <%= t("questions.type.#{question.question_type}") %>
+                        </span>
+                      </div>
+                      <p class="mt-2 text-sm text-gray-900"><%= question.text %></p>
+                      <% if question.options.present? %>
+                        <div class="mt-2">
+                          <p class="text-xs text-gray-500"><%= t('questions.options') %>:</p>
+                          <ul class="mt-1 text-xs text-gray-600">
+                            <% question.options.each do |option| %>
+                              <li class="inline-block mr-3">• <%= option %></li>
+                            <% end %>
+                          </ul>
+                        </div>
+                      <% end %>
+                    </div>
+                    <% if can_manage_evaluation?(@evaluation) && @evaluation.draft? %>
+                      <div class="flex space-x-2 ml-4">
+                        <%= link_to t('common.edit'), edit_organization_evaluation_question_path(@organization, @evaluation, question),
+                            class: "text-blue-600 hover:text-blue-900 text-sm" %>
+                        <%= link_to t('common.delete'), organization_evaluation_question_path(@organization, @evaluation, question),
+                            method: :delete,
+                            data: { confirm: t('common.delete_confirmation') },
+                            class: "text-red-600 hover:text-red-900 text-sm" %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <div class="px-6 py-8 text-center">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900"><%= t('evaluations.no_questions') %></h3>
+                <p class="mt-1 text-sm text-gray-500"><%= t('evaluations.no_questions_message') %></p>
+                <% if can_manage_evaluation?(@evaluation) && @evaluation.draft? %>
+                  <div class="mt-6">
+                    <%= link_to t('evaluations.add_first_question'), new_organization_evaluation_question_path(@organization, @evaluation),
+                        class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700" %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Participants Section -->
+      <div>
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-medium text-gray-900"><%= t('evaluations.participants') %></h2>
+              <% if can_manage_evaluation?(@evaluation) && @evaluation.draft? %>
+                <%= link_to t('evaluations.add_participant'), new_organization_evaluation_evaluation_participant_path(@organization, @evaluation),
+                    class: "bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md text-sm font-medium" %>
+              <% end %>
+            </div>
+          </div>
+          <div class="px-6 py-4">
+            <% if @evaluation.evaluation_participants.any? %>
+              <div class="space-y-4">
+                <% @evaluation.evaluation_participants.includes(:user).group_by(&:role).each do |role, participants| %>
+                  <div>
+                    <h4 class="text-sm font-medium text-gray-900 mb-2">
+                      <%= t("evaluation_participants.role.#{role}") %> (<%= participants.count %>)
+                    </h4>
+                    <div class="space-y-2">
+                      <% participants.each do |participant| %>
+                        <div class="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-md">
+                          <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                              <div class="h-8 w-8 bg-blue-500 rounded-full flex items-center justify-center">
+                                <span class="text-sm font-medium text-white">
+                                  <%= participant.user.name.first %>
+                                </span>
+                              </div>
+                            </div>
+                            <div class="ml-3">
+                              <p class="text-sm font-medium text-gray-900"><%= participant.user.name %></p>
+                              <p class="text-xs text-gray-500"><%= participant.user.email %></p>
+                            </div>
+                          </div>
+                          <div class="flex items-center space-x-2">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium <%= participant_status_badge_class(participant.status) %>">
+                              <%= t("evaluation_participants.status.#{participant.status}") %>
+                            </span>
+                            <% if can_manage_evaluation?(@evaluation) && @evaluation.draft? %>
+                              <%= link_to organization_evaluation_evaluation_participant_path(@organization, @evaluation, participant),
+                                  method: :delete,
+                                  data: { confirm: t('common.delete_confirmation') },
+                                  class: "text-red-600 hover:text-red-900" do %>
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                              <% end %>
+                            <% end %>
+                          </div>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% else %>
+              <div class="text-center py-6">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900"><%= t('evaluations.no_participants') %></h3>
+                <p class="mt-1 text-sm text-gray-500"><%= t('evaluations.no_participants_message') %></p>
+                <% if can_manage_evaluation?(@evaluation) && @evaluation.draft? %>
+                  <div class="mt-6">
+                    <%= link_to t('evaluations.add_first_participant'), new_organization_evaluation_evaluation_participant_path(@organization, @evaluation),
+                        class: "inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700" %>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Progress Section (for active evaluations) -->
+        <% if @evaluation.active? %>
+          <div class="bg-white shadow rounded-lg mt-6">
+            <div class="px-6 py-4 border-b border-gray-200">
+              <h2 class="text-lg font-medium text-gray-900"><%= t('evaluations.progress') %></h2>
+            </div>
+            <div class="px-6 py-4">
+              <% progress = @evaluation.progress_percentage %>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium text-gray-900"><%= t('evaluations.completion_rate') %></span>
+                <span class="text-sm text-gray-500"><%= progress %>%</span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: <%= progress %>%"></div>
+              </div>
+              <p class="mt-2 text-xs text-gray-500">
+                <%= t('evaluations.participants_completed',
+                    completed: @evaluation.completed_participants_count,
+                    total: @evaluation.evaluation_participants.count) %>
+              </p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-6">
+      <%= link_to t('common.back'), organization_evaluations_path(@organization),
+          class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+    </div>
+  </div>
+</div>

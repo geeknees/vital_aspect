@@ -10,6 +10,42 @@
       <!-- ダッシュボードカード -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div class="p-8">
+          <!-- 待機中の評価 -->
+          <% if @pending_evaluations.any? %>
+            <div class="mb-8">
+              <h3 class="text-lg font-medium text-gray-900 mb-4">
+                <svg class="inline h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+                回答待ちの評価 (<%= @pending_evaluations.count %>件)
+              </h3>
+              <div class="space-y-3">
+                <% @pending_evaluations.each do |participant| %>
+                  <div class="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <h4 class="font-medium text-gray-900"><%= participant.evaluation.title %></h4>
+                        <p class="text-sm text-gray-600"><%= participant.evaluation.organization.name %></p>
+                        <div class="flex items-center mt-1 text-xs text-gray-500">
+                          <span class="inline-flex items-center px-2 py-1 rounded-full bg-blue-100 text-blue-800 mr-2">
+                            <%= t("evaluation_participants.role.#{participant.role}") %>
+                          </span>
+                          <% if participant.evaluation.end_date %>
+                            期限: <%= l(participant.evaluation.end_date, format: :short) %>
+                          <% end %>
+                        </div>
+                      </div>
+                      <div>
+                        <%= link_to '回答する', participate_organization_evaluation_evaluation_responses_path(participant.evaluation.organization, participant.evaluation),
+                            class: "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700" %>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
           <!-- カードグリッド -->
           <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mb-12">
             <!-- 組織管理カード -->
@@ -30,6 +66,31 @@
                 </div>
               </div>
             <% end %>
+
+            <!-- 360度評価管理カード -->
+            <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-6 border border-indigo-200 hover:shadow-md transition-shadow duration-200">
+              <div class="flex items-center">
+                <div class="flex-shrink-0">
+                  <div class="w-12 h-12 bg-indigo-500 rounded-lg flex items-center justify-center">
+                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </div>
+                </div>
+                <div class="ml-6">
+                  <h3 class="text-lg font-semibold text-indigo-900">360度評価</h3>
+                  <p class="text-indigo-700 mt-1">評価の作成・管理</p>
+                  <% if @owned_organizations.any? %>
+                    <div class="mt-2">
+                      <% @owned_organizations.each do |org| %>
+                        <%= link_to org.name, organization_evaluations_path(org),
+                            class: "text-xs text-indigo-600 hover:text-indigo-800 block" %>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
 
             <!-- 統計カード -->
             <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200 hover:shadow-md transition-shadow duration-200">

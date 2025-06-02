@@ -1,0 +1,131 @@
+<% content_for :title, t('evaluations.new') %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <nav class="flex items-center space-x-2 text-sm text-gray-500 mb-6">
+        <%= link_to t('organizations.title'), organizations_path, class: "hover:text-gray-700" %>
+        <span>/</span>
+        <%= link_to @organization.name, @organization, class: "hover:text-gray-700" %>
+        <span>/</span>
+        <%= link_to t('evaluations.title'), [@organization, :evaluations], class: "hover:text-gray-700" %>
+        <span>/</span>
+        <span class="text-gray-900"><%= t('evaluations.new') %></span>
+      </nav>
+
+      <h1 class="text-4xl font-bold text-gray-900"><%= t('evaluations.new') %></h1>
+      <p class="mt-3 text-lg text-gray-600">
+        <%= @organization.name %> で新しい360度評価を作成
+      </p>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white shadow-xl rounded-xl p-8 lg:p-12">
+      <%= form_with model: [@organization, @evaluation], local: true, class: "space-y-8" do |f| %>
+        <% if @evaluation.errors.any? %>
+          <div class="rounded-lg bg-red-50 p-6 border border-red-200">
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <svg class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-base font-medium text-red-800">
+                  <%= pluralize(@evaluation.errors.count, "error") %> エラーがあります:
+                </h3>
+                <div class="mt-3 text-sm text-red-700">
+                  <ul class="list-disc pl-5 space-y-1">
+                    <% @evaluation.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <div>
+          <%= f.label :title, t('evaluations.name'), class: "block text-base font-medium text-gray-700 mb-2" %>
+          <%= f.text_field :title,
+              class: "block w-full text-lg px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors #{'border-red-300 focus:ring-red-500 focus:border-red-500' if @evaluation.errors.include?(:title)}",
+              placeholder: "360度評価のタイトルを入力",
+              required: true %>
+          <% if @evaluation.errors.include?(:title) %>
+            <p class="mt-2 text-sm text-red-600">
+              <%= @evaluation.errors[:title].first %>
+            </p>
+          <% end %>
+        </div>
+
+        <div>
+          <%= f.label :description, t('evaluations.description'), class: "block text-base font-medium text-gray-700 mb-2" %>
+          <%= f.text_area :description, rows: 4,
+              class: "block w-full text-lg px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors #{'border-red-300 focus:ring-red-500 focus:border-red-500' if @evaluation.errors.include?(:description)}",
+              placeholder: "評価の目的や内容について説明してください" %>
+          <% if @evaluation.errors.include?(:description) %>
+            <p class="mt-2 text-sm text-red-600">
+              <%= @evaluation.errors[:description].first %>
+            </p>
+          <% end %>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <%= f.label :start_date, t('evaluations.start_date'), class: "block text-base font-medium text-gray-700 mb-2" %>
+            <%= f.date_field :start_date,
+                class: "block w-full text-lg px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors #{'border-red-300 focus:ring-red-500 focus:border-red-500' if @evaluation.errors.include?(:start_date)}",
+                required: true %>
+            <% if @evaluation.errors.include?(:start_date) %>
+              <p class="mt-2 text-sm text-red-600">
+                <%= @evaluation.errors[:start_date].first %>
+              </p>
+            <% end %>
+          </div>
+
+          <div>
+            <%= f.label :due_date, t('evaluations.due_date'), class: "block text-base font-medium text-gray-700 mb-2" %>
+            <%= f.date_field :due_date,
+                class: "block w-full text-lg px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors #{'border-red-300 focus:ring-red-500 focus:border-red-500' if @evaluation.errors.include?(:due_date)}",
+                required: true %>
+            <% if @evaluation.errors.include?(:due_date) %>
+              <p class="mt-2 text-sm text-red-600">
+                <%= @evaluation.errors[:due_date].first %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-6 w-6 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-base text-blue-700">
+                <strong>次のステップ:</strong>
+                評価を作成した後、質問の設定と参加者の招待を行ってください。
+              </p>
+              <ul class="mt-2 text-sm text-blue-600 list-disc list-inside">
+                <li>評価の質問を作成・編集する</li>
+                <li>評価参加者を招待する</li>
+                <li>すべての準備が整ったら評価を開始する</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex space-x-4">
+          <%= link_to t('common.cancel'), [@organization, :evaluations],
+              class: "inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors" %>
+          <%= f.submit t('evaluations.create'),
+              class: "inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

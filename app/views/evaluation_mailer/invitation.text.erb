@@ -1,0 +1,24 @@
+<%= t('evaluation_mailer.invitation.greeting', user_name: @user.email_address.split('@').first.capitalize) %>
+
+<%= t('evaluation_mailer.invitation.body_1', organization_name: @organization.name) %>
+
+=== <%= t('evaluations.title') %> ===
+<%= @evaluation.title %>
+
+<%= t('evaluations.description') %>: <%= @evaluation.description %>
+
+<%= t('evaluation_participants.role.label') %>: <%= t("evaluation_participants.role.#{@evaluation_participant.role}") %>
+
+<% if @evaluation.due_date %>
+<%= t('evaluations.due_date') %>: <%= l(@evaluation.due_date, format: :long) %>
+<% end %>
+
+<%= t('evaluation_mailer.invitation.body_2') %>
+
+<%= t('evaluation_mailer.invitation.cta_button') %>: <%= @participation_url %>
+
+<%= t('evaluation_mailer.invitation.note') %>
+
+---
+<%= t('evaluation_mailer.footer.sent_by') %> <%= @organization.name %>
+<%= t('evaluation_mailer.footer.powered_by') %> Vital Aspect

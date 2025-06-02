@@ -14,6 +14,36 @@ Rails.application.routes.draw do
           delete :decline
         end
       end
+
+      # 360度評価管理
+      resources :evaluations do
+        member do
+          patch :start
+          patch :complete
+        end
+
+        # 質問管理
+        resources :questions do
+          collection do
+            patch :reorder
+          end
+        end
+
+        # 参加者管理
+        resources :evaluation_participants, path: "participants" do
+          collection do
+            post :bulk_create
+          end
+        end
+
+        # 評価回答
+        resources :evaluation_responses, path: "responses" do
+          collection do
+            get :participate  # 参加者の回答画面
+            patch :submit     # 回答の一括提出
+          end
+        end
+      end
     end
 
     # Defines the root path route ("/")

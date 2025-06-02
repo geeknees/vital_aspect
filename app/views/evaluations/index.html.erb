@@ -1,0 +1,122 @@
+<% content_for :title, t('evaluations.title') %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <nav class="flex items-center space-x-2 text-sm text-gray-500 mb-4">
+        <%= link_to t('organizations.title'), organizations_path, class: "hover:text-gray-700" %>
+        <span>/</span>
+        <%= link_to @organization.name, @organization, class: "hover:text-gray-700" %>
+        <span>/</span>
+        <span class="text-gray-900"><%= t('evaluations.title') %></span>
+      </nav>
+
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900"><%= t('evaluations.title') %></h1>
+          <p class="mt-2 text-sm text-gray-600">
+            <%= @organization.name %> の360度評価管理
+          </p>
+        </div>
+
+        <% if @can_create %>
+          <%= link_to t('evaluations.new'), new_organization_evaluation_path(@organization),
+              class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700" %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Evaluations List -->
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+      <% if @evaluations.any? %>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <%= t('evaluations.name') %>
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <%= t('evaluations.status') %>
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <%= t('evaluations.evaluator') %>
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <%= t('evaluations.participants') %>
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <%= t('evaluations.due_date') %>
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  操作
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @evaluations.each do |evaluation| %>
+                <tr class="hover:bg-gray-50">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div>
+                      <div class="text-sm font-medium text-gray-900">
+                        <%= link_to evaluation.title, [@organization, evaluation], class: "hover:text-blue-600" %>
+                      </div>
+                      <% if evaluation.description.present? %>
+                        <div class="text-sm text-gray-500 truncate max-w-xs">
+                          <%= evaluation.description %>
+                        </div>
+                      <% end %>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                      <%= case evaluation.status
+                          when 'draft' then 'bg-gray-100 text-gray-800'
+                          when 'active' then 'bg-green-100 text-green-800'
+                          when 'completed' then 'bg-blue-100 text-blue-800'
+                          when 'cancelled' then 'bg-red-100 text-red-800'
+                          end %>">
+                      <%= t("evaluations.statuses.#{evaluation.status}") %>
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <%= evaluation.evaluator.email_address %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <%= evaluation.evaluation_participants.count %>人
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <%= evaluation.due_date&.strftime("%Y/%m/%d") %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <div class="flex items-center space-x-2">
+                      <%= link_to [@organization, evaluation], class: "text-blue-600 hover:text-blue-900" do %>
+                        <%= t('common.view') %>
+                      <% end %>
+
+                      <% if @can_create && evaluation.can_edit? %>
+                        <%= link_to edit_organization_evaluation_path(@organization, evaluation),
+                            class: "text-green-600 hover:text-green-900" do %>
+                          <%= t('common.edit') %>
+                        <% end %>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="text-center py-12">
+          <p class="text-gray-500 text-lg"><%= t('evaluations.no_evaluations') %></p>
+          <% if @can_create %>
+            <%= link_to t('evaluations.new'), new_organization_evaluation_path(@organization),
+                class: "mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

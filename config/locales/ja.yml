@@ -4,6 +4,11 @@ ja:
   # Common
   common:
     cancel: 'キャンセル'
+    save: '保存'
+    delete: '削除'
+    edit: '編集'
+    view: '表示'
+    back: '戻る'
 
   # Navigation
   nav:
@@ -119,3 +124,196 @@ ja:
             user:
               already_member: 'このユーザーは既にこの組織のメンバーです'
               cannot_invite_owner: '組織の所有者を招待することはできません'
+
+  # 360度評価
+  evaluations:
+    title: '360度評価'
+    new: '新しい評価'
+    edit: '評価を編集'
+    create: '評価を作成'
+    update: '評価を更新'
+    delete: '評価を削除'
+    start: '評価を開始'
+    complete: '評価を完了'
+    name: '評価名'
+    description: '説明'
+    start_date: '開始日'
+    due_date: '締切日'
+    status: 'ステータス'
+    evaluator: '評価者'
+    participants: '参加者'
+    questions: '質問'
+    responses: '回答'
+    results: '結果'
+    no_evaluations: '評価がありません。'
+
+    statuses:
+      draft: '下書き'
+      active: '実施中'
+      completed: '完了'
+      cancelled: 'キャンセル'
+
+    participant_roles:
+      self_evaluator: '自己評価'
+      peer: '同僚'
+      supervisor: '上司'
+      subordinate: '部下'
+
+    participant_statuses:
+      invited: '招待済み'
+      in_progress: '回答中'
+      completed: '回答完了'
+      declined: '辞退'
+
+  # 質問管理
+  questions:
+    new: '新しい質問'
+    edit: '質問を編集'
+    create: '質問を作成'
+    update: '質問を更新'
+    delete: '質問を削除'
+    text: '質問内容'
+    text_placeholder: '質問の内容を入力してください'
+    question_type: '質問タイプ'
+    select_type: '質問タイプを選択してください'
+    required: '必須回答'
+    options: '選択肢'
+    option_placeholder: '選択肢を入力してください'
+    add_option: '選択肢を追加'
+    options_help: '選択肢または評価尺度を設定してください'
+    new_description: '評価に使用する質問を作成します。'
+    edit_description: '質問の内容を編集します。'
+    created_successfully: '質問が正常に作成されました。'
+    updated_successfully: '質問が正常に更新されました。'
+    deleted_successfully: '質問が正常に削除されました。'
+    errors_prevented_saving: '以下のエラーにより保存できませんでした：'
+
+    type:
+      text: 'テキスト回答'
+      rating: '5段階評価'
+      multiple_choice: '選択肢'
+      yes_no: 'はい/いいえ'
+
+    rating:
+      very_poor: '非常に低い'
+      poor: '低い'
+      average: '普通'
+      good: '高い'
+      excellent: '非常に高い'
+
+  # 評価参加者管理
+  evaluation_participants:
+    new: '参加者を追加'
+    edit: '参加者を編集'
+    add: '追加'
+    update: '更新'
+    delete: '削除'
+    add_single: '個別に追加'
+    add_multiple: '一括追加'
+    add_selected: '選択した参加者を追加'
+    select_user: 'ユーザーを選択してください'
+    select_role: '役割を選択してください'
+    select_users: 'ユーザーを選択'
+    new_description: '評価に参加するメンバーを追加します。'
+    no_available_users: '追加可能なユーザーがいません'
+    no_available_users_message: 'すべての組織メンバーが既に参加者として追加されています。'
+    created_successfully: '参加者が正常に追加されました。'
+    updated_successfully: '参加者が正常に更新されました。'
+    deleted_successfully: '参加者が正常に削除されました。'
+    bulk_created_successfully: '%{count}人の参加者が正常に追加されました。'
+    no_users_selected: 'ユーザーが選択されていません。'
+    errors_prevented_saving: '以下のエラーにより保存できませんでした：'
+
+    role:
+      self_evaluator: '自己評価者'
+      peer: '同僚'
+      supervisor: '上司'
+      subordinate: '部下'
+
+    status:
+      invited: '招待済み'
+      in_progress: '回答中'
+      completed: '回答完了'
+      declined: '辞退'
+
+  # 追加の評価関連翻訳
+  evaluations:
+    questions: '質問'
+    participants: '参加者'
+    progress: '進捗状況'
+    completion_rate: '完了率'
+    participants_completed: '%{completed}/%{total}人が回答完了'
+    add_question: '質問を追加'
+    add_participant: '参加者を追加'
+    add_first_question: '最初の質問を追加'
+    add_first_participant: '最初の参加者を追加'
+    no_questions: '質問がありません'
+    no_questions_message: 'この評価にはまだ質問が追加されていません。'
+    no_participants: '参加者がいません'
+    no_participants_message: 'この評価にはまだ参加者が追加されていません。'
+    edit_description: '評価の基本情報を編集します。'
+    start_confirmation: 'この評価を開始しますか？開始後は質問や参加者の変更ができなくなります。'
+    complete_confirmation: 'この評価を完了しますか？完了後は回答や変更ができなくなります。'
+    access_denied: 'この評価を管理する権限がありません。'
+    not_participant: 'この評価の参加者ではありません。'
+    not_active: 'この評価は現在実施されていません。'
+
+  # 回答
+  responses:
+    title: '回答'
+    content: '回答内容'
+    score: '評点'
+    submit: '回答を提出'
+    draft_save: '下書き保存'
+    participate: '評価に参加'
+    progress: '回答進捗'
+    submitted_successfully: '回答を正常に提出しました。'
+    submission_failed: '回答の提出に失敗しました。'
+    submit_confirmation: '回答を提出しますか？提出後は変更できません。'
+    already_completed: 'この評価は既に回答済みです。'
+
+  # メール通知
+  evaluation_mailer:
+    invitation:
+      subject: '360度評価への参加のお願い - %{evaluation_name}'
+      greeting: 'こんにちは、%{name}さん'
+      intro: '%{organization}の360度評価にご参加いただき、ありがとうございます。'
+      evaluation_details: '評価詳細'
+      your_role: 'あなたの役割'
+      due_date: '回答期限'
+      participate_button: '評価に参加する'
+      footer_note: 'このメールは %{app_name} から自動送信されています。'
+
+    reminder:
+      subject: '【リマインダー】360度評価の回答期限が近づいています - %{evaluation_name}'
+      greeting: 'こんにちは、%{name}さん'
+      intro: '%{evaluation_name}の回答期限が近づいています。まだ回答されていない場合は、お早めにご回答ください。'
+      urgent_notice: '締切まで残りわずかです'
+      current_status: '現在のステータス'
+      participate_button: '今すぐ回答する'
+      footer_note: 'このメールは %{app_name} から自動送信されています。'
+
+    completion_notification:
+      subject: '360度評価が完了しました - %{evaluation_name}'
+      greeting: 'こんにちは、%{name}さん'
+      intro: '%{evaluation_name}が正常に完了いたしました。'
+      completion_summary: '完了サマリー'
+      total_participants: '総参加者数'
+      completed_responses: '回答完了数'
+      completion_rate: '完了率'
+      completion_date: '完了日'
+      view_results_button: '結果を確認する'
+      footer_note: 'このメールは %{app_name} から自動送信されています。'
+
+    # 共通の翻訳
+    common:
+      roles:
+        self_evaluator: '自己評価者'
+        peer: '同僚'
+        supervisor: '上司'
+        subordinate: '部下'
+      statuses:
+        invited: '招待済み'
+        in_progress: '回答中'
+        completed: '回答完了'
+        declined: '辞退'
