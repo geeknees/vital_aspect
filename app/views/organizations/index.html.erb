@@ -36,6 +36,10 @@
                     <%= t('organizations.members') %>: <%= org.users.count %>
                   </p>
                   <div class="flex space-x-2">
+                    <%= link_to organization_okrs_path(org),
+                        class: "text-sm text-purple-600 hover:text-purple-800" do %>
+                      <i class="fas fa-bullseye mr-1"></i>OKR
+                    <% end %>
                     <%= link_to t('organizations.edit'), edit_organization_path(org),
                         class: "text-sm text-blue-600 hover:text-blue-800" %>
                     <%= link_to organization_memberships_path(org),
@@ -83,12 +87,18 @@
                   <p class="text-sm text-gray-500">
                     <%= t('organizations.members') %>: <%= org.users.count %>
                   </p>
-                  <% if membership.can_manage_members? %>
-                    <%= link_to organization_memberships_path(org),
-                        class: "text-sm text-green-600 hover:text-green-800" do %>
-                      <%= t('memberships.title') %>
+                  <div class="flex space-x-2">
+                    <%= link_to organization_okrs_path(org),
+                        class: "text-sm text-purple-600 hover:text-purple-800" do %>
+                      <i class="fas fa-bullseye mr-1"></i>OKR
                     <% end %>
-                  <% end %>
+                    <% if membership.can_manage_members? %>
+                      <%= link_to organization_memberships_path(org),
+                          class: "text-sm text-green-600 hover:text-green-800" do %>
+                        <%= t('memberships.title') %>
+                      <% end %>
+                    <% end %>
+                  </div>
                 </div>
               </div>
             </div>

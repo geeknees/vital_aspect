@@ -23,10 +23,21 @@
 
         <% if @can_manage %>
           <div class="flex space-x-3">
+            <%= link_to "OKR管理", organization_okrs_path(@organization),
+                class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700" do %>
+              <i class="fas fa-bullseye mr-2"></i>OKR管理
+            <% end %>
             <%= link_to t('organizations.edit'), edit_organization_path(@organization),
                 class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
             <%= link_to t('memberships.invite'), new_organization_membership_path(@organization),
                 class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700" %>
+          </div>
+        <% else %>
+          <div class="flex space-x-3">
+            <%= link_to "OKR一覧", organization_okrs_path(@organization),
+                class: "inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" do %>
+              <i class="fas fa-bullseye mr-2"></i>OKR一覧
+            <% end %>
           </div>
         <% end %>
       </div>

@@ -30,8 +30,8 @@
                           <span class="inline-flex items-center px-2 py-1 rounded-full bg-blue-100 text-blue-800 mr-2">
                             <%= t("evaluation_participants.role.#{participant.role}") %>
                           </span>
-                          <% if participant.evaluation.end_date %>
-                            期限: <%= l(participant.evaluation.end_date, format: :short) %>
+                          <% if participant.evaluation.due_date %>
+                            期限: <%= l(participant.evaluation.due_date, format: :short) %>
                           <% end %>
                         </div>
                       </div>
@@ -47,7 +47,7 @@
           <% end %>
 
           <!-- カードグリッド -->
-          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mb-12">
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-8 mb-12">
             <!-- 組織管理カード -->
             <%= link_to organizations_path, class: "block h-full" do %>
               <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200 hover:shadow-md transition-shadow duration-200 h-full flex flex-col">
@@ -66,6 +66,37 @@
                 </div>
               </div>
             <% end %>
+
+            <!-- OKR管理カード -->
+            <div class="bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl p-6 border border-teal-200 hover:shadow-md transition-shadow duration-200 h-full flex flex-col">
+              <div class="flex items-start flex-1">
+                <div class="flex-shrink-0">
+                  <div class="w-12 h-12 bg-teal-500 rounded-lg flex items-center justify-center">
+                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </div>
+                </div>
+                <div class="ml-6 flex-1">
+                  <h3 class="text-lg font-semibold text-teal-900">OKR管理</h3>
+                  <p class="text-teal-700 mt-1">目標と成果の管理</p>
+                  <div class="mt-2 space-y-1">
+                    <div class="text-xs text-teal-600">
+                      アクティブ: <%= @active_okrs_count %>件
+                    </div>
+                    <div class="text-xs text-teal-600">
+                      完了済み: <%= @completed_okrs_count %>件
+                    </div>
+                    <% if @owned_organizations.any? %>
+                      <% @owned_organizations.first(2).each do |org| %>
+                        <%= link_to "#{org.name}のOKR", organization_okrs_path(org),
+                            class: "text-xs text-teal-600 hover:text-teal-800 block truncate" %>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <!-- 360度評価管理カード -->
             <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-6 border border-indigo-200 hover:shadow-md transition-shadow duration-200 h-full flex flex-col">
@@ -147,17 +178,112 @@
             </div>
           </div>
 
+          <!-- 私のOKRセクション -->
+          <% if @my_okrs.any? %>
+            <div class="mb-8">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-semibold text-gray-900">私のOKR</h3>
+                <% if @owned_organizations.any? %>
+                  <%= link_to "全て見る", organization_okrs_path(@owned_organizations.first, filter: 'my'),
+                      class: "text-sm text-blue-600 hover:text-blue-800" %>
+                <% end %>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <% @my_okrs.each do |okr| %>
+                  <div class="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-start justify-between mb-3">
+                      <div class="flex-1">
+                        <h4 class="text-lg font-medium text-gray-900 mb-1">
+                          <%= link_to okr.title, organization_okr_path(okr.organization, okr),
+                              class: "hover:text-blue-600" %>
+                        </h4>
+                        <p class="text-sm text-gray-600"><%= okr.organization.name %></p>
+                      </div>
+                      <span class="<%= okr_status_color(okr.status) %> px-2 py-1 text-xs font-medium rounded-full">
+                        <%= okr.status.humanize %>
+                      </span>
+                    </div>
+                    
+                    <% if okr.description.present? %>
+                      <p class="text-sm text-gray-700 mb-3 line-clamp-2"><%= okr.description %></p>
+                    <% end %>
+                    
+                    <!-- 進捗バー -->
+                    <div class="mb-3">
+                      <div class="flex items-center justify-between text-sm mb-1">
+                        <span class="text-gray-600">進捗</span>
+                        <span class="font-medium text-gray-900"><%= okr.overall_progress.round(1) %>%</span>
+                      </div>
+                      <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full" style="width: <%= okr.overall_progress %>%"></div>
+                      </div>
+                    </div>
+                    
+                    <!-- キーリザルト要約 -->
+                    <div class="text-xs text-gray-500">
+                      <%= okr.key_results.count %>個のキーリザルト
+                      <% if okr.start_date && okr.end_date %>
+                        • <%= l(okr.start_date, format: :short) %> - <%= l(okr.end_date, format: :short) %>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- 最近のOKR進捗セクション -->
+          <% if @recent_okr_progresses.any? %>
+            <div class="border-t border-gray-200 pt-8 mb-8">
+              <h3 class="text-xl font-semibold text-gray-900 mb-6">最近のOKR進捗</h3>
+              <div class="space-y-4">
+                <% @recent_okr_progresses.each do |progress| %>
+                  <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <div class="flex items-start justify-between">
+                      <div class="flex-1">
+                        <h4 class="font-medium text-gray-900">
+                          <%= link_to progress.okr.title, organization_okr_path(progress.okr.organization, progress.okr),
+                              class: "hover:text-blue-600" %>
+                        </h4>
+                        <p class="text-sm text-gray-600 mt-1"><%= progress.okr.organization.name %></p>
+                        <% if progress.notes.present? %>
+                          <p class="text-sm text-gray-700 mt-2"><%= truncate(progress.notes, length: 100) %></p>
+                        <% end %>
+                      </div>
+                      <div class="text-right ml-4">
+                        <div class="text-sm font-medium text-gray-900"><%= progress.completion_percentage %>%</div>
+                        <div class="text-xs text-gray-500"><%= time_ago_in_words(progress.reported_at) %>前</div>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
           <!-- 最近のアクティビティセクション -->
           <div class="border-t border-gray-200 pt-8">
             <h3 class="text-xl font-semibold text-gray-900 mb-6"><%= t('dashboard.recent_activity.title') %></h3>
-            <div class="bg-gray-50 rounded-lg p-8 text-center">
-              <div class="mx-auto w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
+            <% if @recent_okr_progresses.any? || @my_okrs.any? %>
+              <div class="bg-green-50 rounded-lg p-6 text-center">
+                <div class="mx-auto w-16 h-16 bg-green-200 rounded-full flex items-center justify-center mb-4">
+                  <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </div>
+                <p class="text-green-800 text-lg font-medium">OKRシステムが利用可能です</p>
+                <p class="text-green-600 mt-1">上記で最近のOKR活動を確認できます</p>
               </div>
-              <p class="text-gray-600 text-lg"><%= t('dashboard.recent_activity.no_activity') %></p>
-            </div>
+            <% else %>
+              <div class="bg-gray-50 rounded-lg p-8 text-center">
+                <div class="mx-auto w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
+                  <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </div>
+                <p class="text-gray-600 text-lg"><%= t('dashboard.recent_activity.no_activity') %></p>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>

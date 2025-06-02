@@ -8,7 +8,7 @@
           <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mr-2">
             <%= t("evaluation_participants.role.#{@evaluation_participant.role}") %>
           </span>
-          <span>期限: <%= l(@evaluation.end_date, format: :long) if @evaluation.end_date %></span>
+          <span>期限: <%= l(@evaluation.due_date, format: :long) if @evaluation.due_date %></span>
         </div>
       </div>
 
@@ -39,8 +39,8 @@
                 </span>
                 <div class="flex-1">
                   <h3 class="text-lg font-medium text-gray-900 mb-2">
-                    <%= question.text %>
-                    <% if question.required? %>
+                    <%= question.content %>
+                    <% if question.is_required? %>
                       <span class="text-red-500 text-sm">*</span>
                     <% end %>
                   </h3>
@@ -61,7 +61,7 @@
                     rows: 4,
                     placeholder: "回答を入力してください",
                     class: "w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500",
-                    required: question.required? %>
+                    required: question.is_required? %>
               </div>
 
             <% when 'rating' %>
@@ -72,7 +72,7 @@
                       <%= radio_button_tag "responses[#{question.id}][content]",
                           rating,
                           existing_response&.content == rating.to_s,
-                          required: question.required?,
+                          required: question.is_required?,
                           class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" %>
                       <span class="mt-1 text-xs text-gray-600 text-center">
                         <%= rating %><br>

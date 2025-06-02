@@ -1,0 +1,144 @@
+<% content_for :title, "#{@organization.name} - #{t('okrs.title')}" %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900"><%= t('okrs.title') %></h1>
+        <p class="mt-2 text-lg text-gray-600">
+          <%= @organization.name %> の<%= t('okrs.title') %>（目標と主要な結果）
+        </p>
+      </div>
+      <%= link_to t('okrs.new'), new_organization_okr_path(@organization),
+          class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white shadow rounded-lg mb-6">
+      <div class="px-6 py-4">
+        <div class="flex flex-wrap gap-4">
+          <%= link_to t('okrs.filter.all'), organization_okrs_path(@organization),
+              class: "px-4 py-2 text-sm font-medium rounded-lg #{params[:filter].blank? ? 'bg-blue-100 text-blue-800' : 'text-gray-700 hover:bg-gray-100'}" %>
+          <%= link_to t('okrs.filter.my'), organization_okrs_path(@organization, filter: 'my_okrs'),
+              class: "px-4 py-2 text-sm font-medium rounded-lg #{params[:filter] == 'my_okrs' ? 'bg-blue-100 text-blue-800' : 'text-gray-700 hover:bg-gray-100'}" %>
+          <%= link_to t('okrs.filter.current'), organization_okrs_path(@organization, filter: 'current'),
+              class: "px-4 py-2 text-sm font-medium rounded-lg #{params[:filter] == 'current' ? 'bg-green-100 text-green-800' : 'text-gray-700 hover:bg-gray-100'}" %>
+          <%= link_to t('okrs.filter.upcoming'), organization_okrs_path(@organization, filter: 'upcoming'),
+              class: "px-4 py-2 text-sm font-medium rounded-lg #{params[:filter] == 'upcoming' ? 'bg-yellow-100 text-yellow-800' : 'text-gray-700 hover:bg-gray-100'}" %>
+          <%= link_to t('okrs.filter.completed'), organization_okrs_path(@organization, filter: 'completed'),
+              class: "px-4 py-2 text-sm font-medium rounded-lg #{params[:filter] == 'completed' ? 'bg-gray-100 text-gray-800' : 'text-gray-700 hover:bg-gray-100'}" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- OKR List -->
+    <div class="space-y-6">
+      <% if @okrs.any? %>
+        <% @okrs.each do |okr| %>
+          <div class="bg-white shadow rounded-lg overflow-hidden">
+            <div class="px-6 py-4">
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <div class="flex items-center space-x-3">
+                    <h3 class="text-lg font-semibold text-gray-900">
+                      <%= link_to okr.title, organization_okr_path(@organization, okr),
+                          class: "hover:text-blue-600" %>
+                    </h3>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                      <%= case okr.status
+                          when 'draft' then 'bg-gray-100 text-gray-800'
+                          when 'active' then 'bg-green-100 text-green-800'
+                          when 'completed' then 'bg-blue-100 text-blue-800'
+                          when 'cancelled' then 'bg-red-100 text-red-800'
+                          end %>">
+                      <%= okr.status.humanize %>
+                    </span>
+                  </div>
+
+                  <p class="mt-2 text-sm text-gray-600">
+                    担当者: <%= okr.user.email_address %>
+                  </p>
+
+                  <% if okr.description.present? %>
+                    <p class="mt-2 text-sm text-gray-700 line-clamp-2">
+                      <%= okr.description %>
+                    </p>
+                  <% end %>
+
+                  <div class="mt-4 flex items-center space-x-6 text-sm text-gray-500">
+                    <span>期間: <%= okr.start_date.strftime("%Y/%m/%d") %> - <%= okr.end_date.strftime("%Y/%m/%d") %></span>
+                    <span><%= t('key_results.title') %>: <%= t('okrs.key_results_count', count: okr.key_results.count) %></span>
+                    <% if okr.is_current? %>
+                      <span class="text-orange-600">残り <%= okr.days_remaining %>日</span>
+                    <% end %>
+                  </div>
+                </div>
+
+                <div class="ml-6 flex flex-col items-end">
+                  <div class="text-right mb-2">
+                    <div class="text-2xl font-bold text-gray-900">
+                      <%= okr.progress_percentage.round(1) %>%
+                    </div>
+                    <div class="text-sm text-gray-500">進捗</div>
+                  </div>
+
+                  <!-- Progress Bar -->
+                  <div class="w-24 bg-gray-200 rounded-full h-2">
+                    <div class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                         style="width: <%= okr.progress_percentage %>%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Key Results Preview -->
+              <% if okr.key_results.any? %>
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                  <h4 class="text-sm font-medium text-gray-900 mb-3">Key Results</h4>
+                  <div class="space-y-2">
+                    <% okr.key_results.limit(3).each do |kr| %>
+                      <div class="flex items-center justify-between text-sm">
+                        <span class="text-gray-700 flex-1 truncate">
+                          <%= kr.title %>
+                        </span>
+                        <span class="ml-4 text-gray-500">
+                          <%= kr.current_value %> / <%= kr.target_value %> <%= kr.unit %>
+                        </span>
+                        <span class="ml-2 font-medium
+                          <%= kr.progress_percentage >= 100 ? 'text-green-600' : 
+                              kr.progress_percentage >= 70 ? 'text-blue-600' : 
+                              kr.progress_percentage >= 30 ? 'text-yellow-600' : 'text-red-600' %>">
+                          <%= kr.progress_percentage.round(1) %>%
+                        </span>
+                      </div>
+                    <% end %>
+                    <% if okr.key_results.count > 3 %>
+                      <p class="text-xs text-gray-500">
+                        他 <%= okr.key_results.count - 3 %>個のKey Results
+                      </p>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="text-center py-12">
+          <div class="w-24 h-24 mx-auto mb-6 text-gray-400">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900 mb-2"><%= t('okrs.no_okrs') %></h3>
+          <p class="text-gray-500 mb-6">
+            新しいOKRを作成して目標設定を始めましょう
+          </p>
+          <%= link_to t('okrs.new'), new_organization_okr_path(@organization),
+              class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

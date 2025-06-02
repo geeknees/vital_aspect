@@ -1,0 +1,283 @@
+<% content_for :title, t('okrs.new') %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-gray-900"><%= t('okrs.new') %></h1>
+      <p class="mt-3 text-lg text-gray-600">
+        <%= @organization.name %> での目標設定
+      </p>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white shadow-xl rounded-xl p-8 lg:p-12">
+      <%= form_with model: [@organization, @okr], local: true, class: "space-y-8" do |f| %>
+        <% if @okr.errors.any? %>
+          <div class="rounded-lg bg-red-50 p-6 border border-red-200">
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <svg class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-base font-medium text-red-800">
+                  <%= pluralize(@okr.errors.count, "件のエラー") %>が発生しました:
+                </h3>
+                <div class="mt-3 text-sm text-red-700">
+                  <ul class="list-disc pl-5 space-y-1">
+                    <% @okr.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Basic Information -->
+        <div class="space-y-6">
+          <div>
+            <%= f.label :title, t('okrs.title_label'), class: "block text-base font-medium text-gray-700 mb-2" %>
+            <%= f.text_field :title,
+                placeholder: "例: 顧客満足度を向上させる",
+                class: "block w-full text-lg px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors" %>
+            <p class="mt-2 text-sm text-gray-500">
+              具体的で意欲的な目標を設定してください
+            </p>
+          </div>
+
+          <div>
+            <%= f.label :description, "説明", class: "block text-base font-medium text-gray-700 mb-2" %>
+            <%= f.text_area :description,
+                rows: 4,
+                placeholder: "目標の背景や重要性について説明してください",
+                class: "block w-full text-base px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors" %>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <%= f.label :status, "ステータス", class: "block text-base font-medium text-gray-700 mb-2" %>
+              <%= f.select :status,
+                  options_for_select([
+                    ['ドラフト', 'draft'],
+                    ['アクティブ', 'active'],
+                    ['完了', 'completed'],
+                    ['キャンセル', 'cancelled']
+                  ], @okr.status),
+                  {},
+                  { class: "block w-full text-base px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors" } %>
+            </div>
+
+            <div>
+              <%= f.label :start_date, "開始日", class: "block text-base font-medium text-gray-700 mb-2" %>
+              <%= f.date_field :start_date,
+                  value: @okr.start_date || Date.current,
+                  class: "block w-full text-base px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors" %>
+            </div>
+
+            <div>
+              <%= f.label :end_date, "終了日", class: "block text-base font-medium text-gray-700 mb-2" %>
+              <%= f.date_field :end_date,
+                  value: @okr.end_date || 3.months.from_now.to_date,
+                  class: "block w-full text-base px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors" %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key Results -->
+        <div class="border-t border-gray-200 pt-8">
+          <h3 class="text-xl font-semibold text-gray-900 mb-6">Key Results（主要な結果）</h3>
+          
+          <div id="key-results" class="space-y-6">
+            <%= f.fields_for :key_results do |kr_form| %>
+              <div class="key-result-fields border border-gray-200 rounded-lg p-6">
+                <div class="flex justify-between items-start mb-4">
+                  <h4 class="text-lg font-medium text-gray-800">Key Result</h4>
+                  <button type="button" class="remove-key-result text-red-600 hover:text-red-800">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="space-y-4">
+                  <div>
+                    <%= kr_form.label :title, "タイトル", class: "block text-sm font-medium text-gray-700 mb-1" %>
+                    <%= kr_form.text_field :title,
+                        placeholder: "例: NPS（ネット推奨者スコア）を改善する",
+                        class: "block w-full text-base px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+                  </div>
+
+                  <div>
+                    <%= kr_form.label :description, "説明", class: "block text-sm font-medium text-gray-700 mb-1" %>
+                    <%= kr_form.text_area :description,
+                        rows: 2,
+                        placeholder: "Key Resultの詳細説明",
+                        class: "block w-full text-base px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                      <%= kr_form.label :target_value, "目標値", class: "block text-sm font-medium text-gray-700 mb-1" %>
+                      <%= kr_form.number_field :target_value,
+                          step: 0.01,
+                          placeholder: "100",
+                          class: "block w-full text-base px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+                    </div>
+
+                    <div>
+                      <%= kr_form.label :current_value, "現在値", class: "block text-sm font-medium text-gray-700 mb-1" %>
+                      <%= kr_form.number_field :current_value,
+                          step: 0.01,
+                          placeholder: "0",
+                          class: "block w-full text-base px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+                    </div>
+
+                    <div>
+                      <%= kr_form.label :unit, "単位", class: "block text-sm font-medium text-gray-700 mb-1" %>
+                      <%= kr_form.text_field :unit,
+                          placeholder: "ポイント",
+                          class: "block w-full text-base px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+                    </div>
+
+                    <div>
+                      <%= kr_form.label :status, "ステータス", class: "block text-sm font-medium text-gray-700 mb-1" %>
+                      <%= kr_form.select :status,
+                          options_for_select([
+                            ['未開始', 'not_started'],
+                            ['進行中', 'in_progress'],
+                            ['完了', 'completed'],
+                            ['リスク', 'at_risk']
+                          ], kr_form.object.status),
+                          {},
+                          { class: "block w-full text-base px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" } %>
+                    </div>
+                  </div>
+                </div>
+
+                <%= kr_form.hidden_field :_destroy, class: "destroy-field" %>
+              </div>
+            <% end %>
+          </div>
+
+          <button type="button" id="add-key-result" 
+                  class="mt-4 inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Key Resultを追加
+          </button>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div class="border-t border-gray-200 pt-8">
+          <div class="flex space-x-4">
+            <%= link_to "キャンセル", organization_okrs_path(@organization),
+                class: "inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors" %>
+            <%= f.submit "OKRを作成",
+                class: "inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const keyResultsContainer = document.getElementById('key-results');
+  const addButton = document.getElementById('add-key-result');
+  let keyResultIndex = keyResultsContainer.querySelectorAll('.key-result-fields').length;
+
+  // Add new key result
+  addButton.addEventListener('click', function() {
+    const template = `
+      <div class="key-result-fields border border-gray-200 rounded-lg p-6">
+        <div class="flex justify-between items-start mb-4">
+          <h4 class="text-lg font-medium text-gray-800">Key Result</h4>
+          <button type="button" class="remove-key-result text-red-600 hover:text-red-800">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">タイトル</label>
+            <input type="text" name="okr[key_results_attributes][${keyResultIndex}][title]" 
+                   placeholder="例: NPS（ネット推奨者スコア）を改善する"
+                   class="block w-full text-base px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">説明</label>
+            <textarea name="okr[key_results_attributes][${keyResultIndex}][description]" rows="2"
+                      placeholder="Key Resultの詳細説明"
+                      class="block w-full text-base px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">目標値</label>
+              <input type="number" step="0.01" name="okr[key_results_attributes][${keyResultIndex}][target_value]"
+                     placeholder="100"
+                     class="block w-full text-base px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">現在値</label>
+              <input type="number" step="0.01" name="okr[key_results_attributes][${keyResultIndex}][current_value]"
+                     placeholder="0" value="0"
+                     class="block w-full text-base px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">単位</label>
+              <input type="text" name="okr[key_results_attributes][${keyResultIndex}][unit]"
+                     placeholder="ポイント"
+                     class="block w-full text-base px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">ステータス</label>
+              <select name="okr[key_results_attributes][${keyResultIndex}][status]"
+                      class="block w-full text-base px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                <option value="not_started">未開始</option>
+                <option value="in_progress">進行中</option>
+                <option value="completed">完了</option>
+                <option value="at_risk">リスク</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <input type="hidden" name="okr[key_results_attributes][${keyResultIndex}][_destroy]" class="destroy-field" value="false">
+      </div>
+    `;
+    
+    keyResultsContainer.insertAdjacentHTML('beforeend', template);
+    keyResultIndex++;
+  });
+
+  // Remove key result
+  keyResultsContainer.addEventListener('click', function(e) {
+    if (e.target.closest('.remove-key-result')) {
+      const keyResultField = e.target.closest('.key-result-fields');
+      const destroyField = keyResultField.querySelector('.destroy-field');
+      
+      if (destroyField && destroyField.name.includes('[id]')) {
+        // Existing record - mark for destruction
+        destroyField.value = 'true';
+        keyResultField.style.display = 'none';
+      } else {
+        // New record - remove from DOM
+        keyResultField.remove();
+      }
+    }
+  });
+});
+</script>

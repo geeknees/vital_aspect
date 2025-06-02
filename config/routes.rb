@@ -44,6 +44,11 @@ Rails.application.routes.draw do
           end
         end
       end
+
+      # OKR管理
+      resources :okrs do
+        resources :okr_progresses, path: "progresses"
+      end
     end
 
     # Defines the root path route ("/")

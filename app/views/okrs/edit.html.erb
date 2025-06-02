@@ -1,0 +1,269 @@
+<% content_for :title, "Edit OKR" %>
+
+<div class="container mx-auto py-8">
+  <div class="max-w-4xl mx-auto">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900">Edit OKR</h1>
+            <p class="text-sm text-gray-600 mt-1">Update your Objective and Key Results</p>
+          </div>
+          <%= link_to organization_okr_path(@organization, @okr), 
+                      class: "bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm font-medium transition-colors" do %>
+            <i class="fas fa-arrow-left mr-2"></i>Back to OKR
+          <% end %>
+        </div>
+      </div>
+
+      <div class="p-6">
+        <%= form_with model: [@organization, @okr], local: true, class: "space-y-6", id: "okr-form" do |form| %>
+          <% if @okr.errors.any? %>
+            <div class="bg-red-50 border border-red-200 rounded-md p-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <i class="fas fa-exclamation-circle text-red-400"></i>
+                </div>
+                <div class="ml-3">
+                  <h3 class="text-sm font-medium text-red-800">
+                    Please correct the following errors:
+                  </h3>
+                  <ul class="mt-2 text-sm text-red-700 list-disc list-inside">
+                    <% @okr.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- Basic Information -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <%= form.label :title, class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.text_field :title, 
+                                  class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500",
+                                  placeholder: "Enter objective title..." %>
+            </div>
+
+            <div>
+              <%= form.label :status, class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.select :status, 
+                              options_for_select([
+                                ['Draft', 'draft'],
+                                ['Active', 'active'],
+                                ['Completed', 'completed'],
+                                ['Cancelled', 'cancelled']
+                              ], @okr.status),
+                              {},
+                              { class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" } %>
+            </div>
+          </div>
+
+          <div>
+            <%= form.label :description, class: "block text-sm font-medium text-gray-700 mb-2" %>
+            <%= form.text_area :description, 
+                               rows: 4,
+                               class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500",
+                               placeholder: "Describe the objective in detail..." %>
+          </div>
+
+          <!-- Date Range -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <%= form.label :start_date, class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.date_field :start_date, 
+                                  class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+            </div>
+
+            <div>
+              <%= form.label :end_date, class: "block text-sm font-medium text-gray-700 mb-2" %>
+              <%= form.date_field :end_date, 
+                                  class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+            </div>
+          </div>
+
+          <!-- Key Results Section -->
+          <div class="border-t border-gray-200 pt-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-medium text-gray-900">Key Results</h3>
+              <button type="button" id="add-key-result" 
+                      class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                <i class="fas fa-plus mr-2"></i>Add Key Result
+              </button>
+            </div>
+
+            <div id="key-results-container" class="space-y-4">
+              <%= form.fields_for :key_results do |kr_form| %>
+                <div class="key-result-item border border-gray-200 rounded-lg p-4 bg-gray-50">
+                  <div class="flex items-start justify-between mb-4">
+                    <h4 class="text-sm font-medium text-gray-800">Key Result</h4>
+                    <button type="button" class="remove-key-result text-red-600 hover:text-red-800 text-sm">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="md:col-span-2">
+                      <%= kr_form.label :title, "Title", class: "block text-sm font-medium text-gray-700 mb-1" %>
+                      <%= kr_form.text_field :title, 
+                                             class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm",
+                                             placeholder: "Key result description..." %>
+                    </div>
+
+                    <div>
+                      <%= kr_form.label :target_value, "Target", class: "block text-sm font-medium text-gray-700 mb-1" %>
+                      <%= kr_form.number_field :target_value, 
+                                               step: 0.01,
+                                               class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm",
+                                               placeholder: "100" %>
+                    </div>
+
+                    <div>
+                      <%= kr_form.label :unit, "Unit", class: "block text-sm font-medium text-gray-700 mb-1" %>
+                      <%= kr_form.text_field :unit, 
+                                             class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm",
+                                             placeholder: "%, users, $, etc." %>
+                    </div>
+
+                    <div>
+                      <%= kr_form.label :current_value, "Current Progress", class: "block text-sm font-medium text-gray-700 mb-1" %>
+                      <%= kr_form.number_field :current_value, 
+                                               step: 0.01,
+                                               class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm",
+                                               placeholder: "0" %>
+                    </div>
+
+                    <div>
+                      <%= kr_form.label :status, "Status", class: "block text-sm font-medium text-gray-700 mb-1" %>
+                      <%= kr_form.select :status, 
+                                         options_for_select([
+                                           ['Not Started', 'not_started'],
+                                           ['In Progress', 'in_progress'],
+                                           ['Completed', 'completed'],
+                                           ['At Risk', 'at_risk']
+                                         ], kr_form.object.status),
+                                         {},
+                                         { class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" } %>
+                    </div>
+                  </div>
+
+                  <%= kr_form.hidden_field :id %>
+                  <%= kr_form.hidden_field :_destroy, class: "destroy-field" %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+            <div class="flex space-x-3">
+              <%= link_to organization_okr_path(@organization, @okr), 
+                          class: "bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm font-medium transition-colors" do %>
+                Cancel
+              <% end %>
+            </div>
+
+            <div class="flex space-x-3">
+              <%= form.submit "Update OKR", 
+                              class: "bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md text-sm font-medium transition-colors" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Key Result Template (hidden) -->
+<template id="key-result-template">
+  <div class="key-result-item border border-gray-200 rounded-lg p-4 bg-gray-50">
+    <div class="flex items-start justify-between mb-4">
+      <h4 class="text-sm font-medium text-gray-800">Key Result</h4>
+      <button type="button" class="remove-key-result text-red-600 hover:text-red-800 text-sm">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+        <input type="text" name="okr[key_results_attributes][NEW_RECORD][title]" 
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+               placeholder="Key result description...">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Target</label>
+        <input type="number" step="0.01" name="okr[key_results_attributes][NEW_RECORD][target_value]" 
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+               placeholder="100">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Unit</label>
+        <input type="text" name="okr[key_results_attributes][NEW_RECORD][unit]" 
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+               placeholder="%, users, $, etc.">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Current Progress</label>
+        <input type="number" step="0.01" name="okr[key_results_attributes][NEW_RECORD][current_value]" 
+               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm"
+               placeholder="0">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+        <select name="okr[key_results_attributes][NEW_RECORD][status]" 
+                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
+          <option value="not_started">Not Started</option>
+          <option value="in_progress">In Progress</option>
+          <option value="completed">Completed</option>
+          <option value="at_risk">At Risk</option>
+        </select>
+      </div>
+    </div>
+
+    <input type="hidden" name="okr[key_results_attributes][NEW_RECORD][_destroy]" class="destroy-field" value="false">
+  </div>
+</template>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  let keyResultIndex = <%= @okr.key_results.length %>;
+  
+  // Add new key result
+  document.getElementById('add-key-result').addEventListener('click', function() {
+    const template = document.getElementById('key-result-template');
+    const container = document.getElementById('key-results-container');
+    
+    let newKeyResult = template.content.cloneNode(true);
+    
+    // Replace NEW_RECORD with actual index
+    newKeyResult.innerHTML = newKeyResult.innerHTML.replace(/NEW_RECORD/g, keyResultIndex);
+    
+    container.appendChild(newKeyResult);
+    keyResultIndex++;
+  });
+  
+  // Remove key result
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.remove-key-result')) {
+      const keyResultItem = e.target.closest('.key-result-item');
+      const destroyField = keyResultItem.querySelector('.destroy-field');
+      
+      if (destroyField && destroyField.name.includes('[id]')) {
+        // Existing record - mark for destruction
+        destroyField.value = '1';
+        keyResultItem.style.display = 'none';
+      } else {
+        // New record - remove from DOM
+        keyResultItem.remove();
+      }
+    }
+  });
+});
+</script>

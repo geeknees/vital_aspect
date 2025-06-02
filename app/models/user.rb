@@ -12,6 +12,9 @@ class User < ApplicationRecord
   has_many :evaluation_participants, dependent: :destroy
   has_many :evaluations, through: :evaluation_participants
 
+  # OKR associations
+  has_many :okrs, dependent: :destroy
+
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
   def admin_organizations
