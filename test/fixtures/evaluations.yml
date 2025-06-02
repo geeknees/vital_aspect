@@ -3,7 +3,7 @@
 one:
   title: MyString
   description: MyText
-  organization: one
+  organization: test_org
   evaluator: one
   status: 1
   due_date: 2025-06-03 00:05:54
@@ -11,7 +11,7 @@ one:
 two:
   title: MyString
   description: MyText
-  organization: two
+  organization: another_org
   evaluator: two
   status: 1
   due_date: 2025-06-03 00:05:54

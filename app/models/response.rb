@@ -1,8 +1,8 @@
 class Response < ApplicationRecord
   belongs_to :question
-  belongs_to :evaluation_participant
+  belongs_to :evaluation_participant, foreign_key: :participant_id
 
-  validates :evaluation_participant_id, uniqueness: { scope: :question_id }
+  validates :participant_id, uniqueness: { scope: :question_id }
   validate :content_or_score_present
   validate :score_within_range, if: :score?
 

@@ -2,12 +2,12 @@
 
 one:
   question: one
-  participant: one
+  evaluation_participant: one
   content: MyText
   score: 1
 
 two:
   question: two
-  participant: two
+  evaluation_participant: two
   content: MyText
   score: 1

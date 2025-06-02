@@ -4,12 +4,12 @@ one:
   evaluation: one
   content: MyText
   question_type: 1
-  order_number: 1
+  order_index: 1
   is_required: false
 
 two:
   evaluation: two
   content: MyText
   question_type: 1
-  order_number: 1
+  order_index: 1
   is_required: false
