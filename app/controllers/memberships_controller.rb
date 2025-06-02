@@ -166,8 +166,8 @@ class MembershipsController < ApplicationController
   # Authorization and validation methods for create action
   def authorize_member_management
     return true if can_manage_members?
-    
-    redirect_to [@organization, :memberships], alert: t("memberships.unauthorized")
+
+    redirect_to [ @organization, :memberships ], alert: t("memberships.unauthorized")
     false
   end
 
@@ -210,7 +210,7 @@ class MembershipsController < ApplicationController
     when "inactive"
       # 非アクティブメンバーの場合は再招待可能
       existing_membership.update(status: "pending", role: membership_params[:role] || "member")
-      redirect_to [@organization, :memberships],
+      redirect_to [ @organization, :memberships ],
                   notice: t("memberships.invitation_resent",
                            user_name: @user.name,
                            email: @user.email_address)
@@ -234,7 +234,7 @@ class MembershipsController < ApplicationController
     )
 
     if @membership.save
-      redirect_to [@organization, :memberships],
+      redirect_to [ @organization, :memberships ],
                   notice: t("memberships.invitation_sent",
                            user_name: @user.email_address.split("@").first,
                            email: @user.email_address)
