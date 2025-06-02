@@ -30,7 +30,7 @@ class OrganizationTest < ActiveSupport::TestCase
   test "should destroy associated memberships when organization is destroyed" do
     membership_ids = @organization.memberships.pluck(:id)
     @organization.destroy
-    
+
     # Check that the organization's memberships no longer exist
     membership_ids.each do |id|
       assert_raises(ActiveRecord::RecordNotFound) do
@@ -197,7 +197,7 @@ class OrganizationTest < ActiveSupport::TestCase
   # Edge case tests
   test "should handle organization with no memberships" do
     org = Organization.create!(name: "Empty Org", owner: users(:owner))
-    
+
     assert_empty org.admin_users
     assert_empty org.member_users
     assert_empty org.active_users
@@ -208,7 +208,7 @@ class OrganizationTest < ActiveSupport::TestCase
   test "owner should not be automatically included in users collection" do
     # Owner is not automatically a member unless there's a membership record
     org = Organization.create!(name: "Owner Only Org", owner: users(:two))
-    
+
     assert_equal users(:two), org.owner
     assert_not_includes org.users, users(:two)
     assert_empty org.active_users
