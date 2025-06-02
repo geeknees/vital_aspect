@@ -61,10 +61,9 @@
     <div>
       <h2 class="text-xl font-semibold text-gray-900 mb-6"><%= t('organizations.member_organizations') %></h2>
 
-      <% if @member_organizations.any? %>
+      <% if @member_organizations_with_memberships.any? %>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <% @member_organizations.each do |org| %>
-            <% membership = org.memberships.find_by(user: Current.user) %>
+          <% @member_organizations_with_memberships.each do |org, membership| %>
             <div class="bg-white overflow-hidden shadow rounded-lg">
               <div class="p-6">
                 <div class="flex items-center justify-between">

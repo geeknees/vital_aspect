@@ -4,7 +4,12 @@ class OrganizationsController < ApplicationController
 
   def index
     @owned_organizations = Current.user.owned_organizations.includes(:memberships, :users)
-    @member_organizations = Current.user.organizations.includes(:memberships, :users)
+
+    # Get member organizations with their memberships included to avoid N+1 queries
+    @member_organizations_with_memberships = Current.user.memberships
+                                                         .active_memberships
+                                                         .includes(organization: [ :users, :memberships ])
+                                                         .map { |membership| [ membership.organization, membership ] }
   end
 
   def show
