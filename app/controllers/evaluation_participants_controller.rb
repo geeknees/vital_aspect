@@ -24,7 +24,7 @@ class EvaluationParticipantsController < ApplicationController
 
   def create
     user_id = params[:evaluation_participant][:user_id]
-    
+
     # Security: Only allow users who are members of the organization
     user = @organization.users.find_by(id: user_id)
     unless user
@@ -146,7 +146,7 @@ class EvaluationParticipantsController < ApplicationController
     # Only allow valid role values for security reasons
     # user_id should be set explicitly in controller actions
     role_param = params.dig(:evaluation_participant, :role)
-    
+
     # Only permit if role is a valid enum value
     if role_param.present? && EvaluationParticipant.roles.key?(role_param.to_s)
       { role: role_param }
