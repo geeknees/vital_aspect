@@ -54,7 +54,7 @@ class UserTest < ActiveSupport::TestCase
     user_memberships = @user.memberships.to_a
     membership_ids = user_memberships.map(&:id)
     @user.destroy
-    
+
     # Check that the user's memberships no longer exist
     membership_ids.each do |id|
       assert_raises(ActiveRecord::RecordNotFound) do
@@ -86,7 +86,7 @@ class UserTest < ActiveSupport::TestCase
   test "admin_organizations should return organizations where user has admin or owner role" do
     admin_orgs = @user.admin_organizations
     assert_includes admin_orgs, organizations(:test_org)
-    
+
     # Test admin user
     admin_admin_orgs = @admin_user.admin_organizations
     assert_includes admin_admin_orgs, organizations(:test_org)
@@ -112,7 +112,7 @@ class UserTest < ActiveSupport::TestCase
   test "member_organizations should not return organizations where user is admin or owner" do
     owner_member_orgs = @user.member_organizations
     assert_not_includes owner_member_orgs, organizations(:test_org)
-    
+
     admin_member_orgs = @admin_user.member_organizations
     assert_not_includes admin_member_orgs, organizations(:test_org)
     assert_not_includes admin_member_orgs, organizations(:another_org)
@@ -127,7 +127,7 @@ class UserTest < ActiveSupport::TestCase
   test "active_memberships should return only active memberships" do
     active_memberships = @user.active_memberships
     assert_includes active_memberships, memberships(:owner_membership)
-    
+
     # Test that inactive memberships are not included
     member_active = @member_user.active_memberships
     assert_includes member_active, memberships(:member_membership)
