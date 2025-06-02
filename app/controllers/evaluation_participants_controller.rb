@@ -71,8 +71,12 @@ class EvaluationParticipantsController < ApplicationController
     user_ids.each do |user_id|
       next if user_id.blank?
 
+      # Security: Only allow users who are members of the organization
+      user = @organization.users.find_by(id: user_id)
+      next unless user
+
       participant = @evaluation.evaluation_participants.build(
-        user_id: user_id,
+        user: user,
         role: role,
         status: "invited"
       )
@@ -121,6 +125,8 @@ class EvaluationParticipantsController < ApplicationController
   end
 
   def evaluation_participant_params
-    params.require(:evaluation_participant).permit(:user_id, :role)
+    # Only allow role parameter for security reasons
+    # user_id should be set explicitly in controller actions
+    params.require(:evaluation_participant).permit(:role)
   end
 end
