@@ -5,8 +5,8 @@ class EvaluationMailer < ApplicationMailer
     @organization = @evaluation.organization
     @user = evaluation_participant.user
     @participation_url = participate_organization_evaluation_evaluation_responses_url(
-      @organization,
-      @evaluation,
+      organization_id: @organization.id,
+      evaluation_id: @evaluation.id,
       host: default_url_options[:host]
     )
 
@@ -24,8 +24,8 @@ class EvaluationMailer < ApplicationMailer
     @organization = @evaluation.organization
     @user = evaluation_participant.user
     @participation_url = participate_organization_evaluation_evaluation_responses_url(
-      @organization,
-      @evaluation,
+      organization_id: @organization.id,
+      evaluation_id: @evaluation.id,
       host: default_url_options[:host]
     )
 

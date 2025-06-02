@@ -34,6 +34,8 @@ en:
   # Common
   common:
     cancel: 'Cancel'
+    create: 'Create'
+    update: 'Update'
 
   # Navigation
   nav:

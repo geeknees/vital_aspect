@@ -9,6 +9,8 @@ ja:
     edit: '編集'
     view: '表示'
     back: '戻る'
+    create: '作成'
+    update: 'アップデート'
 
   # Navigation
   nav:

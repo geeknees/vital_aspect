@@ -1,4 +1,6 @@
 # Preview all emails at http://localhost:3000/rails/mailers/evaluation_mailer
+require 'bcrypt'
+
 class EvaluationMailerPreview < ActionMailer::Preview
   # Preview invitation email
   # Visit http://localhost:3000/rails/mailers/evaluation_mailer/invitation
@@ -16,15 +18,16 @@ class EvaluationMailerPreview < ActionMailer::Preview
 
       user = User.first || User.create!(
         email_address: "sample@example.com",
-        password: "password123",
+        password_digest: BCrypt::Password.create("password123")
       )
 
       evaluation = organization.evaluations.first || organization.evaluations.create!(
-        name: "Sample 360 Evaluation",
+        title: "Sample 360 Evaluation",
         description: "A sample evaluation for email preview",
         start_date: 1.week.ago,
         due_date: 1.week.from_now,
-        status: "active"
+        status: "active",
+        evaluator: user
       )
 
       evaluation_participant = evaluation.evaluation_participants.create!(
@@ -54,15 +57,16 @@ class EvaluationMailerPreview < ActionMailer::Preview
 
       user = User.first || User.create!(
         email_address: "sample@example.com",
-        password: "password123",
+        password_digest: BCrypt::Password.create("password123")
       )
 
       evaluation = organization.evaluations.first || organization.evaluations.create!(
-        name: "Sample 360 Evaluation",
+        title: "Sample 360 Evaluation",
         description: "A sample evaluation for email preview",
         start_date: 2.weeks.ago,
         due_date: 2.days.from_now,
-        status: "active"
+        status: "active",
+        evaluator: user
       )
 
       evaluation_participant = evaluation.evaluation_participants.create!(
@@ -92,20 +96,21 @@ class EvaluationMailerPreview < ActionMailer::Preview
 
       user1 = User.first || User.create!(
         email_address: "user1@example.com",
-        password: "password123",
+        password_digest: BCrypt::Password.create("password123")
       )
 
       user2 = User.find_by(email_address: "user2@example.com") || User.create!(
         email_address: "user2@example.com",
-        password: "password123",
+        password_digest: BCrypt::Password.create("password123")
       )
 
       evaluation = organization.evaluations.create!(
-        name: "Q4 Performance Review",
+        title: "Q4 Performance Review",
         description: "Quarterly 360-degree performance evaluation",
         start_date: 1.month.ago,
         due_date: 1.day.ago,
-        status: "completed"
+        status: "completed",
+        evaluator: user1
       )
 
       # Create some participants with different statuses
