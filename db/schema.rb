@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_02_150624) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_02_162507) do
   create_table "evaluation_participants", force: :cascade do |t|
     t.integer "evaluation_id", null: false
     t.integer "user_id", null: false
@@ -67,11 +67,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_02_150624) do
     t.integer "evaluation_id", null: false
     t.text "content", null: false
     t.integer "question_type", default: 0, null: false
-    t.integer "order_number", null: false
+    t.integer "order_index", null: false
     t.boolean "is_required", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["evaluation_id", "order_number"], name: "index_questions_on_evaluation_id_and_order_number"
+    t.index ["evaluation_id", "order_index"], name: "index_questions_on_evaluation_id_and_order_index"
     t.index ["evaluation_id"], name: "index_questions_on_evaluation_id"
   end
 

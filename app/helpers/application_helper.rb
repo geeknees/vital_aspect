@@ -31,7 +31,7 @@ module ApplicationHelper
 
   def can_manage_evaluation?(evaluation)
     Current.user == evaluation.created_by ||
-    Current.user.has_role?(:admin, evaluation.organization)
+    Current.user.can_create_evaluation?(evaluation.organization)
   end
 
   def get_rating_label(rating)

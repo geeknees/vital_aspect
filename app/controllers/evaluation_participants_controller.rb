@@ -115,6 +115,11 @@ class EvaluationParticipantsController < ApplicationController
     end
   end
 
+  def can_manage_evaluation?(evaluation)
+    Current.session.user == evaluation.created_by ||
+    Current.session.user.can_create_evaluation?(evaluation.organization)
+  end
+
   def evaluation_participant_params
     params.require(:evaluation_participant).permit(:user_id, :role)
   end

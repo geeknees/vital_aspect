@@ -83,6 +83,11 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def can_manage_evaluation?(evaluation)
+    Current.session.user == evaluation.created_by ||
+    Current.session.user.can_create_evaluation?(evaluation.organization)
+  end
+
   def question_params
     params.require(:question).permit(:text, :question_type, :required, options: [])
   end
