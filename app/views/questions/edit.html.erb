@@ -60,7 +60,7 @@
             <label class="block text-sm font-medium text-gray-700"><%= t('questions.options') %></label>
             <div class="mt-2">
               <div id="options-container">
-                <% (@question.options || ['']).each_with_index do |option, index| %>
+                <% (@question.options.presence || ['']).each_with_index do |option, index| %>
                   <div class="flex items-center mb-2 option-row">
                     <input type="text"
                            name="question[options][]"
@@ -94,9 +94,9 @@
           </div>
 
           <div class="flex items-center">
-            <%= form.check_box :required,
+            <%= form.check_box :is_required,
                 class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
-            <%= form.label :required, t('questions.required'),
+            <%= form.label :is_required, t('questions.required'),
                 class: "ml-2 block text-sm text-gray-900" %>
           </div>
 

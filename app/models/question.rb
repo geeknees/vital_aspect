@@ -2,6 +2,9 @@ class Question < ApplicationRecord
   belongs_to :evaluation
   has_many :responses, dependent: :destroy
 
+  # Serialize options as JSON for multiple choice questions
+  serialize :options, type: Array, coder: JSON
+
   enum :question_type, {
     text: 0,              # テキスト回答
     rating: 1,            # 評点（1-5など）
@@ -10,16 +13,16 @@ class Question < ApplicationRecord
   }
 
   validates :content, presence: true, length: { maximum: 500 }
-  validates :order_number, presence: true, uniqueness: { scope: :evaluation_id }
+  validates :order_index, presence: true, uniqueness: { scope: :evaluation_id }
   validates :question_type, presence: true
 
-  scope :ordered, -> { order(:order_number) }
+  scope :ordered, -> { order(:order_index) }
   scope :required, -> { where(is_required: true) }
 
   def self.reorder_questions!(evaluation, question_ids)
     transaction do
       question_ids.each_with_index do |id, index|
-        evaluation.questions.find(id).update!(order_number: index + 1)
+        evaluation.questions.find(id).update!(order_index: index + 1)
       end
     end
   end

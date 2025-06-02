@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_02_162507) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_02_163117) do
   create_table "evaluation_participants", force: :cascade do |t|
     t.integer "evaluation_id", null: false
     t.integer "user_id", null: false
@@ -71,6 +71,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_02_162507) do
     t.boolean "is_required", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "options"
     t.index ["evaluation_id", "order_index"], name: "index_questions_on_evaluation_id_and_order_index"
     t.index ["evaluation_id"], name: "index_questions_on_evaluation_id"
   end

@@ -16,6 +16,8 @@ class QuestionsController < ApplicationController
   def new
     @question = @evaluation.questions.build
     @question.order_index = (@evaluation.questions.maximum(:order_index) || 0) + 1
+    # Initialize options for multiple choice questions
+    @question.options = [ "" ] if @question.options.nil?
   end
 
   def create
@@ -89,6 +91,15 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:text, :question_type, :required, options: [])
+    permitted_params = params.require(:question).permit(:text, :question_type, :is_required, options: [])
+    # Map :text to :content since the model uses content
+    if permitted_params[:text]
+      permitted_params[:content] = permitted_params.delete(:text)
+    end
+    # Filter out empty options
+    if permitted_params[:options]
+      permitted_params[:options] = permitted_params[:options].reject(&:blank?)
+    end
+    permitted_params
   end
 end
