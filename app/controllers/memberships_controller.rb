@@ -21,94 +21,18 @@ class MembershipsController < ApplicationController
   end
 
   def create
-    # 権限チェック：メンバー管理権限がない場合は拒否
-    unless can_manage_members?
-      redirect_to [ @organization, :memberships ], alert: t("memberships.unauthorized")
-      return
-    end
+    return unless authorize_member_management
 
-    email_address = membership_params[:email_address]&.strip&.downcase
-
-    # メールアドレスの基本チェック
-    if email_address.blank?
-      @membership = @organization.memberships.build
-      @membership.email_address = membership_params[:email_address]
-      @membership.errors.add(:base, t("memberships.errors.email_required"))
-      render :new, status: :unprocessable_entity
-      return
-    end
-
-    # メールアドレス形式チェック
-    unless email_address.match?(URI::MailTo::EMAIL_REGEXP)
-      @membership = @organization.memberships.build
-      @membership.email_address = email_address
-      @membership.errors.add(:base, t("memberships.errors.email_invalid"))
-      render :new, status: :unprocessable_entity
-      return
-    end
+    email_address = normalize_email_address
+    return unless validate_email_address(email_address)
 
     @user = User.find_by(email_address: email_address)
+    return unless validate_user_eligibility(@user, email_address)
 
-    # ユーザーが存在しない場合
-    unless @user
-      @membership = @organization.memberships.build
-      @membership.email_address = email_address
-      @membership.errors.add(:base, t("memberships.errors.user_not_found", email: email_address))
-      render :new, status: :unprocessable_entity
-      return
-    end
-
-    # 組織所有者を招待しようとした場合
-    if @user == @organization.owner
-      @membership = @organization.memberships.build
-      @membership.email_address = email_address
-      @membership.errors.add(:base, t("memberships.errors.cannot_invite_owner"))
-      render :new, status: :unprocessable_entity
-      return
-    end
-
-    # 既にメンバーの場合
     existing_membership = @organization.memberships.find_by(user: @user)
-    if existing_membership
-      @membership = @organization.memberships.build
-      @membership.email_address = email_address
+    return unless handle_existing_membership(existing_membership, email_address)
 
-      case existing_membership.status
-      when "active"
-        @membership.errors.add(:base, t("memberships.errors.already_active_member"))
-      when "pending"
-        @membership.errors.add(:base, t("memberships.errors.already_invited"))
-      when "suspended"
-        @membership.errors.add(:base, t("memberships.errors.user_suspended"))
-      when "inactive"
-        # 非アクティブメンバーの場合は再招待可能
-        existing_membership.update(status: "pending", role: membership_params[:role] || "member")
-        redirect_to [ @organization, :memberships ],
-                    notice: t("memberships.invitation_resent",
-                             user_name: @user.name,
-                             email: @user.email_address)
-        return
-      end
-
-      render :new, status: :unprocessable_entity
-      return
-    end
-
-    @membership = @organization.memberships.build(
-      user: @user,
-      role: membership_params[:role] || "member",
-      status: "pending"
-    )
-
-    if @membership.save
-      redirect_to [ @organization, :memberships ],
-                  notice: t("memberships.invitation_sent",
-                           user_name: @user.email_address.split("@").first,
-                           email: @user.email_address)
-    else
-      @membership.email_address = email_address # フォーム再表示用
-      render :new, status: :unprocessable_entity
-    end
+    create_membership_invitation(email_address)
   end
 
   def update
@@ -237,5 +161,93 @@ class MembershipsController < ApplicationController
 
     # Admin can't remove other admins unless they are owner
     !(membership.admin? && current_membership.admin?)
+  end
+
+  # Authorization and validation methods for create action
+  def authorize_member_management
+    return true if can_manage_members?
+    
+    redirect_to [@organization, :memberships], alert: t("memberships.unauthorized")
+    false
+  end
+
+  def normalize_email_address
+    membership_params[:email_address]&.strip&.downcase
+  end
+
+  def validate_email_address(email_address)
+    if email_address.blank?
+      render_membership_error(membership_params[:email_address], t("memberships.errors.email_required"))
+      return false
+    end
+
+    unless email_address.match?(URI::MailTo::EMAIL_REGEXP)
+      render_membership_error(email_address, t("memberships.errors.email_invalid"))
+      return false
+    end
+
+    true
+  end
+
+  def validate_user_eligibility(user, email_address)
+    unless user
+      render_membership_error(email_address, t("memberships.errors.user_not_found", email: email_address))
+      return false
+    end
+
+    if user == @organization.owner
+      render_membership_error(email_address, t("memberships.errors.cannot_invite_owner"))
+      return false
+    end
+
+    true
+  end
+
+  def handle_existing_membership(existing_membership, email_address)
+    return true unless existing_membership
+
+    case existing_membership.status
+    when "inactive"
+      # 非アクティブメンバーの場合は再招待可能
+      existing_membership.update(status: "pending", role: membership_params[:role] || "member")
+      redirect_to [@organization, :memberships],
+                  notice: t("memberships.invitation_resent",
+                           user_name: @user.name,
+                           email: @user.email_address)
+      return false
+    when "active"
+      render_membership_error(email_address, t("memberships.errors.already_active_member"))
+    when "pending"
+      render_membership_error(email_address, t("memberships.errors.already_invited"))
+    when "suspended"
+      render_membership_error(email_address, t("memberships.errors.user_suspended"))
+    end
+
+    false
+  end
+
+  def create_membership_invitation(email_address)
+    @membership = @organization.memberships.build(
+      user: @user,
+      role: membership_params[:role] || "member",
+      status: "pending"
+    )
+
+    if @membership.save
+      redirect_to [@organization, :memberships],
+                  notice: t("memberships.invitation_sent",
+                           user_name: @user.email_address.split("@").first,
+                           email: @user.email_address)
+    else
+      @membership.email_address = email_address # フォーム再表示用
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def render_membership_error(email_address, error_message)
+    @membership = @organization.memberships.build
+    @membership.email_address = email_address
+    @membership.errors.add(:base, error_message)
+    render :new, status: :unprocessable_entity
   end
 end
