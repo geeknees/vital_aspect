@@ -133,7 +133,7 @@
 
         <div style="text-align: center; margin: 30px 0;">
           <%= link_to t('evaluation_mailer.completion_notification.cta_button'),
-                      organization_evaluation_url(organization_id: @organization.id, id: @evaluation.id, host: default_url_options[:host]),
+                      @evaluation_url,
                       class: 'cta-button' %>
         </div>
       </div>

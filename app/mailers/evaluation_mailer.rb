@@ -46,6 +46,10 @@ class EvaluationMailer < ApplicationMailer
       completed_participants: evaluation.evaluation_participants.completed.count,
       completion_rate: evaluation.progress_percentage
     }
+    @evaluation_url = organization_evaluation_url(
+      organization_id: @organization.id,
+      id: @evaluation.id
+    )
 
     mail(
       to: @evaluator.email_address,
