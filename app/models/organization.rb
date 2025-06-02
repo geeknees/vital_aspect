@@ -17,4 +17,12 @@ class Organization < ApplicationRecord
   def active_users
     users.joins(:memberships).where(memberships: { status: "active" })
   end
+
+  def pending_users
+    users.joins(:memberships).where(memberships: { status: "pending" })
+  end
+
+  def all_users_including_pending
+    users.joins(:memberships).where(memberships: { status: [ "active", "pending" ] })
+  end
 end

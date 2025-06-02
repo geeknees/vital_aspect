@@ -109,7 +109,8 @@ en:
     accept: 'Accept'
     decline: 'Decline'
     user_not_found: 'User not found.'
-    invitation_sent: 'Invitation sent.'
+    invitation_sent: '%{user_name} (%{email}) has been invited.'
+    invitation_resent: '%{user_name} (%{email}) has been re-invited.'
     invitation_accepted: 'Invitation accepted.'
     invitation_declined: 'Invitation declined.'
     invitation_not_found: 'Invitation not found.'
@@ -118,6 +119,15 @@ en:
     removed_successfully: 'Member was successfully removed.'
     unauthorized: 'You are not authorized to perform this action.'
     cannot_modify_owner: 'Cannot modify organization owner information.'
+
+    errors:
+      email_required: 'Please enter an email address.'
+      email_invalid: 'Please enter a valid email address.'
+      user_not_found: 'User with email address "%{email}" was not found. Please ask them to register first.'
+      cannot_invite_owner: 'Cannot invite the organization owner.'
+      already_active_member: 'This user is already a member of this organization.'
+      already_invited: 'This user has already been invited.'
+      user_suspended: 'This user is suspended and cannot be invited.'
 
     roles:
       member: 'Member'
@@ -129,3 +139,13 @@ en:
       active: 'Active'
       inactive: 'Inactive'
       suspended: 'Suspended'
+
+  # ActiveRecord error messages
+  activerecord:
+    errors:
+      models:
+        membership:
+          attributes:
+            user:
+              already_member: 'This user is already a member of this organization'
+              cannot_invite_owner: 'Cannot invite the organization owner'

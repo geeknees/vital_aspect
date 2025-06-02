@@ -25,10 +25,15 @@
       <%= form_with model: [@organization, @membership], local: true, class: "space-y-8" do |f| %>
         <% if @membership.errors.any? %>
           <div class="rounded-lg bg-red-50 p-6 border border-red-200">
-            <div class="flex">
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <svg class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.962-.833-2.732 0L3.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              </div>
               <div class="ml-3">
                 <h3 class="text-base font-medium text-red-800">
-                  <%= pluralize(@membership.errors.count, "error") %> prohibited this invitation from being sent:
+                  招待の送信中にエラーが発生しました
                 </h3>
                 <div class="mt-3 text-sm text-red-700">
                   <ul class="list-disc pl-5 space-y-1">
@@ -42,15 +47,67 @@
           </div>
         <% end %>
 
+        <% if notice %>
+          <div class="rounded-lg bg-green-50 p-6 border border-green-200">
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <svg class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-base font-medium text-green-800">
+                  <%= notice %>
+                </h3>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <% if alert %>
+          <div class="rounded-lg bg-yellow-50 p-6 border border-yellow-200">
+            <div class="flex items-start">
+              <div class="flex-shrink-0">
+                <svg class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.962-.833-2.732 0L3.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <h3 class="text-base font-medium text-yellow-800">
+                  <%= alert %>
+                </h3>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
         <div>
-          <%= label_tag :email_address, t('memberships.email_address'), class: "block text-base font-medium text-gray-700 mb-2" %>
-          <%= email_field_tag :email_address, params.dig(:membership, :email_address),
-              class: "block w-full text-lg px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors",
+          <%= f.label :email_address, t('memberships.email_address'), class: "block text-base font-medium text-gray-700 mb-2" %>
+          <%= f.email_field :email_address, value: @membership&.email_address || params.dig(:membership, :email_address),
+              class: "block w-full text-lg px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors #{'border-red-300 focus:ring-red-500 focus:border-red-500' if @membership&.errors&.include?(:email_address)}",
               placeholder: "招待するユーザーのメールアドレス",
               required: true %>
+          <% if @membership&.errors&.include?(:email_address) %>
+            <p class="mt-2 text-sm text-red-600">
+              <%= @membership.errors[:email_address].first %>
+            </p>
+          <% end %>
+          <% if @membership&.errors&.include?(:user) %>
+            <p class="mt-2 text-sm text-red-600">
+              <%= @membership.errors[:user].first %>
+            </p>
+          <% end %>
           <p class="mt-3 text-base text-gray-500">
             招待するユーザーはすでにシステムに登録済みである必要があります。
           </p>
+          <div class="mt-2 text-sm text-blue-600 bg-blue-50 p-3 rounded-lg">
+            <strong>ヒント:</strong>
+            <ul class="mt-1 list-disc pl-5 space-y-1">
+              <li>ユーザーが見つからない場合は、先にユーザー登録を行ってもらってください</li>
+              <li>既にメンバーの場合は招待できません</li>
+              <li>組織の所有者は招待できません</li>
+            </ul>
+          </div>
         </div>
 
         <div>

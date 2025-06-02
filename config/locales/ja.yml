@@ -79,7 +79,8 @@ ja:
     accept: '承認'
     decline: '拒否'
     user_not_found: 'ユーザーが見つかりません。'
-    invitation_sent: '招待を送信しました。'
+    invitation_sent: '%{user_name} (%{email}) に招待を送信しました。'
+    invitation_resent: '%{user_name} (%{email}) に招待を再送信しました。'
     invitation_accepted: '招待を承認しました。'
     invitation_declined: '招待を拒否しました。'
     invitation_not_found: '招待が見つかりません。'
@@ -88,6 +89,15 @@ ja:
     removed_successfully: 'メンバーが正常に削除されました。'
     unauthorized: 'この操作を実行する権限がありません。'
     cannot_modify_owner: '組織所有者の情報は変更できません。'
+
+    errors:
+      email_required: 'メールアドレスを入力してください。'
+      email_invalid: '有効なメールアドレスを入力してください。'
+      user_not_found: 'メールアドレス "%{email}" のユーザーが見つかりません。まずはユーザー登録を行ってもらってください。'
+      cannot_invite_owner: '組織の所有者を招待することはできません。'
+      already_active_member: 'このユーザーは既にこの組織のメンバーです。'
+      already_invited: 'このユーザーには既に招待を送信済みです。'
+      user_suspended: 'このユーザーは停止されているため招待できません。'
 
     roles:
       member: 'メンバー'
@@ -99,3 +109,13 @@ ja:
       active: 'アクティブ'
       inactive: '非アクティブ'
       suspended: '停止中'
+
+  # ActiveRecord error messages
+  activerecord:
+    errors:
+      models:
+        membership:
+          attributes:
+            user:
+              already_member: 'このユーザーは既にこの組織のメンバーです'
+              cannot_invite_owner: '組織の所有者を招待することはできません'

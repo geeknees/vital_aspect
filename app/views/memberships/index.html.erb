@@ -30,9 +30,15 @@
     <!-- Members Table -->
     <div class="bg-white shadow rounded-lg overflow-hidden">
       <div class="px-6 py-4 border-b border-gray-200">
-        <h2 class="text-lg font-medium text-gray-900">
-          <%= t('organizations.members') %> (<%= @memberships.count %>)
-        </h2>
+        <div class="flex justify-between items-center">
+          <h2 class="text-lg font-medium text-gray-900">
+            <%= t('organizations.members') %> (<%= @memberships.count %>)
+          </h2>
+          <div class="flex space-x-4 text-sm text-gray-600">
+            <span>アクティブ: <%= @memberships.select(&:active?).count %></span>
+            <span>招待中: <%= @memberships.select(&:pending?).count %></span>
+          </div>
+        </div>
       </div>
 
       <% if @memberships.any? %>
@@ -61,7 +67,7 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
               <% @memberships.each do |membership| %>
-                <tr class="hover:bg-gray-50">
+                <tr class="hover:bg-gray-50 <%= 'bg-yellow-50' if membership.pending? %>">
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
                       <div class="flex-shrink-0 h-10 w-10">
@@ -74,7 +80,17 @@
                       <div class="ml-4">
                         <div class="text-sm font-medium text-gray-900">
                           <%= membership.user.email_address %>
+                          <% if membership.pending? %>
+                            <span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+                              招待中
+                            </span>
+                          <% end %>
                         </div>
+                        <% if membership.pending? %>
+                          <div class="text-xs text-gray-500">
+                            <%= membership.created_at.strftime("%Y年%m月%d日") %> に招待送信
+                          </div>
+                        <% end %>
                       </div>
                     </div>
                   </td>
@@ -111,11 +127,15 @@
                         <% end %>
 
                         <% unless membership.user == @organization.owner %>
-                          <%= link_to [@organization, membership],
-                              method: :delete,
-                              data: { confirm: "このメンバーを削除しますか？" },
-                              class: "text-red-600 hover:text-red-900" do %>
-                            <%= t('memberships.remove') %>
+                          <% if can_remove_member?(membership) %>
+                            <%= link_to [@organization, membership],
+                                data: {
+                                  turbo_method: :delete,
+                                  turbo_confirm: membership.pending? ? "この招待を取り消しますか？" : "このメンバーを削除しますか？"
+                                },
+                                class: "text-red-600 hover:text-red-900" do %>
+                              <%= membership.pending? ? "招待取り消し" : t('memberships.remove') %>
+                            <% end %>
                           <% end %>
                         <% end %>
                       </div>

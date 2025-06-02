@@ -4,8 +4,12 @@ class MembershipsController < ApplicationController
   before_action :authenticate_user!
   before_action :check_organization_access!
 
+  helper_method :can_remove_member?
+
   def index
     @memberships = @organization.memberships.includes(:user)
+                                            .where(status: [ "active", "pending" ])
+                                            .order(:status, :created_at)
     @can_manage = can_manage_members?
   end
 
@@ -23,22 +27,86 @@ class MembershipsController < ApplicationController
       return
     end
 
-    @user = User.find_by(email_address: membership_params[:email_address])
+    email_address = membership_params[:email_address]&.strip&.downcase
 
+    # メールアドレスの基本チェック
+    if email_address.blank?
+      @membership = @organization.memberships.build
+      @membership.email_address = membership_params[:email_address]
+      @membership.errors.add(:email_address, t("memberships.errors.email_required"))
+      render :new, status: :unprocessable_entity
+      return
+    end
+
+    # メールアドレス形式チェック
+    unless email_address.match?(URI::MailTo::EMAIL_REGEXP)
+      @membership = @organization.memberships.build
+      @membership.email_address = email_address
+      @membership.errors.add(:email_address, t("memberships.errors.email_invalid"))
+      render :new, status: :unprocessable_entity
+      return
+    end
+
+    @user = User.find_by(email_address: email_address)
+
+    # ユーザーが存在しない場合
     unless @user
-      redirect_to [ @organization, :memberships ], alert: t("memberships.user_not_found")
+      @membership = @organization.memberships.build
+      @membership.email_address = email_address
+      @membership.errors.add(:email_address, t("memberships.errors.user_not_found", email: email_address))
+      render :new, status: :unprocessable_entity
+      return
+    end
+
+    # 組織所有者を招待しようとした場合
+    if @user == @organization.owner
+      @membership = @organization.memberships.build
+      @membership.email_address = email_address
+      @membership.errors.add(:user, t("memberships.errors.cannot_invite_owner"))
+      render :new, status: :unprocessable_entity
+      return
+    end
+
+    # 既にメンバーの場合
+    existing_membership = @organization.memberships.find_by(user: @user)
+    if existing_membership
+      @membership = @organization.memberships.build
+      @membership.email_address = email_address
+
+      case existing_membership.status
+      when "active"
+        @membership.errors.add(:user, t("memberships.errors.already_active_member"))
+      when "pending"
+        @membership.errors.add(:user, t("memberships.errors.already_invited"))
+      when "suspended"
+        @membership.errors.add(:user, t("memberships.errors.user_suspended"))
+      when "inactive"
+        # 非アクティブメンバーの場合は再招待可能
+        existing_membership.update(status: "pending", role: membership_params[:role] || "member")
+        redirect_to [ @organization, :memberships ],
+                    notice: t("memberships.invitation_resent",
+                             user_name: @user.name,
+                             email: @user.email_address)
+        return
+      end
+
+      render :new, status: :unprocessable_entity
       return
     end
 
     @membership = @organization.memberships.build(
       user: @user,
-      role: membership_params[:role],
+      role: membership_params[:role] || "member",
       status: "pending"
     )
 
     if @membership.save
-      redirect_to [ @organization, :memberships ], notice: t("memberships.invitation_sent")
+      redirect_to [ @organization, :memberships ],
+                  notice: t("memberships.invitation_sent",
+                           user_name: @user.email_address.split("@").first,
+                           email: @user.email_address)
     else
+      @membership.email_address = email_address # フォーム再表示用
       render :new, status: :unprocessable_entity
     end
   end
@@ -163,6 +231,9 @@ class MembershipsController < ApplicationController
 
     current_membership = @organization.memberships.find_by(user: Current.user)
     return false unless current_membership&.can_manage_members?
+
+    # 招待中（pending）のメンバーは管理者でも削除可能
+    return true if membership.pending?
 
     # Admin can't remove other admins unless they are owner
     !(membership.admin? && current_membership.admin?)
