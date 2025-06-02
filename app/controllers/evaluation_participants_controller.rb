@@ -23,7 +23,18 @@ class EvaluationParticipantsController < ApplicationController
   end
 
   def create
+    user_id = params[:evaluation_participant][:user_id]
+    
+    # Security: Only allow users who are members of the organization
+    user = @organization.users.find_by(id: user_id)
+    unless user
+      redirect_to organization_evaluation_path(@organization, @evaluation),
+                  alert: t("evaluation_participants.user_not_found")
+      return
+    end
+
     @evaluation_participant = @evaluation.evaluation_participants.build(evaluation_participant_params)
+    @evaluation_participant.user = user
 
     if @evaluation_participant.save
       # Send invitation email
@@ -60,6 +71,13 @@ class EvaluationParticipantsController < ApplicationController
   def bulk_create
     user_ids = params[:user_ids] || []
     role = params[:role]
+
+    # Validate role is one of the allowed enum values
+    unless role.present? && EvaluationParticipant.roles.key?(role)
+      redirect_to organization_evaluation_path(@organization, @evaluation),
+                  alert: t("evaluation_participants.invalid_role")
+      return
+    end
 
     if user_ids.empty?
       redirect_to organization_evaluation_path(@organization, @evaluation),
@@ -125,8 +143,15 @@ class EvaluationParticipantsController < ApplicationController
   end
 
   def evaluation_participant_params
-    # Only allow role parameter for security reasons
+    # Only allow valid role values for security reasons
     # user_id should be set explicitly in controller actions
-    params.require(:evaluation_participant).permit(:role)
+    permitted_params = params.require(:evaluation_participant).permit(:role)
+    
+    # Validate role is one of the allowed enum values
+    if permitted_params[:role].present? && !EvaluationParticipant.roles.key?(permitted_params[:role])
+      permitted_params[:role] = nil
+    end
+    
+    permitted_params
   end
 end
