@@ -4,12 +4,12 @@ ja:
     formats:
       long: "%Y年%m月%d日 %H:%M"
       short: "%m/%d %H:%M"
-  
+
   date:
     formats:
       long: "%Y年%m月%d日"
       short: "%m/%d"
-  
+
   app_name: 'Vital Aspect'
 
   # Common

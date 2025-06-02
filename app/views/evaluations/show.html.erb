@@ -43,7 +43,7 @@
           </div>
           <div>
             <dt class="text-sm font-medium text-gray-500"><%= t('evaluations.end_date') %></dt>
-            <dd class="mt-1 text-sm text-gray-900"><%= l(@evaluation.end_date, format: :long) if @evaluation.end_date %></dd>
+            <dd class="mt-1 text-sm text-gray-900"><%= l(@evaluation.due_date, format: :long) if @evaluation.due_date %></dd>
           </div>
           <div>
             <dt class="text-sm font-medium text-gray-500"><%= t('evaluations.created_by') %></dt>
@@ -157,7 +157,7 @@
                             </div>
                             <div class="ml-3">
                               <p class="text-sm font-medium text-gray-900"><%= participant.user.name %></p>
-                              <p class="text-xs text-gray-500"><%= participant.user.email %></p>
+                              <p class="text-xs text-gray-500"><%= participant.user.email_address %></p>
                             </div>
                           </div>
                           <div class="flex items-center space-x-2">

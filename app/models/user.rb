@@ -48,4 +48,8 @@ class User < ApplicationRecord
     evaluation_participants.includes(:evaluation)
                           .where(status: :completed)
   end
+
+  def name
+    email_address.split("@").first.titleize
+  end
 end
