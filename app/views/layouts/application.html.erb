@@ -72,6 +72,66 @@
           </div>
         </div>
       </nav>
+
+      <!-- Flash Messages -->
+      <% if flash[:notice] || flash[:alert] %>
+        <div class="mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <% if flash[:notice] %>
+            <div class="rounded-lg bg-green-50 p-4 mb-4 border border-green-200">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm font-medium text-green-800">
+                    <%= flash[:notice] %>
+                  </p>
+                </div>
+                <div class="ml-auto pl-3">
+                  <div class="-mx-1.5 -my-1.5">
+                    <button type="button" onclick="this.parentElement.parentElement.parentElement.parentElement.remove()" class="inline-flex bg-green-50 rounded-md p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-green-600">
+                      <span class="sr-only">Dismiss</span>
+                      <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+
+          <% if flash[:alert] %>
+            <div class="rounded-lg bg-red-50 p-4 mb-4 border border-red-200">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <svg class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.962-.833-2.732 0L3.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm font-medium text-red-800">
+                    <%= flash[:alert] %>
+                  </p>
+                </div>
+                <div class="ml-auto pl-3">
+                  <div class="-mx-1.5 -my-1.5">
+                    <button type="button" onclick="this.parentElement.parentElement.parentElement.parentElement.remove()" class="inline-flex bg-red-50 rounded-md p-1.5 text-red-500 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-red-50 focus:ring-red-600">
+                      <span class="sr-only">Dismiss</span>
+                      <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
     <%= yield %>
     </div>
   </body>

@@ -47,40 +47,6 @@
           </div>
         <% end %>
 
-        <% if notice %>
-          <div class="rounded-lg bg-green-50 p-6 border border-green-200">
-            <div class="flex items-start">
-              <div class="flex-shrink-0">
-                <svg class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div class="ml-3">
-                <h3 class="text-base font-medium text-green-800">
-                  <%= notice %>
-                </h3>
-              </div>
-            </div>
-          </div>
-        <% end %>
-
-        <% if alert %>
-          <div class="rounded-lg bg-yellow-50 p-6 border border-yellow-200">
-            <div class="flex items-start">
-              <div class="flex-shrink-0">
-                <svg class="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.962-.833-2.732 0L3.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                </svg>
-              </div>
-              <div class="ml-3">
-                <h3 class="text-base font-medium text-yellow-800">
-                  <%= alert %>
-                </h3>
-              </div>
-            </div>
-          </div>
-        <% end %>
-
         <div>
           <%= f.label :email_address, t('memberships.email_address'), class: "block text-base font-medium text-gray-700 mb-2" %>
           <%= f.email_field :email_address, value: @membership&.email_address || params.dig(:membership, :email_address),
