@@ -1,5 +1,5 @@
 # Preview all emails at http://localhost:3000/rails/mailers/evaluation_mailer
-require 'bcrypt'
+require "bcrypt"
 
 class EvaluationMailerPreview < ActionMailer::Preview
   # Preview invitation email
