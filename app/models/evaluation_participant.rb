@@ -1,7 +1,7 @@
 class EvaluationParticipant < ApplicationRecord
   belongs_to :evaluation
   belongs_to :user
-  has_many :responses, dependent: :destroy
+  has_many :responses, inverse_of: :evaluation_participant, dependent: :destroy
 
   enum :role, {
     self_evaluator: 0,    # 自己評価者
