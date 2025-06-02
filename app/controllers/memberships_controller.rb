@@ -33,7 +33,7 @@ class MembershipsController < ApplicationController
     if email_address.blank?
       @membership = @organization.memberships.build
       @membership.email_address = membership_params[:email_address]
-      @membership.errors.add(:email_address, t("memberships.errors.email_required"))
+      @membership.errors.add(:base, t("memberships.errors.email_required"))
       render :new, status: :unprocessable_entity
       return
     end
@@ -42,7 +42,7 @@ class MembershipsController < ApplicationController
     unless email_address.match?(URI::MailTo::EMAIL_REGEXP)
       @membership = @organization.memberships.build
       @membership.email_address = email_address
-      @membership.errors.add(:email_address, t("memberships.errors.email_invalid"))
+      @membership.errors.add(:base, t("memberships.errors.email_invalid"))
       render :new, status: :unprocessable_entity
       return
     end
@@ -53,7 +53,7 @@ class MembershipsController < ApplicationController
     unless @user
       @membership = @organization.memberships.build
       @membership.email_address = email_address
-      @membership.errors.add(:email_address, t("memberships.errors.user_not_found", email: email_address))
+      @membership.errors.add(:base, t("memberships.errors.user_not_found", email: email_address))
       render :new, status: :unprocessable_entity
       return
     end
@@ -62,7 +62,7 @@ class MembershipsController < ApplicationController
     if @user == @organization.owner
       @membership = @organization.memberships.build
       @membership.email_address = email_address
-      @membership.errors.add(:user, t("memberships.errors.cannot_invite_owner"))
+      @membership.errors.add(:base, t("memberships.errors.cannot_invite_owner"))
       render :new, status: :unprocessable_entity
       return
     end
@@ -75,11 +75,11 @@ class MembershipsController < ApplicationController
 
       case existing_membership.status
       when "active"
-        @membership.errors.add(:user, t("memberships.errors.already_active_member"))
+        @membership.errors.add(:base, t("memberships.errors.already_active_member"))
       when "pending"
-        @membership.errors.add(:user, t("memberships.errors.already_invited"))
+        @membership.errors.add(:base, t("memberships.errors.already_invited"))
       when "suspended"
-        @membership.errors.add(:user, t("memberships.errors.user_suspended"))
+        @membership.errors.add(:base, t("memberships.errors.user_suspended"))
       when "inactive"
         # 非アクティブメンバーの場合は再招待可能
         existing_membership.update(status: "pending", role: membership_params[:role] || "member")
