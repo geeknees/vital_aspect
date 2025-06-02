@@ -134,9 +134,6 @@ class MembershipsController < ApplicationController
     params.require(:membership).permit(permitted_params)
   end
 
-  def authenticate_user!
-    redirect_to new_session_path unless Current.user
-  end
 
   def check_organization_access!
     unless @organization.users.include?(Current.user) || @organization.owner == Current.user

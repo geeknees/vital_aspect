@@ -19,4 +19,8 @@ class ApplicationController < ActionController::Base
   def default_url_options
     { locale: I18n.locale }
   end
+
+  def authenticate_user!
+    redirect_to new_session_path unless Current.user
+  end
 end

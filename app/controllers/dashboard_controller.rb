@@ -1,4 +1,5 @@
 class DashboardController < ApplicationController
+  before_action :authenticate_user!
   def index
     user = Current.user
     @organizations = user.organizations.includes(:evaluations)
