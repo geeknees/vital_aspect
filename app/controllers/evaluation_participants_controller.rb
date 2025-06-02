@@ -145,13 +145,13 @@ class EvaluationParticipantsController < ApplicationController
   def evaluation_participant_params
     # Only allow valid role values for security reasons
     # user_id should be set explicitly in controller actions
-    permitted_params = params.require(:evaluation_participant).permit(:role)
+    role_param = params.dig(:evaluation_participant, :role)
     
-    # Validate role is one of the allowed enum values
-    if permitted_params[:role].present? && !EvaluationParticipant.roles.key?(permitted_params[:role])
-      permitted_params[:role] = nil
+    # Only permit if role is a valid enum value
+    if role_param.present? && EvaluationParticipant.roles.key?(role_param.to_s)
+      { role: role_param }
+    else
+      {}
     end
-    
-    permitted_params
   end
 end
