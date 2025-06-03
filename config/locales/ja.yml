@@ -2,10 +2,10 @@ ja:
   # Time and date formats
   time:
     formats:
-      long: "%Y年%m月%d日 %H:%M"
-      short: "%m/%d %H:%M"
-    am: "午前"
-    pm: "午後"
+      long: '%Y年%m月%d日 %H:%M'
+      short: '%m/%d %H:%M'
+    am: '午前'
+    pm: '午後'
     distance_in_words:
       about_x_hours:
         one: 約1時間前
@@ -13,45 +13,45 @@ ja:
 
   date:
     formats:
-      long: "%Y年%m月%d日"
-      short: "%m/%d"
+      long: '%Y年%m月%d日'
+      short: '%m/%d'
 
   datetime:
     distance_in_words:
-      half_a_minute: "30秒前後"
+      half_a_minute: '30秒前後'
       less_than_x_seconds:
-        one:   "1秒未満前"
-        other: "%{count}秒未満前"
+        one: '1秒未満前'
+        other: '%{count}秒未満前'
       x_seconds:
-        one:   "1秒前"
-        other: "%{count}秒前"
+        one: '1秒前'
+        other: '%{count}秒前'
       less_than_x_minutes:
-        one:   "1分未満前"
-        other: "%{count}分未満前"
+        one: '1分未満前'
+        other: '%{count}分未満前'
       x_minutes:
-        one:   "1分前"
-        other: "%{count}分前"
+        one: '1分前'
+        other: '%{count}分前'
       about_x_hours:
-        one:   "約1時間前"
-        other: "約%{count}時間前"
+        one: '約1時間前'
+        other: '約%{count}時間前'
       x_days:
-        one:   "1日前"
-        other: "%{count}日前"
+        one: '1日前'
+        other: '%{count}日前'
       about_x_months:
-        one:   "約1ヶ月前"
-        other: "約%{count}ヶ月前"
+        one: '約1ヶ月前'
+        other: '約%{count}ヶ月前'
       x_months:
-        one:   "1ヶ月前"
-        other: "%{count}ヶ月前"
+        one: '1ヶ月前'
+        other: '%{count}ヶ月前'
       about_x_years:
-        one:   "約1年前"
-        other: "約%{count}年前"
+        one: '約1年前'
+        other: '約%{count}年前'
       over_x_years:
-        one:   "1年以上前"
-        other: "%{count}年以上前"
+        one: '1年以上前'
+        other: '%{count}年以上前'
       almost_x_years:
-        one:   "1年弱前"
-        other: "%{count}年弱前"
+        one: '1年弱前'
+        other: '%{count}年弱前'
 
   app_name: 'Vital Aspect'
 
@@ -248,6 +248,33 @@ ja:
     responses: '回答'
     results: '結果'
     no_evaluations: '評価がありません。'
+    progress: '進捗状況'
+    completion_rate: '完了率'
+    participants_completed: '%{completed}/%{total}人が回答完了'
+    add_question: '質問を追加'
+    add_participant: '参加者を追加'
+    add_first_question: '最初の質問を追加'
+    add_first_participant: '最初の参加者を追加'
+    no_questions: '質問がありません'
+    no_questions_message: 'この評価にはまだ質問が追加されていません。'
+    no_participants: '参加者がいません'
+    no_participants_message: 'この評価にはまだ参加者が追加されていません。'
+    edit_description: '評価の基本情報を編集します。'
+    start_confirmation: 'この評価を開始しますか？開始後は質問や参加者の変更ができなくなります。'
+    complete_confirmation: 'この評価を完了しますか？完了後は回答や変更ができなくなります。'
+    access_denied: 'この評価を管理する権限がありません。'
+    not_participant: 'この評価の参加者ではありません。'
+    not_active: 'この評価は現在実施されていません。'
+    view_results: '評価結果を表示'
+    results_title: '%{evaluation}の評価結果'
+    results_for: '%{evaluation}の評価結果'
+    summary: '評価概要'
+    total_participants: '参加者総数'
+    completed_responses: '回答完了数'
+    completion_date: '完了日'
+    results_by_question: '質問別の結果'
+    anonymous_response: '匿名回答'
+    is_anonymous: '匿名評価にする'
 
     statuses:
       draft: '下書き'
@@ -338,38 +365,7 @@ ja:
       completed: '回答完了'
       declined: '辞退'
 
-  # 追加の評価関連翻訳
-  evaluations:
-    questions: '質問'
-    participants: '参加者'
-    progress: '進捗状況'
-    completion_rate: '完了率'
-    participants_completed: '%{completed}/%{total}人が回答完了'
-    add_question: '質問を追加'
-    add_participant: '参加者を追加'
-    add_first_question: '最初の質問を追加'
-    add_first_participant: '最初の参加者を追加'
-    no_questions: '質問がありません'
-    no_questions_message: 'この評価にはまだ質問が追加されていません。'
-    no_participants: '参加者がいません'
-    no_participants_message: 'この評価にはまだ参加者が追加されていません。'
-    edit_description: '評価の基本情報を編集します。'
-    start_confirmation: 'この評価を開始しますか？開始後は質問や参加者の変更ができなくなります。'
-    complete_confirmation: 'この評価を完了しますか？完了後は回答や変更ができなくなります。'
-    access_denied: 'この評価を管理する権限がありません。'
-    not_participant: 'この評価の参加者ではありません。'
-    not_active: 'この評価は現在実施されていません。'
-    view_results: '評価結果を表示'
-    results_title: '%{evaluation}の評価結果'
-    results_for: '%{evaluation}の評価結果'
-    summary: '評価概要'
-    total_participants: '参加者総数'
-    completed_responses: '回答完了数'
-    completion_date: '完了日'
-    results_by_question: '質問別の結果'
-    responses: '回答'
-    anonymous_response: '匿名回答'
-    is_anonymous: '匿名評価にする'
+  # 追加の評価関連翻訳（evaluationsに統合されます）
 
   # 回答
   responses:
