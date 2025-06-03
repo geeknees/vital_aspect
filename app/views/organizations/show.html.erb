@@ -23,7 +23,7 @@
 
         <% if @can_manage %>
           <div class="flex space-x-3">
-            <%= link_to "OKR管理", organization_okrs_path(@organization),
+            <%= link_to organization_okrs_path(@organization),
                 class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700" do %>
               <i class="fas fa-bullseye mr-2"></i>OKR管理
             <% end %>
