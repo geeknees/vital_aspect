@@ -144,6 +144,21 @@ en:
 
   # ActiveRecord error messages
   activerecord:
+    models:
+      key_result: 'Key Result'
+      okr: 'OKR'
+      organization: 'Organization'
+      membership: 'Membership'
+      user: 'User'
+      evaluation: 'Evaluation'
+      question: 'Question'
+    attributes:
+      key_result:
+        title: 'Title'
+        status: 'Status'
+      okr:
+        title: 'Title'
+        status: 'Status'
     errors:
       models:
         membership:
@@ -151,6 +166,19 @@ en:
             user:
               already_member: 'This user is already a member of this organization'
               cannot_invite_owner: 'Cannot invite the organization owner'
+      messages:
+        blank: 'Please enter %{attribute}'
+        not_a_number: 'Please enter a number for %{attribute}'
+        greater_than: 'Please enter a value greater than %{count} for %{attribute}'
+        greater_than_or_equal_to: 'Please enter a value greater than or equal to %{count} for %{attribute}'
+        less_than: 'Please enter a value less than %{count} for %{attribute}'
+        less_than_or_equal_to: 'Please enter a value less than or equal to %{count} for %{attribute}'
+        invalid: '%{attribute} is invalid'
+        taken: '%{attribute} is already taken'
+        too_long: 'Please enter %{attribute} with no more than %{count} characters'
+        too_short: 'Please enter %{attribute} with at least %{count} characters'
+        wrong_length: 'Please enter %{attribute} with exactly %{count} characters'
+        confirmation: '%{attribute} confirmation does not match'
 
   # OKRs
   okrs:
@@ -183,6 +211,8 @@ en:
     created_successfully: 'OKR was successfully created.'
     updated_successfully: 'OKR was successfully updated.'
     deleted_successfully: 'OKR was successfully deleted.'
+    activated_successfully: 'OKR has been finalized. Status changed to Active.'
+    already_activated: 'This OKR has already been finalized.'
     unauthorized: 'You are not authorized to perform this action.'
     not_found: 'OKR not found.'
 
@@ -199,6 +229,8 @@ en:
     add_key_result: 'Add Key Result'
     remove_key_result: 'Remove Key Result'
     key_results_count: '%{count} Key Results'
+    update_key_results_message: 'To update individual key result progress, edit the OKR directly.'
+    enter_overall_completion: 'Enter the overall completion percentage for this OKR.'
 
     # Actions
     view_details: 'View Details'
@@ -237,6 +269,13 @@ en:
     update: 'Update Progress Report'
     delete: 'Delete Progress Report'
     delete_confirm: 'Are you sure you want to delete this progress report?'
+    update_for: 'Update Progress For'
+    overall_completion: 'Overall Completion'
+    progress_notes: 'Progress Notes'
+    report_date: 'Report Date'
+    add_progress_update: 'Add Progress Update'
+    progress_notes_placeholder: 'Enter details about progress made, challenges faced, achievements, next steps, etc...'
+    progress_notes_help: 'Share information about progress status, challenges, achievements, and next steps.'
 
     # Fields
     completion_percentage: 'Completion Percentage'
@@ -258,3 +297,203 @@ en:
     # Timeline
     progress_timeline: 'Progress Timeline'
     view_timeline: 'View Timeline'
+
+  # 360-degree Evaluations
+  evaluations:
+    title: '360-degree Evaluation'
+    new: 'New Evaluation'
+    edit: 'Edit Evaluation'
+    create: 'Create Evaluation'
+    update: 'Update Evaluation'
+    delete: 'Delete Evaluation'
+    start: 'Start Evaluation'
+    complete: 'Complete Evaluation'
+    name: 'Evaluation Name'
+    description: 'Description'
+    start_date: 'Start Date'
+    due_date: 'Due Date'
+    status: 'Status'
+    evaluator: 'Evaluator'
+    participants: 'Participants'
+    questions: 'Questions'
+    responses: 'Responses'
+    results: 'Results'
+    no_evaluations: 'No evaluations found.'
+    progress: 'Progress'
+    completion_rate: 'Completion Rate'
+    participants_completed: '%{completed}/%{total} participants completed'
+    add_question: 'Add Question'
+    add_participant: 'Add Participant'
+    add_first_question: 'Add First Question'
+    add_first_participant: 'Add First Participant'
+    no_questions: 'No Questions'
+    no_questions_message: 'No questions have been added to this evaluation yet.'
+    no_participants: 'No Participants'
+    no_participants_message: 'No participants have been added to this evaluation yet.'
+    edit_description: 'Edit the basic information for this evaluation.'
+    start_confirmation: 'Are you sure you want to start this evaluation? You will not be able to modify questions or participants after starting.'
+    complete_confirmation: 'Are you sure you want to complete this evaluation? No more responses will be allowed after completion.'
+    access_denied: 'You do not have permission to manage this evaluation.'
+    not_participant: 'You are not a participant in this evaluation.'
+    not_active: 'This evaluation is not currently active.'
+    view_results: 'View Results'
+    results_title: 'Results for %{evaluation}'
+    results_for: 'Evaluation Results for %{evaluation}'
+    summary: 'Evaluation Summary'
+    total_participants: 'Total Participants'
+    completed_responses: 'Completed Responses'
+    completion_date: 'Completion Date'
+    results_by_question: 'Results by Question'
+    anonymous_response: 'Anonymous Response'
+    is_anonymous: 'Make evaluation anonymous'
+
+    statuses:
+      draft: 'Draft'
+      active: 'Active'
+      completed: 'Completed'
+      cancelled: 'Cancelled'
+
+    participant_roles:
+      self_evaluator: 'Self Evaluator'
+      peer: 'Peer'
+      supervisor: 'Supervisor'
+      subordinate: 'Subordinate'
+
+    participant_statuses:
+      invited: 'Invited'
+      in_progress: 'In Progress'
+      completed: 'Completed'
+      declined: 'Declined'
+
+  # Questions Management
+  questions:
+    new: 'New Question'
+    edit: 'Edit Question'
+    create: 'Create Question'
+    update: 'Update Question'
+    delete: 'Delete Question'
+    text: 'Question Text'
+    text_placeholder: 'Enter the question text'
+    question_type: 'Question Type'
+    select_type: 'Select question type'
+    required: 'Required'
+    options: 'Options'
+    option_placeholder: 'Enter an option'
+    add_option: 'Add Option'
+    options_help: 'Set options or rating scale'
+    new_description: 'Create a question for use in evaluations.'
+    edit_description: 'Edit the question content.'
+    created_successfully: 'Question was successfully created.'
+    updated_successfully: 'Question was successfully updated.'
+    deleted_successfully: 'Question was successfully deleted.'
+    errors_prevented_saving: 'The following errors prevented saving:'
+
+    type:
+      text: 'Text Response'
+      rating: '5-point Rating'
+      multiple_choice: 'Multiple Choice'
+      yes_no: 'Yes/No'
+
+    rating:
+      very_poor: 'Very Poor'
+      poor: 'Poor'
+      average: 'Average'
+      good: 'Good'
+      excellent: 'Excellent'
+
+  # Evaluation Participants Management
+  evaluation_participants:
+    new: 'Add Participant'
+    edit: 'Edit Participant'
+    add: 'Add'
+    update: 'Update'
+    delete: 'Delete'
+    add_single: 'Add Individual'
+    add_multiple: 'Bulk Add'
+    add_selected: 'Add Selected Participants'
+    select_user: 'Select a user'
+    select_role: 'Select a role'
+    select_users: 'Select Users'
+    new_description: 'Add members to participate in the evaluation.'
+    no_available_users: 'No available users'
+    no_available_users_message: 'All organization members have already been added as participants.'
+    created_successfully: 'Participant was successfully added.'
+    updated_successfully: 'Participant was successfully updated.'
+    deleted_successfully: 'Participant was successfully deleted.'
+    bulk_created_successfully: '%{count} participants were successfully added.'
+    no_users_selected: 'No users selected.'
+    errors_prevented_saving: 'The following errors prevented saving:'
+
+    role:
+      self_evaluator: 'Self Evaluator'
+      peer: 'Peer'
+      supervisor: 'Supervisor'
+      subordinate: 'Subordinate'
+
+    status:
+      invited: 'Invited'
+      in_progress: 'In Progress'
+      completed: 'Completed'
+      declined: 'Declined'
+
+  # Responses section is defined below, so this duplicate is removed.
+
+  # Email Notifications
+  evaluation_mailer:
+    invitation:
+      subject: 'Invitation to Participate in 360-degree Evaluation - %{evaluation_title}'
+      header: 'Invitation to Evaluation'
+      greeting: 'Hello, %{user_name}'
+      body_1: 'Thank you for participating in the 360-degree evaluation for %{organization_name}.'
+      body_2: 'Please access the evaluation using the link below.'
+      cta_button: 'Participate in Evaluation'
+      note: 'If you have any questions about this email, please feel free to contact us.'
+
+    reminder:
+      subject: '[REMINDER] 360-degree Evaluation Due Date Approaching - %{evaluation_title}'
+      header: 'Evaluation Response Reminder'
+      greeting: 'Hello, %{user_name}'
+      body_1: 'The due date for %{evaluation_title} is approaching. Please complete your response if you have not done so already.'
+      body_2: 'You can continue your response using the link below.'
+      urgent_notice: 'Deadline is approaching!'
+      due_soon: 'Due: %{due_date}'
+      cta_button: 'Respond Now'
+      note: 'If you have any questions about this email, please feel free to contact us.'
+
+    completion_notification:
+      subject: '360-degree Evaluation Completed - %{evaluation_title}'
+      header: 'Evaluation Completion Notification'
+      greeting: 'Hello, %{evaluator_name}'
+      body_1: '%{evaluation_title} has been successfully completed.'
+      body_2: 'You can view the detailed results using the link below.'
+      completion_stats: 'Completion Statistics'
+      completed: 'Completed'
+      total: 'Total Participants'
+      rate: 'Completion Rate'
+      cta_button: 'View Results'
+
+    footer:
+      sent_by: 'Sent by:'
+      powered_by: 'Powered by'
+      completion_date: 'Completion Date'
+      view_results_button: 'View Results'
+      footer_note: 'This email was automatically sent from %{app_name}.'
+
+    # Common translations
+    common:
+      roles:
+        self_evaluator: 'Self Evaluator'
+        peer: 'Peer'
+        supervisor: 'Supervisor'
+        subordinate: 'Subordinate'
+      statuses:
+        invited: 'Invited'
+        in_progress: 'In Progress'
+        completed: 'Completed'
+        declined: 'Declined'
+
+  # Time and date formats
+  formats:
+
+  datetime:
+    distance_in_words:
