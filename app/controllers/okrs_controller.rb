@@ -71,7 +71,12 @@ class OkrsController < ApplicationController
   private
 
   def set_organization
-    @organization = Current.user.organizations.find(params[:organization_id])
+    @organization = Organization.find(params[:organization_id])
+    unless Current.user.member_of?(@organization)
+      redirect_to organizations_path, alert: t("organizations.access_denied")
+    end
+  rescue ActiveRecord::RecordNotFound
+    redirect_to organizations_path, alert: t("organizations.not_found")
   end
 
   def set_okr
