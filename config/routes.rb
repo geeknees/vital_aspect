@@ -20,6 +20,7 @@ Rails.application.routes.draw do
         member do
           patch :start
           patch :complete
+          get :results   # 評価結果確認画面
         end
 
         # 質問管理

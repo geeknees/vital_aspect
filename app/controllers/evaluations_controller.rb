@@ -1,9 +1,9 @@
 class EvaluationsController < ApplicationController
   before_action :set_organization
-  before_action :set_evaluation, only: [ :show, :edit, :update, :destroy, :start, :complete ]
+  before_action :set_evaluation, only: [ :show, :edit, :update, :destroy, :start, :complete, :results ]
   before_action :authenticate_user!
   before_action :check_organization_access!
-  before_action :check_evaluation_management_permission!, except: [ :index, :show ]
+  before_action :check_evaluation_management_permission!, except: [ :index, :show, :results ]
 
   def index
     @evaluations = @organization.evaluations.includes(:evaluator, :evaluation_participants)
@@ -95,6 +95,21 @@ class EvaluationsController < ApplicationController
     end
   end
 
+  def results
+    unless @evaluation.completed?
+      redirect_to [ @organization, @evaluation ], alert: "評価が完了していないため、結果を確認できません。"
+      return
+    end
+
+    @participants = @evaluation.evaluation_participants.includes(:user)
+    @questions = @evaluation.questions.order(:order_index)
+    @responses_by_participant = {}
+
+    @participants.each do |participant|
+      @responses_by_participant[participant.id] = participant.responses.includes(:question).index_by(&:question_id)
+    end
+  end
+
   private
 
   def set_organization
@@ -106,7 +121,7 @@ class EvaluationsController < ApplicationController
   end
 
   def evaluation_params
-    params.require(:evaluation).permit(:title, :description, :start_date, :due_date)
+    params.require(:evaluation).permit(:title, :description, :start_date, :due_date, :is_anonymous)
   end
 
   def authenticate_user!

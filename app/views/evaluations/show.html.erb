@@ -28,6 +28,10 @@
                         turbo_confirm: t('evaluations.complete_confirmation') },
                       class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
                 <% end %>
+                <% if @evaluation.completed? %>
+                  <%= link_to t('evaluations.view_results'), results_organization_evaluation_path(@organization, @evaluation),
+                      class: "bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
+                <% end %>
                 <%= link_to t('evaluations.edit'), edit_organization_evaluation_path(@organization, @evaluation),
                     class: "bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium" %>
               </div>

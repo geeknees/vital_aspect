@@ -1,0 +1,220 @@
+<% content_for :title, t('evaluations.results_title', evaluation: @evaluation.title) %>
+
+<div class="min-h-screen bg-gray-50 py-6">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="bg-white shadow rounded-lg mb-6">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900"><%= t('evaluations.results_for', evaluation: @evaluation.title) %></h1>
+            <p class="mt-1 text-sm text-gray-600"><%= @evaluation.description %></p>
+          </div>
+          <div>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= status_badge_class(@evaluation.status) %>">
+              <%= t("evaluations.status.#{@evaluation.status}") %>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Stats -->
+    <div class="bg-white shadow rounded-lg mb-6">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-medium text-gray-900"><%= t('evaluations.summary') %></h2>
+      </div>
+      <div class="px-6 py-4">
+        <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
+          <div>
+            <dt class="text-sm font-medium text-gray-500"><%= t('evaluations.total_participants') %></dt>
+            <dd class="mt-1 text-2xl font-semibold text-gray-900"><%= @participants.count %></dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500"><%= t('evaluations.completed_responses') %></dt>
+            <dd class="mt-1 text-2xl font-semibold text-gray-900"><%= @participants.completed_participants.count %></dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500"><%= t('evaluations.completion_date') %></dt>
+            <dd class="mt-1 text-sm text-gray-900"><%= l(@evaluation.updated_at, format: :long) %></dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <!-- Results by Question -->
+    <div class="bg-white shadow rounded-lg mb-6">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-medium text-gray-900"><%= t('evaluations.results_by_question') %></h2>
+      </div>
+      <div>
+        <% @questions.each_with_index do |question, index| %>
+          <div class="border-b border-gray-200 last:border-b-0">
+            <div class="px-6 py-4">
+              <div class="flex items-start">
+                <div class="flex-shrink-0 bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm font-medium">
+                  Q<%= index + 1 %>
+                </div>
+                <div class="ml-3">
+                  <h3 class="text-base font-medium text-gray-900"><%= question.content %></h3>
+                  <p class="mt-1 text-sm text-gray-600">
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      <%= t("questions.type.#{question.question_type}") %>
+                    </span>
+                    <% if question.is_required %>
+                      <span class="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        <%= t("questions.required") %>
+                      </span>
+                    <% end %>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Question responses -->
+              <div class="mt-4 pl-10">
+                <h4 class="text-sm font-medium text-gray-700 mb-2"><%= t('evaluations.responses') %>:</h4>
+
+                <% if question.question_type == "rating" %>
+                  <!-- Rating visualization -->
+                  <div class="space-y-2">
+                    <% ratings = @participants.map { |p| @responses_by_participant[p.id]&.dig(question.id)&.score }.compact %>
+                    <% avg_rating = ratings.any? ? (ratings.sum.to_f / ratings.size).round(1) : 0 %>
+
+                    <div class="flex items-center">
+                      <span class="text-lg font-medium text-gray-900 mr-2"><%= avg_rating %></span>
+                      <div class="flex">
+                        <% 5.times do |i| %>
+                          <% if i < avg_rating.floor %>
+                            <svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                          <% elsif i == avg_rating.floor && avg_rating % 1 > 0 %>
+                            <!-- Half star for decimal part -->
+                            <svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                              <defs>
+                                <linearGradient id="halfStar">
+                                  <stop offset="50%" stop-color="currentColor" />
+                                  <stop offset="50%" stop-color="#e5e7eb" />
+                                </linearGradient>
+                              </defs>
+                              <path fill="url(#halfStar)" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                          <% else %>
+                            <svg class="h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                          <% end %>
+                        <% end %>
+                      </div>
+                      <span class="ml-2 text-sm text-gray-500">(<%= ratings.size %> <%= t('evaluations.responses') %>)</span>
+                    </div>
+
+                    <!-- Rating distribution -->
+                    <div class="space-y-2 mt-2">
+                      <% (1..5).each do |rating| %>
+                        <% count = ratings.count { |r| r == rating } %>
+                        <% percentage = ratings.any? ? (count.to_f / ratings.size * 100).round : 0 %>
+                        <div class="flex items-center">
+                          <span class="w-6 text-sm text-gray-600"><%= rating %></span>
+                          <div class="flex-1 h-4 mx-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div class="h-full bg-blue-600" style="width: <%= percentage %>%"></div>
+                          </div>
+                          <span class="w-8 text-xs text-gray-500"><%= percentage %>%</span>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+
+                <% elsif question.question_type == "yes_no" %>
+                  <!-- Yes/No visualization -->
+                  <% responses = @participants.map { |p| @responses_by_participant[p.id]&.dig(question.id)&.score }.compact %>
+                  <% yes_count = responses.count { |r| r == 1 } %>
+                  <% no_count = responses.count { |r| r == 0 } %>
+                  <% total = responses.size %>
+                  <% yes_percentage = total > 0 ? (yes_count.to_f / total * 100).round : 0 %>
+                  <% no_percentage = total > 0 ? (no_count.to_f / total * 100).round : 0 %>
+
+                  <div class="space-y-4">
+                    <div class="flex items-center">
+                      <div class="flex-1 h-8 bg-gray-200 rounded-full overflow-hidden">
+                        <div class="h-full bg-green-500" style="width: <%= yes_percentage %>%"></div>
+                      </div>
+                      <div class="ml-3 w-24 flex items-center">
+                        <span class="text-sm font-medium text-gray-900"><%= t('common.yes') %>: <%= yes_count %></span>
+                        <span class="ml-1 text-xs text-gray-500">(<%= yes_percentage %>%)</span>
+                      </div>
+                    </div>
+                    <div class="flex items-center">
+                      <div class="flex-1 h-8 bg-gray-200 rounded-full overflow-hidden">
+                        <div class="h-full bg-red-500" style="width: <%= no_percentage %>%"></div>
+                      </div>
+                      <div class="ml-3 w-24 flex items-center">
+                        <span class="text-sm font-medium text-gray-900"><%= t('common.no') %>: <%= no_count %></span>
+                        <span class="ml-1 text-xs text-gray-500">(<%= no_percentage %>%)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                <% elsif question.question_type == "multiple_choice" %>
+                  <!-- Multiple choice visualization -->
+                  <% responses = @participants.map { |p| @responses_by_participant[p.id]&.dig(question.id)&.content }.compact %>
+                  <% options = question.options %>
+                  <% total = responses.size %>
+
+                  <div class="space-y-3">
+                    <% options.each do |option| %>
+                      <% count = responses.count { |r| r == option } %>
+                      <% percentage = total > 0 ? (count.to_f / total * 100).round : 0 %>
+                      <div class="flex items-center">
+                        <div class="flex-1 h-6 bg-gray-200 rounded-full overflow-hidden">
+                          <div class="h-full bg-indigo-500" style="width: <%= percentage %>%"></div>
+                        </div>
+                        <div class="ml-3 min-w-[150px] flex items-center">
+                          <span class="text-sm font-medium text-gray-900"><%= option %></span>
+                          <span class="ml-2 text-xs text-gray-500">(<%= count %>/<%= total %>, <%= percentage %>%)</span>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+
+                <% else %>
+                  <!-- Text responses -->
+                  <div class="space-y-4">
+                    <% @participants.each do |participant| %>
+                      <% response = @responses_by_participant[participant.id]&.dig(question.id) %>
+                      <% next unless response&.content.present? %>
+
+                      <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex items-center mb-2">
+                          <div class="h-8 w-8 bg-blue-500 rounded-full flex items-center justify-center">
+                            <span class="text-sm font-medium text-white"><%= participant.user.name.first %></span>
+                          </div>
+                          <div class="ml-3">
+                            <% if @evaluation.is_anonymous? %>
+                              <p class="text-sm font-medium text-gray-900"><%= t('evaluations.anonymous_response') %></p>
+                              <p class="text-xs text-gray-500"><%= t("evaluation_participants.role.#{participant.role}") %></p>
+                            <% else %>
+                              <p class="text-sm font-medium text-gray-900"><%= participant.user.name %></p>
+                              <p class="text-xs text-gray-500"><%= t("evaluation_participants.role.#{participant.role}") %></p>
+                            <% end %>
+                          </div>
+                        </div>
+                        <p class="text-sm text-gray-700"><%= simple_format(response.content) %></p>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-6">
+      <%= link_to t('common.back'), organization_evaluation_path(@organization, @evaluation),
+          class: "inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
+    </div>
+  </div>
+</div>

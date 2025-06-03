@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_03_000003) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_03_144926) do
   create_table "evaluation_participants", force: :cascade do |t|
     t.integer "evaluation_id", null: false
     t.integer "user_id", null: false
@@ -33,6 +33,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_03_000003) do
     t.datetime "start_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_anonymous", default: false, null: false
     t.index ["evaluator_id"], name: "index_evaluations_on_evaluator_id"
     t.index ["organization_id"], name: "index_evaluations_on_organization_id"
   end

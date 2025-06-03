@@ -359,6 +359,17 @@ ja:
     access_denied: 'この評価を管理する権限がありません。'
     not_participant: 'この評価の参加者ではありません。'
     not_active: 'この評価は現在実施されていません。'
+    view_results: '評価結果を表示'
+    results_title: '%{evaluation}の評価結果'
+    results_for: '%{evaluation}の評価結果'
+    summary: '評価概要'
+    total_participants: '参加者総数'
+    completed_responses: '回答完了数'
+    completion_date: '完了日'
+    results_by_question: '質問別の結果'
+    responses: '回答'
+    anonymous_response: '匿名回答'
+    is_anonymous: '匿名評価にする'
 
   # 回答
   responses:

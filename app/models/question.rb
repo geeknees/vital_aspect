@@ -14,6 +14,8 @@ class Question < ApplicationRecord
 
   validates :content, presence: true, length: { maximum: 500 }
   validates :order_index, presence: true, uniqueness: { scope: :evaluation_id }
+
+  scope :ordered, -> { order(:order_index) }
   validates :question_type, presence: true
 
   scope :ordered, -> { order(:order_index) }
