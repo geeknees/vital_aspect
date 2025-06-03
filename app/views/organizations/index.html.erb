@@ -31,22 +31,26 @@
                   <p class="mt-2 text-sm text-gray-600 line-clamp-2"><%= org.description %></p>
                 <% end %>
 
-                <div class="mt-4 flex items-center justify-between">
-                  <p class="text-sm text-gray-500">
+                <div class="mt-4 flex flex-col">
+                  <p class="text-sm text-gray-500 mb-2">
                     <%= t('organizations.members') %>: <%= org.users.count %>
                   </p>
-                  <div class="flex space-x-2">
+                  <div class="flex flex-row flex-wrap gap-4 items-center">
                     <% if Current.user.member_of?(org) %>
                       <%= link_to organization_okrs_path(org),
-                          class: "text-sm text-purple-600 hover:text-purple-800" do %>
-                        <i class="fas fa-bullseye mr-1"></i>OKR
+                          class: "text-sm text-purple-600 hover:text-purple-800 flex items-center whitespace-nowrap" do %>
+                        <i class="fas fa-bullseye mr-1"></i><%= t('okrs.title', default: 'OKR管理') %>
+                      <% end %>
+                      <%= link_to organization_evaluations_path(org),
+                          class: "text-sm text-indigo-600 hover:text-indigo-800 flex items-center whitespace-nowrap" do %>
+                        <i class="fas fa-clipboard-list mr-1"></i><%= t('evaluations.title', default: '360度評価') %>
                       <% end %>
                     <% end %>
                     <%= link_to t('organizations.edit'), edit_organization_path(org),
-                        class: "text-sm text-blue-600 hover:text-blue-800" %>
+                        class: "text-sm text-blue-600 hover:text-blue-800 whitespace-nowrap" %>
                     <%= link_to organization_memberships_path(org),
-                        class: "text-sm text-green-600 hover:text-green-800" do %>
-                      <%= t('memberships.title') %>
+                        class: "text-sm text-green-600 hover:text-green-800 whitespace-nowrap" do %>
+                      <%= t('memberships.title', default: 'メンバー管理') %>
                     <% end %>
                   </div>
                 </div>
@@ -85,15 +89,19 @@
                   <p class="mt-2 text-sm text-gray-600 line-clamp-2"><%= org.description %></p>
                 <% end %>
 
-                <div class="mt-4 flex items-center justify-between">
-                  <p class="text-sm text-gray-500">
+                <div class="mt-4 flex flex-col">
+                  <p class="text-sm text-gray-500 mb-2">
                     <%= t('organizations.members') %>: <%= org.users.count %>
                   </p>
-                  <div class="flex space-x-2">
+                  <div class="flex flex-row flex-wrap gap-4 items-center">
                     <% if Current.user.member_of?(org) %>
                       <%= link_to organization_okrs_path(org),
                           class: "text-sm text-purple-600 hover:text-purple-800" do %>
                         <i class="fas fa-bullseye mr-1"></i>OKR
+                      <% end %>
+                      <%= link_to organization_evaluations_path(org),
+                          class: "text-sm text-indigo-600 hover:text-indigo-800 flex items-center" do %>
+                        <i class="fas fa-clipboard-list mr-1"></i><%= t('evaluations.title', default: 'Evaluations') %>
                       <% end %>
                     <% end %>
                     <% if membership.can_manage_members? %>
