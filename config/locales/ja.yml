@@ -434,6 +434,8 @@ ja:
     add_key_result: 'キーリザルトを追加'
     remove_key_result: 'キーリザルトを削除'
     key_results_count: '%{count}個のキーリザルト'
+    update_key_results_message: '個別のキーリザルトの進捗を更新するには、OKRを直接編集してください。'
+    enter_overall_completion: 'このOKRの全体完了率を入力してください。'
 
     # Actions
     view_details: '詳細を見る'
@@ -472,9 +474,17 @@ ja:
     update: '進捗報告を更新'
     delete: '進捗報告を削除'
     delete_confirm: 'この進捗報告を削除しますか？'
+    update_for: '進捗更新対象'
+    overall_completion: '全体完了率'
+    progress_notes: '進捗メモ'
+    report_date: '報告日'
+    add_progress_update: '進捗報告を追加'
+    progress_notes_placeholder: '達成した進捗、直面した課題、成果、次のステップなどを記入してください...'
+    progress_notes_help: '進捗状況、課題、成果、次のステップなどを共有してください。'
 
     # Fields
     completion_percentage: '完了率'
+    progress_note: '進捗メモ'
     notes: '備考'
     reported_at: '報告日時'
 

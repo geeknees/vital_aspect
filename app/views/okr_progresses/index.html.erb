@@ -103,10 +103,10 @@
                         </div>
                       </div>
 
-                      <% if progress.notes.present? %>
+                      <% if progress.progress_note.present? %>
                         <div class="px-4 py-3">
                           <div class="prose prose-sm max-w-none text-gray-700">
-                            <%= simple_format(h(progress.notes)) %>
+                            <%= simple_format(h(progress.progress_note)) %>
                           </div>
                         </div>
                       <% end %>
