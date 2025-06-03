@@ -47,6 +47,9 @@ Rails.application.routes.draw do
 
       # OKR管理
       resources :okrs do
+        member do
+          patch :activate # ドラフトからアクティブへ変更
+        end
         resources :okr_progresses, path: "progresses"
       end
     end

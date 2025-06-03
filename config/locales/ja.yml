@@ -416,6 +416,8 @@ ja:
     created_successfully: 'OKRが正常に作成されました。'
     updated_successfully: 'OKRが正常に更新されました。'
     deleted_successfully: 'OKRが正常に削除されました。'
+    activated_successfully: 'OKRを確定しました。アクティブ状態に変更されました。'
+    already_activated: 'このOKRはすでに確定されています。'
     unauthorized: 'この操作を実行する権限がありません。'
     not_found: 'OKRが見つかりません。'
 

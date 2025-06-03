@@ -75,18 +75,28 @@
                   </div>
                 </div>
 
-                <div class="ml-6 flex flex-col items-end">
-                  <div class="text-right mb-2">
-                    <div class="text-2xl font-bold text-gray-900">
-                      <%= okr.progress_percentage.round(1) %>%
-                    </div>
-                    <div class="text-sm text-gray-500">進捗</div>
+                <div class="ml-6 flex-shrink-0 flex flex-col justify-center space-y-2 sm:space-y-0 sm:flex-row sm:items-center">
+                  <div class="flex items-center mb-3 sm:mb-0">
+                  <% if okr.draft? && can_edit_okr?(okr) %>
+                    <%= button_to activate_organization_okr_path(@organization, okr),
+                          method: :patch,
+                          class: "inline-flex justify-center w-32 items-center px-2 py-0.5  border border-transparent text-xs font-medium rounded text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" do %>
+                      確定する
+                    <% end %>
+                  <% end %>
                   </div>
-
-                  <!-- Progress Bar -->
-                  <div class="w-24 bg-gray-200 rounded-full h-2">
-                    <div class="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                         style="width: <%= okr.progress_percentage %>%"></div>
+                  <div class="flex items-center mb-3 sm:mb-0">
+                    <!-- Progress Bar -->
+                    <div class="w-24 bg-gray-200 rounded-full h-2">
+                      <div class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                           style="width: <%= okr.progress_percentage %>%"></div>
+                    </div>
+                    <div class="text-right ml-3 mr-3">
+                      <div class="text-2xl font-bold text-gray-900">
+                        <%= okr.progress_percentage.round(1) %>%
+                      </div>
+                      <div class="text-sm text-gray-500">進捗</div>
+                    </div>
                   </div>
                 </div>
               </div>

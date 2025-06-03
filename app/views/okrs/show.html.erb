@@ -97,8 +97,20 @@
               <div class="flex space-x-3">
                 <%= link_to "編集", edit_organization_okr_path(@organization, @okr),
                     class: "inline-flex items-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" %>
-                <%= link_to "進捗を報告", new_organization_okr_okr_progress_path(@organization, @okr),
-                    class: "inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700" %>
+                <% if @okr.draft? %>
+                  <%= button_to activate_organization_okr_path(@organization, @okr),
+                        method: :patch,
+                        class: "inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700" do %>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    確定する
+                  <% end %>
+                <% end %>
+                <% if @okr.active? %>
+                  <%= link_to "進捗を報告", new_organization_okr_okr_progress_path(@organization, @okr),
+                      class: "inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700" %>
+                <% end %>
               </div>
             <% end %>
           </div>

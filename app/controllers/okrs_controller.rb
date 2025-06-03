@@ -1,9 +1,9 @@
 class OkrsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_organization
-  before_action :set_okr, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_okr, only: [ :show, :edit, :update, :destroy, :activate ]
   before_action :check_organization_member
-  before_action :check_okr_owner, only: [ :edit, :update, :destroy ]
+  before_action :check_okr_owner, only: [ :edit, :update, :destroy, :activate ]
 
   def index
     @okrs = @organization.okrs.includes(:user, :key_results)
@@ -66,6 +66,17 @@ class OkrsController < ApplicationController
     @okr.destroy
     redirect_to organization_okrs_path(@organization),
                 notice: t("okrs.deleted_successfully")
+  end
+
+  def activate
+    if @okr.draft?
+      @okr.update(status: :active)
+      redirect_to organization_okr_path(@organization, @okr),
+                notice: t("okrs.activated_successfully")
+    else
+      redirect_to organization_okr_path(@organization, @okr),
+                alert: t("okrs.already_activated")
+    end
   end
 
   private
