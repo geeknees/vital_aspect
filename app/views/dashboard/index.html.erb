@@ -68,67 +68,109 @@
             <% end %>
 
             <!-- OKR管理カード -->
-            <div class="bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl p-6 border border-teal-200 hover:shadow-md transition-shadow duration-200 h-full flex flex-col">
-              <div class="flex items-start flex-1">
-                <div class="flex-shrink-0">
-                  <div class="w-12 h-12 bg-teal-500 rounded-lg flex items-center justify-center">
-                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
+            <% if @owned_organizations.any? %>
+              <%= link_to organization_okrs_path(@owned_organizations.first), class: "block h-full" do %>
+                <div class="bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl p-6 border border-teal-200 hover:shadow-md transition-shadow duration-200 h-full flex flex-col">
+                  <div class="flex items-start flex-1">
+                    <div class="flex-shrink-0">
+                      <div class="w-12 h-12 bg-teal-500 rounded-lg flex items-center justify-center">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                      </div>
+                    </div>
+                    <div class="ml-6 flex-1">
+                      <h3 class="text-lg font-semibold text-teal-900">OKR管理</h3>
+                      <p class="text-teal-700 mt-1">目標と成果の管理</p>
+                      <div class="mt-2 space-y-2">
+                        <div class="flex space-x-4 text-xs text-teal-600">
+                          <span>アクティブ: <%= @active_okrs_count %>件</span>
+                          <span>完了済み: <%= @completed_okrs_count %>件</span>
+                        </div>
+                        <div class="flex flex-wrap gap-x-4 gap-y-2">
+                          <% @owned_organizations.first(2).each do |org| %>
+                            <% if Current.user.member_of?(org) %>
+                              <span class="text-xs text-teal-600 truncate"><%= org.name %></span>
+                            <% end %>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="ml-6 flex-1">
-                  <h3 class="text-lg font-semibold text-teal-900">OKR管理</h3>
-                  <p class="text-teal-700 mt-1">目標と成果の管理</p>
-                  <div class="mt-2 space-y-2">
-                    <div class="flex space-x-4 text-xs text-teal-600">
-                      <span>アクティブ: <%= @active_okrs_count %>件</span>
-                      <span>完了済み: <%= @completed_okrs_count %>件</span>
+              <% end %>
+            <% else %>
+              <div class="bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl p-6 border border-teal-200 h-full flex flex-col opacity-75">
+                <div class="flex items-start flex-1">
+                  <div class="flex-shrink-0">
+                    <div class="w-12 h-12 bg-teal-400 rounded-lg flex items-center justify-center">
+                      <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
                     </div>
-                    <% if @owned_organizations.any? %>
-                      <div class="flex flex-wrap gap-x-4 gap-y-2">
-                        <% @owned_organizations.first(2).each do |org| %>
-                          <% if Current.user.member_of?(org) %>
-                            <%= link_to "#{org.name}のOKR", organization_okrs_path(org),
-                                class: "text-xs text-teal-600 hover:text-teal-800 truncate" %>
-                          <% end %>
-                        <% end %>
-                      </div>
-                    <% end %>
+                  </div>
+                  <div class="ml-6 flex-1">
+                    <h3 class="text-lg font-semibold text-teal-900">OKR管理</h3>
+                    <p class="text-teal-700 mt-1">目標と成果の管理</p>
+                    <div class="mt-3 text-xs text-teal-800 bg-teal-100 rounded px-2 py-1 inline-block">
+                      組織を作成すると利用できます
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            <% end %>
 
             <!-- 360度評価管理カード -->
-            <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-6 border border-indigo-200 hover:shadow-md transition-shadow duration-200 h-full flex flex-col">
-              <div class="flex items-start flex-1">
-                <div class="flex-shrink-0">
-                  <div class="w-12 h-12 bg-indigo-500 rounded-lg flex items-center justify-center">
-                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                  </div>
-                </div>
-                <div class="ml-6 flex-1">
-                  <h3 class="text-lg font-semibold text-indigo-900">360度評価</h3>
-                  <p class="text-indigo-700 mt-1">評価の作成・管理</p>
-                  <% if @owned_organizations.any? %>
-                    <div class="mt-2">
-                      <div class="flex flex-wrap gap-x-4 gap-y-2">
-                        <% @owned_organizations.first(3).each do |org| %>
-                          <%= link_to org.name, organization_evaluations_path(org),
-                              class: "text-xs text-indigo-600 hover:text-indigo-800 truncate" %>
-                        <% end %>
-                        <% if @owned_organizations.count > 3 %>
-                          <span class="text-xs text-indigo-500">他 <%= @owned_organizations.count - 3 %>件</span>
-                        <% end %>
+            <% if @owned_organizations.any? %>
+              <%= link_to organization_evaluations_path(@owned_organizations.first), class: "block h-full" do %>
+                <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-6 border border-indigo-200 hover:shadow-md transition-shadow duration-200 h-full flex flex-col">
+                  <div class="flex items-start flex-1">
+                    <div class="flex-shrink-0">
+                      <div class="w-12 h-12 bg-indigo-500 rounded-lg flex items-center justify-center">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                       </div>
                     </div>
-                  <% end %>
+                    <div class="ml-6 flex-1">
+                      <h3 class="text-lg font-semibold text-indigo-900">360度評価</h3>
+                      <p class="text-indigo-700 mt-1">評価の作成・管理</p>
+                      <% if @owned_organizations.any? %>
+                        <div class="mt-2">
+                          <div class="flex flex-wrap gap-x-4 gap-y-2">
+                            <% @owned_organizations.first(3).each do |org| %>
+                              <span class="text-xs text-indigo-600 truncate"><%= org.name %></span>
+                            <% end %>
+                            <% if @owned_organizations.count > 3 %>
+                              <span class="text-xs text-indigo-500">他 <%= @owned_organizations.count - 3 %>件</span>
+                            <% end %>
+                          </div>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-6 border border-indigo-200 h-full flex flex-col opacity-75">
+                <div class="flex items-start flex-1">
+                  <div class="flex-shrink-0">
+                    <div class="w-12 h-12 bg-indigo-400 rounded-lg flex items-center justify-center">
+                      <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="ml-6 flex-1">
+                    <h3 class="text-lg font-semibold text-indigo-900">360度評価</h3>
+                    <p class="text-indigo-700 mt-1">評価の作成・管理</p>
+                    <div class="mt-3 text-xs text-indigo-800 bg-indigo-100 rounded px-2 py-1 inline-block">
+                      組織を作成すると利用できます
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            <% end %>
 
           </div>
 
