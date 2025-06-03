@@ -345,29 +345,6 @@
             </div>
           <% end %>
 
-          <!-- 最近のアクティビティセクション -->
-          <div class="border-t border-gray-200 pt-8">
-            <h3 class="text-xl font-semibold text-gray-900 mb-6"><%= t('dashboard.recent_activity.title') %></h3>
-            <% if @recent_okr_progresses.any? || @my_okrs.any? %>
-              <div class="bg-green-50 rounded-lg p-6 text-center">
-                <div class="mx-auto w-16 h-16 bg-green-200 rounded-full flex items-center justify-center mb-4">
-                  <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                </div>
-                <p class="text-green-800 text-lg font-medium">OKRシステムが利用可能です</p>
-              </div>
-            <% else %>
-              <div class="bg-gray-50 rounded-lg p-8 text-center">
-                <div class="mx-auto w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                  <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                </div>
-                <p class="text-gray-600 text-lg"><%= t('dashboard.recent_activity.no_activity') %></p>
-              </div>
-            <% end %>
-          </div>
         </div>
       </div>
     </div>
