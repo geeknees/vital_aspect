@@ -88,8 +88,10 @@
                     <% if @owned_organizations.any? %>
                       <div class="flex flex-wrap gap-x-4 gap-y-2">
                         <% @owned_organizations.first(2).each do |org| %>
-                          <%= link_to "#{org.name}のOKR", organization_okrs_path(org),
-                              class: "text-xs text-teal-600 hover:text-teal-800 truncate" %>
+                          <% if Current.user.member_of?(org) %>
+                            <%= link_to "#{org.name}のOKR", organization_okrs_path(org),
+                                class: "text-xs text-teal-600 hover:text-teal-800 truncate" %>
+                          <% end %>
                         <% end %>
                       </div>
                     <% end %>
