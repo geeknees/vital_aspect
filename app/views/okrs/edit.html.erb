@@ -85,16 +85,16 @@
           </div>
 
           <!-- Key Results Section -->
-          <div class="border-t border-gray-200 pt-6">
+          <div class="border-t border-gray-200 pt-6" data-controller="key-results">
             <div class="flex items-center justify-between mb-4">
               <h3 class="text-lg font-medium text-gray-900">Key Results</h3>
-              <button type="button" id="add-key-result"
+              <button type="button" id="add-key-result" data-key-results-target="addButton"
                       class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
                 <i class="fas fa-plus mr-2"></i>Add Key Result
               </button>
             </div>
 
-            <div id="key-results-container" class="space-y-4">
+            <div id="key-results-container" data-key-results-target="container" class="space-y-4">
               <%= form.fields_for :key_results do |kr_form| %>
                 <div class="key-result-item border border-gray-200 rounded-lg p-4 bg-gray-50">
                   <div class="flex items-start justify-between mb-4">
@@ -230,40 +230,3 @@
     <input type="hidden" name="okr[key_results_attributes][NEW_RECORD][_destroy]" class="destroy-field" value="false">
   </div>
 </template>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  let keyResultIndex = <%= @okr.key_results.length %>;
-
-  // Add new key result
-  document.getElementById('add-key-result').addEventListener('click', function() {
-    const template = document.getElementById('key-result-template');
-    const container = document.getElementById('key-results-container');
-
-    let newKeyResult = template.content.cloneNode(true);
-
-    // Replace NEW_RECORD with actual index
-    newKeyResult.innerHTML = newKeyResult.innerHTML.replace(/NEW_RECORD/g, keyResultIndex);
-
-    container.appendChild(newKeyResult);
-    keyResultIndex++;
-  });
-
-  // Remove key result
-  document.addEventListener('click', function(e) {
-    if (e.target.closest('.remove-key-result')) {
-      const keyResultItem = e.target.closest('.key-result-item');
-      const destroyField = keyResultItem.querySelector('.destroy-field');
-
-      if (destroyField && destroyField.name.includes('[id]')) {
-        // Existing record - mark for destruction
-        destroyField.value = '1';
-        keyResultItem.style.display = 'none';
-      } else {
-        // New record - remove from DOM
-        keyResultItem.remove();
-      }
-    }
-  });
-});
-</script>
