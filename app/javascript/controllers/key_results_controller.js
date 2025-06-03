@@ -1,10 +1,12 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ["container", "addButton"]
+  static targets = ['container', 'addButton']
 
   connect() {
-    this.keyResultIndex = this.containerTarget.querySelectorAll('.key-result-fields, .key-result-item').length
+    this.keyResultIndex = this.containerTarget.querySelectorAll(
+      '.key-result-fields, .key-result-item'
+    ).length
     this.setupEventListeners()
   }
 
@@ -19,7 +21,9 @@ export default class extends Controller {
     this.containerTarget.addEventListener('click', (e) => {
       if (e.target.closest('.remove-key-result')) {
         e.preventDefault()
-        this.removeKeyResult(e.target.closest('.key-result-fields, .key-result-item'))
+        this.removeKeyResult(
+          e.target.closest('.key-result-fields, .key-result-item')
+        )
       }
     })
   }
@@ -27,7 +31,7 @@ export default class extends Controller {
   addKeyResult() {
     // Check if we're on the edit page (has template) or new page
     const template = document.getElementById('key-result-template')
-    
+
     if (template) {
       // Edit page - use template
       this.addKeyResultFromTemplate()
@@ -44,7 +48,10 @@ export default class extends Controller {
     // Replace NEW_RECORD with actual index
     const tempDiv = document.createElement('div')
     tempDiv.appendChild(newKeyResult)
-    tempDiv.innerHTML = tempDiv.innerHTML.replace(/NEW_RECORD/g, this.keyResultIndex)
+    tempDiv.innerHTML = tempDiv.innerHTML.replace(
+      /NEW_RECORD/g,
+      this.keyResultIndex
+    )
 
     this.containerTarget.appendChild(tempDiv.firstElementChild)
     this.keyResultIndex++
