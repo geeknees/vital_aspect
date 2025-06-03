@@ -90,7 +90,7 @@
                     <%= radio_button_tag "responses[#{question.id}][content]",
                         option,
                         existing_response&.content == option,
-                        required: question.required?,
+                        required: question.is_required?,
                         class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" %>
                     <span class="ml-2 text-sm text-gray-900"><%= option %></span>
                   </label>
