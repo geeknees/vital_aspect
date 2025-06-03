@@ -1,23 +1,23 @@
 class OkrsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_organization
-  before_action :set_okr, only: [:show, :edit, :update, :destroy]
+  before_action :set_okr, only: [ :show, :edit, :update, :destroy ]
   before_action :check_organization_member
-  before_action :check_okr_owner, only: [:edit, :update, :destroy]
+  before_action :check_okr_owner, only: [ :edit, :update, :destroy ]
 
   def index
     @okrs = @organization.okrs.includes(:user, :key_results)
                               .order(:start_date, :end_date)
-    
+
     # フィルタリング
     case params[:filter]
-    when 'my_okrs'
+    when "my_okrs"
       @okrs = @okrs.where(user: Current.user)
-    when 'current'
+    when "current"
       @okrs = @okrs.current
-    when 'upcoming'
+    when "upcoming"
       @okrs = @okrs.upcoming
-    when 'completed'
+    when "completed"
       @okrs = @okrs.completed
     end
 
@@ -41,7 +41,7 @@ class OkrsController < ApplicationController
 
     if @okr.save
       redirect_to organization_okr_path(@organization, @okr),
-                  notice: t('okrs.created_successfully')
+                  notice: t("okrs.created_successfully")
     else
       @okr.key_results.build if @okr.key_results.empty?
       render :new, status: :unprocessable_entity
@@ -55,7 +55,7 @@ class OkrsController < ApplicationController
   def update
     if @okr.update(okr_params)
       redirect_to organization_okr_path(@organization, @okr),
-                  notice: t('okrs.updated_successfully')
+                  notice: t("okrs.updated_successfully")
     else
       @okr.key_results.build if @okr.key_results.empty?
       render :edit, status: :unprocessable_entity
@@ -65,7 +65,7 @@ class OkrsController < ApplicationController
   def destroy
     @okr.destroy
     redirect_to organization_okrs_path(@organization),
-                notice: t('okrs.deleted_successfully')
+                notice: t("okrs.deleted_successfully")
   end
 
   private
@@ -80,14 +80,14 @@ class OkrsController < ApplicationController
 
   def check_organization_member
     unless Current.user.member_of?(@organization)
-      redirect_to root_path, alert: t('organizations.access_denied')
+      redirect_to root_path, alert: t("organizations.access_denied")
     end
   end
 
   def check_okr_owner
     unless can_edit_okr?(@okr)
       redirect_to organization_okr_path(@organization, @okr),
-                  alert: t('okrs.access_denied')
+                  alert: t("okrs.access_denied")
     end
   end
 

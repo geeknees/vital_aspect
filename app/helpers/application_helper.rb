@@ -54,18 +54,18 @@ module ApplicationHelper
   # OKR Helper Methods
   def can_edit_okr?(okr)
     return false unless Current.user
-    
+
     # OKR owner can always edit
     return true if Current.user == okr.user
-    
+
     # Organization admins can edit any OKR in their organization
     membership = Current.user.memberships.find_by(organization: okr.organization)
-    membership&.role == 'admin'
+    membership&.role == "admin"
   end
 
   def can_view_okr?(okr)
     return false unless Current.user
-    
+
     # Members of the organization can view OKRs
     Current.user.memberships.exists?(organization: okr.organization)
   end
@@ -107,9 +107,9 @@ module ApplicationHelper
 
   def okr_time_remaining(okr)
     return "No deadline" unless okr.end_date
-    
+
     days_remaining = (okr.end_date - Date.current).to_i
-    
+
     if days_remaining < 0
       "#{days_remaining.abs} days overdue"
     elsif days_remaining == 0

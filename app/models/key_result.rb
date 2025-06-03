@@ -24,21 +24,21 @@ class KeyResult < ApplicationRecord
   end
 
   def remaining_value
-    [target_value - current_value, 0].max
+    [ target_value - current_value, 0 ].max
   end
 
   def update_status_based_on_progress
     percentage = progress_percentage
-    
+
     self.status = case percentage
-                  when 0
+    when 0
                     :not_started
-                  when 1...100
+    when 1...100
                     :in_progress
-                  when 100
+    when 100
                     :completed
-                  else
+    else
                     :in_progress
-                  end
+    end
   end
 end

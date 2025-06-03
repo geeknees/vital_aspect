@@ -163,7 +163,7 @@ en:
     delete_confirm: 'Are you sure you want to delete this OKR? All related key results and progress will also be deleted.'
     show: 'OKR Details'
     progress_report: 'Progress Report'
-    
+
     # Fields
     title_label: 'Title'
     description_label: 'Description'
@@ -171,21 +171,21 @@ en:
     end_date: 'End Date'
     status: 'Status'
     overall_progress: 'Overall Progress'
-    
+
     # Status values
     statuses:
       draft: 'Draft'
       active: 'Active'
       completed: 'Completed'
       cancelled: 'Cancelled'
-    
+
     # Messages
     created_successfully: 'OKR was successfully created.'
     updated_successfully: 'OKR was successfully updated.'
     deleted_successfully: 'OKR was successfully deleted.'
     unauthorized: 'You are not authorized to perform this action.'
     not_found: 'OKR not found.'
-    
+
     # Filters
     filter:
       all: 'All'
@@ -193,18 +193,18 @@ en:
       current: 'Current OKRs'
       upcoming: 'Upcoming OKRs'
       completed: 'Completed OKRs'
-    
+
     # Lists and views
     no_okrs: 'No OKRs found.'
     add_key_result: 'Add Key Result'
     remove_key_result: 'Remove Key Result'
     key_results_count: '%{count} Key Results'
-    
+
     # Actions
     view_details: 'View Details'
     add_progress: 'Add Progress'
     view_progress: 'View Progress'
-    
+
   # Key Results
   key_results:
     title: 'Key Results'
@@ -213,21 +213,21 @@ en:
     unit: 'Unit'
     progress: 'Progress'
     status: 'Status'
-    
+
     # Status values
     statuses:
       not_started: 'Not Started'
       in_progress: 'In Progress'
       completed: 'Completed'
       at_risk: 'At Risk'
-    
+
     # Units
     units:
       number: 'Number'
       percentage: 'Percentage'
       currency: 'Currency'
       other: 'Other'
-      
+
   # OKR Progress
   okr_progresses:
     title: 'Progress Reports'
@@ -237,24 +237,24 @@ en:
     update: 'Update Progress Report'
     delete: 'Delete Progress Report'
     delete_confirm: 'Are you sure you want to delete this progress report?'
-    
+
     # Fields
     completion_percentage: 'Completion Percentage'
     notes: 'Notes'
     reported_at: 'Reported At'
-    
+
     # Messages
     created_successfully: 'Progress report was successfully created.'
     updated_successfully: 'Progress report was successfully updated.'
     deleted_successfully: 'Progress report was successfully deleted.'
     unauthorized: 'You are not authorized to perform this action.'
     not_found: 'Progress report not found.'
-    
+
     # Lists
     no_progress: 'No progress reports found.'
     progress_history: 'Progress History'
     latest_progress: 'Latest Progress'
-    
+
     # Timeline
     progress_timeline: 'Progress Timeline'
     view_timeline: 'View Timeline'

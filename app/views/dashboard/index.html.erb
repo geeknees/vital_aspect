@@ -203,11 +203,11 @@
                         <%= okr.status.humanize %>
                       </span>
                     </div>
-                    
+
                     <% if okr.description.present? %>
                       <p class="text-sm text-gray-700 mb-3 line-clamp-2"><%= okr.description %></p>
                     <% end %>
-                    
+
                     <!-- 進捗バー -->
                     <div class="mb-3">
                       <div class="flex items-center justify-between text-sm mb-1">
@@ -218,7 +218,7 @@
                         <div class="bg-blue-500 h-2 rounded-full" style="width: <%= okr.overall_progress %>%"></div>
                       </div>
                     </div>
-                    
+
                     <!-- キーリザルト要約 -->
                     <div class="text-xs text-gray-500">
                       <%= okr.key_results.count %>個のキーリザルト

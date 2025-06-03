@@ -105,8 +105,8 @@
                           <%= kr.current_value %> / <%= kr.target_value %> <%= kr.unit %>
                         </span>
                         <span class="ml-2 font-medium
-                          <%= kr.progress_percentage >= 100 ? 'text-green-600' : 
-                              kr.progress_percentage >= 70 ? 'text-blue-600' : 
+                          <%= kr.progress_percentage >= 100 ? 'text-green-600' :
+                              kr.progress_percentage >= 70 ? 'text-blue-600' :
                               kr.progress_percentage >= 30 ? 'text-yellow-600' : 'text-red-600' %>">
                           <%= kr.progress_percentage.round(1) %>%
                         </span>
@@ -127,7 +127,7 @@
         <div class="text-center py-12">
           <div class="w-24 h-24 mx-auto mb-6 text-gray-400">
             <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>

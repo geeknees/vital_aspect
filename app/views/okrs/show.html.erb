@@ -113,7 +113,7 @@
           <div class="px-6 py-4 border-b border-gray-200">
             <h2 class="text-lg font-medium text-gray-900">Key Results</h2>
           </div>
-          
+
           <div class="p-6">
             <% if @key_results.any? %>
               <div class="space-y-6">
@@ -147,8 +147,8 @@
                           <%= kr.current_value %> / <%= kr.target_value %> <%= kr.unit %>
                         </span>
                         <span class="font-bold
-                          <%= kr.progress_percentage >= 100 ? 'text-green-600' : 
-                              kr.progress_percentage >= 70 ? 'text-blue-600' : 
+                          <%= kr.progress_percentage >= 100 ? 'text-green-600' :
+                              kr.progress_percentage >= 70 ? 'text-blue-600' :
                               kr.progress_percentage >= 30 ? 'text-yellow-600' : 'text-red-600' %>">
                           <%= kr.progress_percentage.round(1) %>%
                         </span>
@@ -158,8 +158,8 @@
                     <!-- Progress Bar -->
                     <div class="w-full bg-gray-200 rounded-full h-2">
                       <div class="
-                        <%= kr.progress_percentage >= 100 ? 'bg-green-500' : 
-                            kr.progress_percentage >= 70 ? 'bg-blue-500' : 
+                        <%= kr.progress_percentage >= 100 ? 'bg-green-500' :
+                            kr.progress_percentage >= 70 ? 'bg-blue-500' :
                             kr.progress_percentage >= 30 ? 'bg-yellow-500' : 'bg-red-500' %>
                         h-2 rounded-full transition-all duration-300"
                            style="width: <%= kr.progress_percentage %>%"></div>
@@ -186,7 +186,7 @@
           <div class="px-6 py-4 border-b border-gray-200">
             <h2 class="text-lg font-medium text-gray-900">進捗履歴</h2>
           </div>
-          
+
           <div class="p-6">
             <% if @progress_history.any? %>
               <div class="space-y-4">
@@ -206,7 +206,7 @@
                   </div>
                 <% end %>
               </div>
-              
+
               <% if @okr.okr_progresses.count > 10 %>
                 <div class="mt-4 text-center">
                   <%= link_to "すべての履歴を見る", organization_okr_okr_progresses_path(@organization, @okr),

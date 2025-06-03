@@ -13,7 +13,7 @@ class CreateOkrs < ActiveRecord::Migration[8.0]
     end
 
     add_index :okrs, :status
-    add_index :okrs, [:organization_id, :user_id]
-    add_index :okrs, [:start_date, :end_date]
+    add_index :okrs, [ :organization_id, :user_id ]
+    add_index :okrs, [ :start_date, :end_date ]
   end
 end

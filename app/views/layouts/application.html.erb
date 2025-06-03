@@ -44,14 +44,6 @@
             </div>
 
             <% if Current.session&.user %>
-              <!-- ナビゲーションメニュー -->
-              <div class="hidden md:flex items-center space-x-6">
-                <%= link_to "ダッシュボード", dashboard_path,
-                            class: "text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors #{'text-blue-600' if current_page?(dashboard_path)}" %>
-                <%= link_to "組織", organizations_path,
-                            class: "text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors #{'text-blue-600' if current_page?(organizations_path)}" %>
-              </div>
-
               <!-- 右側のメニュー -->
               <div class="flex items-center space-x-3 sm:space-x-6">
                 <!-- 言語切り替え -->
