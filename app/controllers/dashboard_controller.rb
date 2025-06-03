@@ -6,6 +6,7 @@ class DashboardController < ApplicationController
     @pending_evaluations = user.pending_evaluations.includes(:evaluation, :user)
     @completed_evaluations = user.completed_evaluations.includes(:evaluation, :user).limit(5)
     @owned_organizations = user.owned_organizations
+    @member_organizations = user.organizations
 
     # OKR Data
     @my_okrs = user.okrs.includes(:key_results, :organization).limit(5)
