@@ -47,7 +47,7 @@ class Okr < ApplicationRecord
   def latest_progress
     okr_progresses.order(reported_at: :desc).first
   end
-  
+
   def overall_progress
     latest = latest_progress
     if latest && latest.completion_percentage.present?

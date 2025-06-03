@@ -224,10 +224,20 @@
                     </div>
 
                     <!-- キーリザルト要約 -->
-                    <div class="text-xs text-gray-500">
-                      <%= okr.key_results.count %>個のキーリザルト
-                      <% if okr.start_date && okr.end_date %>
-                        • <%= l(okr.start_date, format: :short) %> - <%= l(okr.end_date, format: :short) %>
+                    <div class="flex justify-between items-center">
+                      <div class="text-xs text-gray-500">
+                        <%= okr.key_results.count %>個のキーリザルト
+                        <% if okr.start_date && okr.end_date %>
+                          • <%= l(okr.start_date, format: :short) %> - <%= l(okr.end_date, format: :short) %>
+                        <% end %>
+                      </div>
+                      <% if okr.status == "active" %>
+                        <%= link_to new_organization_okr_okr_progress_path(okr.organization, okr), class: "text-xs text-blue-600 hover:text-blue-800 flex items-center" do %>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                          </svg>
+                          進捗報告
+                        <% end %>
                       <% end %>
                     </div>
                   </div>
