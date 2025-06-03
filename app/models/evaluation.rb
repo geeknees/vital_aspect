@@ -64,10 +64,12 @@ class Evaluation < ApplicationRecord
   def all_required_responses_submitted?
     required_questions = questions.where(is_required: true)
     total_required = required_questions.count * evaluation_participants.count
+
+    # Check for responses that have either content or score properly set
     submitted_required = responses.joins(:question)
-                                 .where(questions: { is_required: true })
-                                 .where.not(content: [ nil, "" ])
-                                 .count
+                               .where(questions: { is_required: true })
+                               .where("(responses.content IS NOT NULL AND responses.content != '') OR responses.score IS NOT NULL")
+                               .count
 
     submitted_required >= total_required
   end
