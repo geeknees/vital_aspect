@@ -80,18 +80,18 @@
                 <div class="ml-6 flex-1">
                   <h3 class="text-lg font-semibold text-teal-900">OKR管理</h3>
                   <p class="text-teal-700 mt-1">目標と成果の管理</p>
-                  <div class="mt-2 space-y-1">
-                    <div class="text-xs text-teal-600">
-                      アクティブ: <%= @active_okrs_count %>件
-                    </div>
-                    <div class="text-xs text-teal-600">
-                      完了済み: <%= @completed_okrs_count %>件
+                  <div class="mt-2 space-y-2">
+                    <div class="flex space-x-4 text-xs text-teal-600">
+                      <span>アクティブ: <%= @active_okrs_count %>件</span>
+                      <span>完了済み: <%= @completed_okrs_count %>件</span>
                     </div>
                     <% if @owned_organizations.any? %>
-                      <% @owned_organizations.first(2).each do |org| %>
-                        <%= link_to "#{org.name}のOKR", organization_okrs_path(org),
-                            class: "text-xs text-teal-600 hover:text-teal-800 block truncate" %>
-                      <% end %>
+                      <div class="flex flex-wrap gap-x-4 gap-y-2">
+                        <% @owned_organizations.first(2).each do |org| %>
+                          <%= link_to "#{org.name}のOKR", organization_okrs_path(org),
+                              class: "text-xs text-teal-600 hover:text-teal-800 truncate" %>
+                        <% end %>
+                      </div>
                     <% end %>
                   </div>
                 </div>
@@ -112,14 +112,16 @@
                   <h3 class="text-lg font-semibold text-indigo-900">360度評価</h3>
                   <p class="text-indigo-700 mt-1">評価の作成・管理</p>
                   <% if @owned_organizations.any? %>
-                    <div class="mt-2 space-y-1">
-                      <% @owned_organizations.first(3).each do |org| %>
-                        <%= link_to org.name, organization_evaluations_path(org),
-                            class: "text-xs text-indigo-600 hover:text-indigo-800 block truncate" %>
-                      <% end %>
-                      <% if @owned_organizations.count > 3 %>
-                        <span class="text-xs text-indigo-500">他 <%= @owned_organizations.count - 3 %>件</span>
-                      <% end %>
+                    <div class="mt-2">
+                      <div class="flex flex-wrap gap-x-4 gap-y-2">
+                        <% @owned_organizations.first(3).each do |org| %>
+                          <%= link_to org.name, organization_evaluations_path(org),
+                              class: "text-xs text-indigo-600 hover:text-indigo-800 truncate" %>
+                        <% end %>
+                        <% if @owned_organizations.count > 3 %>
+                          <span class="text-xs text-indigo-500">他 <%= @owned_organizations.count - 3 %>件</span>
+                        <% end %>
+                      </div>
                     </div>
                   <% end %>
                 </div>
