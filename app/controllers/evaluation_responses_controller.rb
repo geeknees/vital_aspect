@@ -22,11 +22,11 @@ class EvaluationResponsesController < ApplicationController
         response = find_or_initialize_response(question)
 
         case question.question_type
-        when "rating", "multiple_choice"
-          response.content = response_data[:content]
-        when "text"
-          response.content = response_data[:content]
+        when "rating"
+          response.score = response_data[:content].to_i if response_data[:content].present?
         when "yes_no"
+          response.score = response_data[:content] == "yes" ? 1 : 0 if response_data[:content].present?
+        when "text", "multiple_choice"
           response.content = response_data[:content]
         end
 

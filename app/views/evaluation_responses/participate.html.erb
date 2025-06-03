@@ -102,16 +102,16 @@
                 <label class="flex items-center">
                   <%= radio_button_tag "responses[#{question.id}][content]",
                       'yes',
-                      existing_response&.content == 'yes',
-                      required: question.required?,
+                      existing_response&.score == 1,
+                      required: question.is_required?,
                       class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" %>
                   <span class="ml-2 text-sm text-gray-900">はい</span>
                 </label>
                 <label class="flex items-center">
                   <%= radio_button_tag "responses[#{question.id}][content]",
                       'no',
-                      existing_response&.content == 'no',
-                      required: question.required?,
+                      existing_response&.score == 0,
+                      required: question.is_required?,
                       class: "h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300" %>
                   <span class="ml-2 text-sm text-gray-900">いいえ</span>
                 </label>
