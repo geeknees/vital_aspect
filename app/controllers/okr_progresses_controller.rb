@@ -2,7 +2,7 @@ class OkrProgressesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_organization
   before_action :set_okr
-  before_action :set_okr_progress, only: [:show, :edit, :update, :destroy]
+  before_action :set_okr_progress, only: [ :show, :edit, :update, :destroy ]
   before_action :check_organization_member
   before_action :check_okr_owner
 
@@ -27,7 +27,7 @@ class OkrProgressesController < ApplicationController
 
     if @okr_progress.save
       redirect_to organization_okr_path(@organization, @okr),
-                  notice: t('okr_progresses.created_successfully')
+                  notice: t("okr_progresses.created_successfully")
     else
       render :new, status: :unprocessable_entity
     end
@@ -39,7 +39,7 @@ class OkrProgressesController < ApplicationController
   def update
     if @okr_progress.update(okr_progress_params)
       redirect_to organization_okr_path(@organization, @okr),
-                  notice: t('okr_progresses.updated_successfully')
+                  notice: t("okr_progresses.updated_successfully")
     else
       render :edit, status: :unprocessable_entity
     end
@@ -48,7 +48,7 @@ class OkrProgressesController < ApplicationController
   def destroy
     @okr_progress.destroy
     redirect_to organization_okr_path(@organization, @okr),
-                notice: t('okr_progresses.deleted_successfully')
+                notice: t("okr_progresses.deleted_successfully")
   end
 
   private
@@ -67,14 +67,14 @@ class OkrProgressesController < ApplicationController
 
   def check_organization_member
     unless Current.user.member_of?(@organization)
-      redirect_to root_path, alert: t('organizations.access_denied')
+      redirect_to root_path, alert: t("organizations.access_denied")
     end
   end
 
   def check_okr_owner
     unless can_edit_okr?(@okr)
       redirect_to organization_okr_path(@organization, @okr),
-                  alert: t('okrs.access_denied')
+                  alert: t("okrs.access_denied")
     end
   end
 
