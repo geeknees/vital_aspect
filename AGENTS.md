@@ -50,3 +50,7 @@
 - For system tests: Google Chrome is required
 - Environment variables: Check `.env.example` if available
 
+
+## Additional Guidelines
+- Branch names must be written in English (use hyphens or underscores if needed)
+- If documentation becomes redundant across files, consolidate or reference existing docs rather than duplicating content
