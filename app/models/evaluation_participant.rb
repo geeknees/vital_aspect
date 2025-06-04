@@ -40,10 +40,12 @@ class EvaluationParticipant < ApplicationRecord
   def all_required_responses_completed?
     required_questions = evaluation.questions.where(is_required: true)
 
-    answered_required = responses.joins(:question)
+    required_responses = responses.joins(:question)
                                  .where(questions: { is_required: true })
-                                 .where("(responses.content IS NOT NULL AND responses.content != '') OR responses.score IS NOT NULL")
-                                 .count
+    answered_required = required_responses
+                          .where.not(content: [nil, ""])
+                          .or(required_responses.where.not(score: nil))
+                          .count
 
     answered_required >= required_questions.count
   end
