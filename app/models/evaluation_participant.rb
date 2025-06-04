@@ -43,7 +43,7 @@ class EvaluationParticipant < ApplicationRecord
     required_responses = responses.joins(:question)
                                  .where(questions: { is_required: true })
     answered_required = required_responses
-                          .where.not(content: [nil, ""])
+                          .where.not(content: [ nil, "" ])
                           .or(required_responses.where.not(score: nil))
                           .count
 
