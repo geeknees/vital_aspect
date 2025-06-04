@@ -110,33 +110,9 @@ EvaluationMailer.instance_methods(false)
 
 ## アクセスURL
 
-### メーラープレビュー
-- メーラー一覧: http://localhost:3000/rails/mailers
-- 招待メール: http://localhost:3000/rails/mailers/evaluation_mailer/invitation
-- リマインダーメール: http://localhost:3000/rails/mailers/evaluation_mailer/reminder
-- 完了通知: http://localhost:3000/rails/mailers/evaluation_mailer/completion_notification
-
 ## 使用方法
 
-### 自動送信（推奨）
-評価参加者追加時に自動的に招待メールが送信されます。
-
-### 手動送信
-```bash
-# リマインダーメール送信
-bundle exec rake evaluation:send_reminders
-
-# 完了通知送信
-bundle exec rake evaluation:send_completion_notifications
-
-# 統計表示
-bundle exec rake evaluation:stats
-```
-
-### デモ実行
-```bash
-rails runner demo_email_system.rb
-```
+詳細な利用手順は [docs/email_notification_system.md](email_notification_system.md) を参照してください。
 
 ## 今後の拡張提案
 
