@@ -37,7 +37,7 @@ AI-powered 360° Feedback & OKR Platform for psychologically safe teams
 
 ## Tech Stack
 * **Ruby 3.4 / Rails 8** – Hotwire (Turbo, Stimulus)
-* **SQlite** – Database 
+* **SQLite** – Database 
 * **OpenAI (GPT-4o mini)** – feedback summarization & bias check  
 * **Qdrant** – vector similarity for past feedback retrieval  
 * **Tailwind CSS** – UI Kit  
