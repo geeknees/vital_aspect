@@ -1,0 +1,7 @@
+# Ignore all environment files.
+/.env*
+!/.env.example
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+
