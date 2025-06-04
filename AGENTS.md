@@ -50,3 +50,7 @@
 - For system tests: Google Chrome is required
 - Environment variables: Check `.env.example` if available
 
+## Branch Naming
+- Use descriptive branch names written in English
+- Avoid Japanese or other non‑ASCII characters in branch names
+
