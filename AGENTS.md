@@ -52,7 +52,6 @@
 
 ## Test-Driven Development (TDD)
 
-### English Version
 - Follow test-driven development (TDD) as a guiding principle.
 - Create tests first based on expected inputs and outputs.
 - Do not write implementation code yet; only write tests.
