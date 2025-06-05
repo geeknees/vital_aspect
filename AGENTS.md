@@ -36,7 +36,7 @@
 - **Importmap** for JavaScript module management (no Node.js build step required)
 
 ## Development Workflow
-1. Create a new branch with an English name: `git checkout -b feature/your-feature-name`
+1. Create a new branch with an English name: `git checkout -b feature/your-feature-name` (avoid Japanese words in branch names)
 2. Make your changes and add tests
 3. Document new features or changes in `docs/` directory if needed
 4. Run the full test suite: `bin/rails test test:system`
