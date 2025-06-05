@@ -50,3 +50,15 @@
 - For system tests: Google Chrome is required
 - Environment variables: Check `.env.example` if available
 
+## Test-Driven Development (TDD)
+
+### English Version
+- Follow test-driven development (TDD) as a guiding principle.
+- Create tests first based on expected inputs and outputs.
+- Do not write implementation code yet; only write tests.
+- Run the tests and confirm that they fail.
+- Commit once you are confident the tests are correct.
+- Next, implement code to make the tests pass.
+- While implementing, keep the tests unchanged and adjust the code instead.
+- Repeat until all tests pass.
+
