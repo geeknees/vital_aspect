@@ -16,6 +16,9 @@ Rails.application.routes.draw do
         end
       end
 
+      # 質問テンプレート管理
+      resources :question_templates
+
       # 360度評価管理
       resources :evaluations do
         member do

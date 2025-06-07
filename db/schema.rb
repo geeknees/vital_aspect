@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_03_144926) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_07_122448) do
   create_table "evaluation_participants", force: :cascade do |t|
     t.integer "evaluation_id", null: false
     t.integer "user_id", null: false
@@ -106,6 +106,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_03_144926) do
     t.index ["owner_id"], name: "index_organizations_on_owner_id"
   end
 
+  create_table "question_templates", force: :cascade do |t|
+    t.integer "organization_id", null: false
+    t.text "content", null: false
+    t.integer "question_type", default: 0, null: false
+    t.boolean "is_required", default: true
+    t.text "options"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_question_templates_on_organization_id"
+  end
+
   create_table "questions", force: :cascade do |t|
     t.integer "evaluation_id", null: false
     t.text "content", null: false
@@ -159,6 +170,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_03_144926) do
   add_foreign_key "okrs", "organizations"
   add_foreign_key "okrs", "users"
   add_foreign_key "organizations", "users", column: "owner_id"
+  add_foreign_key "question_templates", "organizations"
   add_foreign_key "questions", "evaluations"
   add_foreign_key "responses", "evaluation_participants", column: "participant_id"
   add_foreign_key "responses", "questions"

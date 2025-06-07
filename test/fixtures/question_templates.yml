@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  organization: test_org
+  content: MyText
+  question_type: 1
+  is_required: false
+  options: MyText
+
+two:
+  organization: another_org
+  content: MyText
+  question_type: 1
+  is_required: false
+  options: MyText

@@ -6,6 +6,9 @@ class Organization < ApplicationRecord
   # Evaluation associations
   has_many :evaluations, dependent: :destroy
 
+  # Question template associations
+  has_many :question_templates, dependent: :destroy
+
   # OKR associations
   has_many :okrs, dependent: :destroy
 

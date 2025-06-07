@@ -1,0 +1,14 @@
+<% content_for :title, t('question_templates.new') %>
+
+<div class="min-h-screen bg-gray-50 py-6">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white shadow rounded-lg">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h1 class="text-2xl font-bold text-gray-900"><%= t('question_templates.new') %></h1>
+      </div>
+      <div class="px-6 py-6">
+        <%= render 'form', question_template: @question_template %>
+      </div>
+    </div>
+  </div>
+</div>
