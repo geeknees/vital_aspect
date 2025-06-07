@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   scope "(:locale)", locale: /en|ja/ do
     resource :session
     resources :passwords, param: :token
+    resource :user, only: %i[ edit update ]
 
     # ダッシュボード
     get "dashboard", to: "dashboard#index"

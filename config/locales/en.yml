@@ -142,6 +142,15 @@ en:
       inactive: 'Inactive'
       suspended: 'Suspended'
 
+  # Users
+  users:
+    edit: 'Edit Profile'
+    update: 'Update'
+    email_address: 'Email Address'
+    password: 'New Password'
+    password_confirmation: 'Confirm Password'
+    updated: 'Profile updated successfully.'
+
   # ActiveRecord error messages
   activerecord:
     models:
