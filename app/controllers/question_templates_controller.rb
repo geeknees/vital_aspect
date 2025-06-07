@@ -1,8 +1,6 @@
 class QuestionTemplatesController < ApplicationController
-  before_action :authenticate_user!
   before_action :set_organization
   before_action :set_question_template, only: [ :edit, :update, :destroy ]
-  before_action :check_organization_member
   before_action :check_manage_permission
 
   def index
@@ -48,12 +46,6 @@ class QuestionTemplatesController < ApplicationController
 
   def set_question_template
     @question_template = @organization.question_templates.find(params[:id])
-  end
-
-  def check_organization_member
-    unless Current.session.user.member_of?(@organization)
-      redirect_to root_path, alert: t("organizations.access_denied")
-    end
   end
 
   def check_manage_permission

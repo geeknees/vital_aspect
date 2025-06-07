@@ -61,7 +61,7 @@ class QuestionsController < ApplicationController
   private
 
   def set_organization
-    @organization = Current.session.user.organizations.find(params[:organization_id])
+    @organization = Organization.find(params[:organization_id])
   end
 
   def set_evaluation
@@ -73,7 +73,7 @@ class QuestionsController < ApplicationController
   end
 
   def check_organization_member
-    unless Current.session.user.member_of?(@organization)
+    unless @organization.users.include?(Current.session.user) || @organization.owner == Current.session.user
       redirect_to root_path, alert: t("organizations.access_denied")
     end
   end
