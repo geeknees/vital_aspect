@@ -5,9 +5,28 @@ export default class extends Controller {
   static values = { url: String }
 
   connect() {
-    console.log('OKR AI Assist controller connected')
+    console.log('=== OKR AI Assist Controller Connected ===')
     console.log('URL value:', this.urlValue)
     console.log('Has objectiveField target:', this.hasObjectiveFieldTarget)
+    
+    if (this.hasObjectiveFieldTarget) {
+      console.log('✅ ObjectiveField target found successfully!')
+      console.log('ObjectiveField element:', this.objectiveFieldTarget)
+    } else {
+      console.log('❌ ObjectiveField target NOT found')
+      
+      // Debug: Find all elements with target attribute
+      const allTargets = this.element.querySelectorAll('[data-okr-ai-assist-target]')
+      console.log('Found elements with data-okr-ai-assist-target:', allTargets.length)
+      allTargets.forEach((el, index) => {
+        console.log(`Target ${index}:`, el, 'value:', el.getAttribute('data-okr-ai-assist-target'))
+      })
+      
+      // Debug: Check global search
+      const allTargetsGlobal = document.querySelectorAll('[data-okr-ai-assist-target]')
+      console.log('Found global elements with data-okr-ai-assist-target:', allTargetsGlobal.length)
+    }
+    console.log('===========================================')
   }
 
   generate() {

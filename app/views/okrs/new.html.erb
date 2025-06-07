@@ -12,7 +12,7 @@
 
     <!-- Form -->
     <div class="bg-white shadow-xl rounded-xl p-8 lg:p-12">
-      <%= form_with model: [@organization, @okr], local: true, class: "space-y-8" do |f| %>
+      <%= form_with model: [@organization, @okr], local: true, class: "space-y-8", data: { controller: "okr-ai-assist", okr_ai_assist_url_value: suggest_key_results_organization_okrs_path(@organization) } do |f| %>
         <% if @okr.errors.any? %>
           <div class="rounded-lg bg-red-50 p-6 border border-red-200">
             <div class="flex items-start">
@@ -44,7 +44,7 @@
             <%= f.text_field :title,
                 placeholder: "例: 顧客満足度を向上させる",
                 class: "block w-full text-lg px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors",
-                data: { "okr-ai-assist-target": "objectiveField" } %>
+                data: { okr_ai_assist_target: "objectiveField" } %>
             <p class="mt-2 text-sm text-gray-500">
               具体的で意欲的な目標を設定してください
             </p>
@@ -89,7 +89,7 @@
         </div>
 
         <!-- Key Results -->
-        <div class="border-t border-gray-200 pt-8" data-controller="key-results okr-ai-assist" data-okr-ai-assist-url="<%= suggest_key_results_organization_okrs_path(@organization) %>">
+        <div class="border-t border-gray-200 pt-8" data-controller="key-results">
           <h3 class="text-xl font-semibold text-gray-900 mb-6">Key Results（主要な結果）</h3>
 
           <div id="key-results" data-key-results-target="container" class="space-y-6">
