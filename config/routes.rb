@@ -51,6 +51,9 @@ Rails.application.routes.draw do
         member do
           patch :activate # ドラフトからアクティブへ変更
         end
+        collection do
+          post :suggest_key_results
+        end
         resources :okr_progresses, path: "progresses"
       end
     end

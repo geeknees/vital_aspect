@@ -8,6 +8,12 @@ export default class extends Controller {
       '.key-result-fields, .key-result-item'
     ).length
     this.setupEventListeners()
+    this.handleAiAdd = this.handleAiAdd.bind(this)
+    window.addEventListener('okr-ai:add-key-result', this.handleAiAdd)
+  }
+
+  disconnect() {
+    window.removeEventListener('okr-ai:add-key-result', this.handleAiAdd)
   }
 
   setupEventListeners() {
@@ -138,5 +144,15 @@ export default class extends Controller {
       // New record - remove from DOM
       keyResultField.remove()
     }
+  }
+
+  handleAiAdd(event) {
+    this.addKeyResult()
+    const items = this.containerTarget.querySelectorAll(
+      '.key-result-fields, .key-result-item'
+    )
+    const last = items[items.length - 1]
+    const titleField = last.querySelector('input[name*="[title]"]')
+    if (titleField) titleField.value = event.detail.title
   }
 }
