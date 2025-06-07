@@ -71,6 +71,7 @@ ja:
     hello: 'こんにちは、%{name}さん'
     logout: 'ログアウト'
     logout_confirm: 'ログアウトしますか？'
+    edit_profile: 'プロフィール編集'
 
   # Authentication
   auth:
@@ -170,6 +171,15 @@ ja:
       active: 'アクティブ'
       inactive: '非アクティブ'
       suspended: '停止中'
+
+  # Users
+  users:
+    edit: 'ユーザー情報編集'
+    update: '更新'
+    email_address: 'メールアドレス'
+    password: '新しいパスワード'
+    password_confirmation: 'パスワード確認'
+    updated: 'ユーザー情報を更新しました。'
 
   # ActiveRecord error messages
   activerecord:

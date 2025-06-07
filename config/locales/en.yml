@@ -42,6 +42,7 @@ en:
     hello: 'Hello, %{name}'
     logout: 'Logout'
     logout_confirm: 'Are you sure you want to logout?'
+    edit_profile: 'Edit Profile'
 
   # Authentication
   auth:
@@ -141,6 +142,15 @@ en:
       active: 'Active'
       inactive: 'Inactive'
       suspended: 'Suspended'
+
+  # Users
+  users:
+    edit: 'Edit Profile'
+    update: 'Update'
+    email_address: 'Email Address'
+    password: 'New Password'
+    password_confirmation: 'Confirm Password'
+    updated: 'Profile updated successfully.'
 
   # ActiveRecord error messages
   activerecord:
