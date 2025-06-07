@@ -44,7 +44,7 @@
             <%= f.text_field :title,
                 placeholder: "例: 顧客満足度を向上させる",
                 class: "block w-full text-lg px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors",
-                data: { okr_ai_assist_target: "objectiveField" } %>
+                data: { "okr-ai-assist-target": "objectiveField" } %>
             <p class="mt-2 text-sm text-gray-500">
               具体的で意欲的な目標を設定してください
             </p>
@@ -173,10 +173,7 @@
           </button>
           <button type="button" data-action="okr-ai-assist#generate"
                   class="mt-4 ml-3 inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h16v16H4z" />
-            </svg>
-            AIアシスト
+           <i class="fas fa-magic mr-2"></i>AIアシスト
           </button>
         </div>
 

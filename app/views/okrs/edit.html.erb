@@ -45,7 +45,7 @@
               <%= form.text_field :title,
                                   class: "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500",
                                   placeholder: "Enter objective title...",
-                                  data: { okr_ai_assist_target: "objectiveField" } %>
+                                  data: { "okr-ai-assist-target": "objectiveField" } %>
             </div>
 
             <div>
@@ -86,7 +86,7 @@
           </div>
 
           <!-- Key Results Section -->
-          <div class="border-t border-gray-200 pt-6" data-controller="key-results okr-ai-assist" data-okr-ai-assist-url="<%= suggest_key_results_organization_okrs_path(@organization) %>">
+          <div class="border-t border-gray-200 pt-6" data-controller="key-results okr-ai-assist" data-okr-ai-assist-url-value="<%= suggest_key_results_organization_okrs_path(@organization) %>">
             <div class="flex items-center justify-between mb-4">
               <h3 class="text-lg font-medium text-gray-900">Key Results</h3>
               <button type="button" id="add-key-result" data-key-results-target="addButton"
