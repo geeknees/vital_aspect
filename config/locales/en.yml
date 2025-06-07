@@ -42,6 +42,7 @@ en:
     hello: 'Hello, %{name}'
     logout: 'Logout'
     logout_confirm: 'Are you sure you want to logout?'
+    edit_profile: 'Edit Profile'
 
   # Authentication
   auth:

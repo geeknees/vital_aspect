@@ -71,6 +71,7 @@ ja:
     hello: 'こんにちは、%{name}さん'
     logout: 'ログアウト'
     logout_confirm: 'ログアウトしますか？'
+    edit_profile: 'プロフィール編集'
 
   # Authentication
   auth:

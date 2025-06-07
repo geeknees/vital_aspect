@@ -56,12 +56,22 @@
 
                 <!-- ユーザー情報 -->
                 <div class="flex items-center space-x-2 sm:space-x-4">
-                  <span class="hidden sm:inline text-gray-700 font-medium">
+                  <%= link_to edit_user_path, class: "hidden sm:inline text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200" do %>
                     <%= t('nav.hello', name:  Current.session.user.email_address.split('@').first) %>
-                  </span>
-                  <span class="sm:hidden text-gray-700 font-medium text-sm">
+                  <% end %>
+                  <%= link_to edit_user_path, class: "sm:hidden text-gray-700 hover:text-blue-600 font-medium text-sm transition-colors duration-200" do %>
                     <%= Current.session.user.email_address.split('@').first %>
-                  </span>
+                  <% end %>
+
+                  <!-- プロフィール編集アイコン -->
+                  <%= link_to edit_user_path,
+                              class: "p-2 text-gray-500 hover:text-blue-600 rounded-lg hover:bg-gray-100 transition-colors duration-200",
+                              title: t('nav.edit_profile') do %>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  <% end %>
+
                   <%= link_to t('nav.logout'), session_path,
                               class: "bg-red-500 hover:bg-red-600 text-white px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-200 shadow-sm",
                               data: {
