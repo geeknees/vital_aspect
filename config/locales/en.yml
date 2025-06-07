@@ -401,6 +401,28 @@ en:
       good: 'Good'
       excellent: 'Excellent'
 
+  # Question Template Management
+  question_templates:
+    index_title: 'Question Templates'
+    new: 'New Template'
+    edit: 'Edit Template'
+    create: 'Create Template'
+    update: 'Update Template'
+    delete: 'Delete Template'
+    text: 'Template Text'
+    text_placeholder: 'Enter the template text'
+    question_type: 'Question Type'
+    select_type: 'Select question type'
+    required: 'Required'
+    options: 'Options'
+    option_placeholder: 'Enter an option'
+    add_option: 'Add Option'
+    options_help: 'Set options or rating scale'
+    created_successfully: 'Template was successfully created.'
+    updated_successfully: 'Template was successfully updated.'
+    deleted_successfully: 'Template was successfully deleted.'
+    errors_prevented_saving: 'The following errors prevented saving:'
+
   # Evaluation Participants Management
   evaluation_participants:
     new: 'Add Participant'

@@ -330,6 +330,28 @@ ja:
       good: '高い'
       excellent: '非常に高い'
 
+  # 質問テンプレート管理
+  question_templates:
+    index_title: '質問テンプレート'
+    new: 'テンプレートを追加'
+    edit: 'テンプレートを編集'
+    create: 'テンプレートを作成'
+    update: 'テンプレートを更新'
+    delete: 'テンプレートを削除'
+    text: 'テンプレート内容'
+    text_placeholder: 'テンプレートの内容を入力してください'
+    question_type: '質問タイプ'
+    select_type: '質問タイプを選択してください'
+    required: '必須回答'
+    options: '選択肢'
+    option_placeholder: '選択肢を入力してください'
+    add_option: '選択肢を追加'
+    options_help: '選択肢または評価尺度を設定してください'
+    created_successfully: 'テンプレートが正常に作成されました。'
+    updated_successfully: 'テンプレートが正常に更新されました。'
+    deleted_successfully: 'テンプレートが正常に削除されました。'
+    errors_prevented_saving: '以下のエラーにより保存できませんでした：'
+
   # 評価参加者管理
   evaluation_participants:
     new: '参加者を追加'
