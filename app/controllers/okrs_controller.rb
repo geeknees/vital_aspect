@@ -80,7 +80,7 @@ class OkrsController < ApplicationController
   end
 
   def suggest_key_results
-    suggestions = OkrAiService.new.suggest_key_results(params[:objective].to_s)
+    suggestions = ::OkrAiService.new.suggest_key_results(params[:objective].to_s)
     render json: suggestions
   end
 
