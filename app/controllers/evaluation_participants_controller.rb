@@ -3,7 +3,6 @@ class EvaluationParticipantsController < ApplicationController
   before_action :set_organization
   before_action :set_evaluation
   before_action :set_evaluation_participant, only: [ :show, :edit, :update, :destroy ]
-  before_action :check_organization_member
   before_action :check_evaluation_manager
 
   def index
@@ -113,7 +112,7 @@ class EvaluationParticipantsController < ApplicationController
   private
 
   def set_organization
-    @organization = Current.user.organizations.find(params[:organization_id])
+    @organization = Organization.find(params[:organization_id])
   end
 
   def set_evaluation
@@ -122,12 +121,6 @@ class EvaluationParticipantsController < ApplicationController
 
   def set_evaluation_participant
     @evaluation_participant = @evaluation.evaluation_participants.find(params[:id])
-  end
-
-  def check_organization_member
-    unless Current.user.member_of?(@organization)
-      redirect_to root_path, alert: t("organizations.access_denied")
-    end
   end
 
   def check_evaluation_manager
