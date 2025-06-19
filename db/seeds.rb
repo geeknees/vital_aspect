@@ -67,17 +67,25 @@ end
 
 puts "✅ Created #{organizations.count} organizations"
 
+# 組織所有者のメンバーシップが正しく作成されているかを確認
+organizations.each do |name, org|
+  owner_membership = org.memberships.find_by(user: org.owner, role: "owner")
+  if owner_membership
+    puts "  ✅ #{name}: 所有者 #{org.owner.email_address} のメンバーシップが作成されました"
+  else
+    puts "  ❌ #{name}: 所有者のメンバーシップが見つかりません"
+  end
+end
+
 # Create memberships
 memberships_data = [
-  # VitalAspect株式会社のメンバーシップ
-  { org: "VitalAspect株式会社", user: "admin@example.com", role: "owner", status: "active" },
+  # VitalAspect株式会社のメンバーシップ（所有者は自動作成されるため除外）
   { org: "VitalAspect株式会社", user: "ceo@example.com", role: "admin", status: "active" },
   { org: "VitalAspect株式会社", user: "cto@example.com", role: "admin", status: "active" },
   { org: "VitalAspect株式会社", user: "hr.manager@example.com", role: "admin", status: "active" },
   { org: "VitalAspect株式会社", user: "marketing.lead@example.com", role: "admin", status: "active" },
 
-  # テクノロジー部門のメンバーシップ
-  { org: "テクノロジー部門", user: "cto@example.com", role: "owner", status: "active" },
+  # テクノロジー部門のメンバーシップ（所有者は自動作成されるため除外）
   { org: "テクノロジー部門", user: "dev.lead@example.com", role: "admin", status: "active" },
   { org: "テクノロジー部門", user: "product.manager@example.com", role: "member", status: "active" },
   { org: "テクノロジー部門", user: "designer@example.com", role: "member", status: "active" },
@@ -85,14 +93,12 @@ memberships_data = [
   { org: "テクノロジー部門", user: "engineer2@example.com", role: "member", status: "active" },
   { org: "テクノロジー部門", user: "intern@example.com", role: "member", status: "active" },
 
-  # マーケティング・セールス部門のメンバーシップ
-  { org: "マーケティング・セールス部門", user: "marketing.lead@example.com", role: "owner", status: "active" },
+  # マーケティング・セールス部門のメンバーシップ（所有者は自動作成されるため除外）
   { org: "マーケティング・セールス部門", user: "sales.manager@example.com", role: "admin", status: "active" },
   { org: "マーケティング・セールス部門", user: "marketer1@example.com", role: "member", status: "active" },
   { org: "マーケティング・セールス部門", user: "sales1@example.com", role: "member", status: "active" },
 
-  # 人事・組織開発部門のメンバーシップ
-  { org: "人事・組織開発部門", user: "hr.manager@example.com", role: "owner", status: "active" },
+  # 人事・組織開発部門のメンバーシップ（所有者は自動作成されるため除外）
   { org: "人事・組織開発部門", user: "ceo@example.com", role: "admin", status: "active" },
   { org: "人事・組織開発部門", user: "admin@example.com", role: "member", status: "active" }
 ]
@@ -101,15 +107,26 @@ memberships_data.each do |membership_data|
   org = organizations[membership_data[:org]]
   user = users[membership_data[:user]]
 
-  # Skip if user is already the owner of the organization
+  # 組織の所有者の場合はスキップ（after_createコールバックで自動作成される）
   next if org.owner == user
 
-  Membership.find_or_create_by!(
-    organization: org,
-    user: user
-  ) do |m|
-    m.role = membership_data[:role]
-    m.status = membership_data[:status]
+  # 既存のメンバーシップがあるかチェック
+  existing_membership = Membership.find_by(organization: org, user: user)
+
+  if existing_membership
+    # 既存のメンバーシップがある場合は更新
+    existing_membership.update!(
+      role: membership_data[:role],
+      status: membership_data[:status]
+    )
+  else
+    # 新しいメンバーシップを作成
+    Membership.create!(
+      organization: org,
+      user: user,
+      role: membership_data[:role],
+      status: membership_data[:status]
+    )
   end
 end
 
@@ -121,8 +138,6 @@ last_quarter_start = Date.new(current_year, 4, 1)
 last_quarter_end = Date.new(current_year, 6, 30)
 current_quarter_start = Date.new(current_year, 7, 1)
 current_quarter_end = Date.new(current_year, 9, 30)
-next_quarter_start = Date.new(current_year, 10, 1)
-next_quarter_end = Date.new(current_year, 12, 31)
 
 okrs_data = [
   # CEO's OKRs
