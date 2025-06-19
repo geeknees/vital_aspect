@@ -15,12 +15,22 @@ class Organization < ApplicationRecord
   validates :name, presence: true, length: { maximum: 100 }
   validates :description, length: { maximum: 500 }
 
+  after_create :create_owner_membership
+
   def admin_users
     users.joins(:memberships).where(memberships: { role: "admin" })
   end
 
   def member_users
     users.joins(:memberships).where(memberships: { role: "member" })
+  end
+
+  def owner_users
+    users.joins(:memberships).where(memberships: { role: "owner" })
+  end
+
+  def admin_and_owner_users
+    users.joins(:memberships).where(memberships: { role: [ "admin", "owner" ] })
   end
 
   def active_users
@@ -41,5 +51,15 @@ class Organization < ApplicationRecord
 
   def completed_evaluations
     evaluations.completed
+  end
+
+  private
+
+  def create_owner_membership
+    memberships.create!(
+      user: owner,
+      role: "owner",
+      status: "active"
+    )
   end
 end
