@@ -1,0 +1,27 @@
+<% content_for :title, @user.email_address %>
+
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <nav class="flex items-center space-x-2 text-sm text-gray-500 mb-4">
+        <%= link_to t('users.title'), registered_users_path, class: 'hover:text-gray-700' %>
+        <span>/</span>
+        <span class="text-gray-900"><%= @user.email_address %></span>
+      </nav>
+      <h1 class="text-3xl font-bold text-gray-900"><%= @user.email_address %></h1>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-xl font-semibold text-gray-900 mb-4"><%= t('organizations.title') %></h2>
+      <% if @organizations.any? %>
+        <ul class="list-disc pl-5 space-y-1 text-gray-700">
+          <% @organizations.each do |org| %>
+            <li><%= link_to org.name, org %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-gray-500"><%= t('organizations.no_organizations') %></p>
+      <% end %>
+    </div>
+  </div>
+</div>

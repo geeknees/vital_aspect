@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resource :session
     resources :passwords, param: :token
     resource :user, only: %i[ edit update ]
+    resources :registered_users, path: "users", as: "registered_users"
 
     # ダッシュボード
     get "dashboard", to: "dashboard#index"
