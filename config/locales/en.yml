@@ -182,6 +182,7 @@ en:
             user:
               already_member: 'This user is already a member of this organization'
               cannot_invite_owner: 'Cannot invite the organization owner'
+              cannot_invite_owner_as_different_role: 'Cannot invite the organization owner with a different role'
       messages:
         blank: 'Please enter %{attribute}'
         not_a_number: 'Please enter a number for %{attribute}'

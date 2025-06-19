@@ -218,6 +218,7 @@ ja:
             user:
               already_member: 'このユーザーは既にこの組織のメンバーです'
               cannot_invite_owner: '組織の所有者を招待することはできません'
+              cannot_invite_owner_as_different_role: '組織の所有者を異なる役割で招待することはできません'
         key_result:
           attributes:
             target_value:

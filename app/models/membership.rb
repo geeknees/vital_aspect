@@ -24,7 +24,7 @@ class Membership < ApplicationRecord
   }
   validates :role, presence: true
   validates :status, presence: true
-  validate :user_cannot_be_owner, if: -> { organization&.owner == user }
+  validate :user_cannot_be_owner, if: -> { organization&.owner == user && !owner? }
 
   scope :active_memberships, -> { where(status: :active) }
   scope :admin_memberships, -> { where(role: [ :admin, :owner ]) }
@@ -40,6 +40,6 @@ class Membership < ApplicationRecord
   private
 
   def user_cannot_be_owner
-    errors.add(:user, :cannot_invite_owner)
+    errors.add(:user, :cannot_invite_owner_as_different_role)
   end
 end

@@ -131,8 +131,8 @@ class EvaluationParticipantsController < ApplicationController
   end
 
   def can_manage_evaluation?(evaluation)
-    Current.session.user == evaluation.created_by ||
-    Current.session.user.can_create_evaluation?(evaluation.organization)
+    Current.user == evaluation.evaluator ||
+    Current.user.can_create_evaluation?(evaluation.organization)
   end
 
   def evaluation_participant_params

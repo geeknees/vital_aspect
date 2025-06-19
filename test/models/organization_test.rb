@@ -195,23 +195,28 @@ class OrganizationTest < ActiveSupport::TestCase
   end
 
   # Edge case tests
-  test "should handle organization with no memberships" do
-    org = Organization.create!(name: "Empty Org", owner: users(:owner))
+  test "should automatically create owner membership on organization creation" do
+    org = Organization.create!(name: "New Org", owner: users(:owner))
 
+    # Owner should have membership automatically created
+    assert_includes org.users, users(:owner)
+    assert_includes org.owner_users, users(:owner)
+    assert_includes org.active_users, users(:owner)
+
+    # But no other role users should exist
     assert_empty org.admin_users
     assert_empty org.member_users
-    assert_empty org.active_users
     assert_empty org.pending_users
-    assert_empty org.all_users_including_pending
   end
 
-  test "owner should not be automatically included in users collection" do
-    # Owner is not automatically a member unless there's a membership record
-    org = Organization.create!(name: "Owner Only Org", owner: users(:two))
+  test "owner is automatically included in users collection through membership" do
+    # Owner automatically gets a membership record when organization is created
+    org = Organization.create!(name: "Owner Org", owner: users(:two))
 
     assert_equal users(:two), org.owner
-    assert_not_includes org.users, users(:two)
-    assert_empty org.active_users
+    assert_includes org.users, users(:two)
+    assert_includes org.active_users, users(:two)
+    assert_includes org.owner_users, users(:two)
   end
 
   test "should allow same user to be owner and have membership" do

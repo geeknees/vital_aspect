@@ -25,15 +25,12 @@ class OrganizationsController < ApplicationController
   def create
     @organization = Current.user.owned_organizations.build(organization_params)
 
-    if @organization.save
-      # Create owner membership
-      @organization.memberships.create!(
-        user: Current.user,
-        role: "owner",
-        status: "active"
-      )
-      redirect_to @organization, notice: t("organizations.created_successfully")
-    else
+    begin
+      ActiveRecord::Base.transaction do
+        @organization.save!
+        redirect_to @organization, notice: t("organizations.created_successfully")
+      end
+    rescue ActiveRecord::RecordInvalid
       render :new, status: :unprocessable_entity
     end
   end
