@@ -135,18 +135,24 @@ class MembershipTest < ActiveSupport::TestCase
     assert different_user_membership.valid?
   end
 
-  test "should prevent user from being owner if already organization owner" do
-    # Create a membership where user is trying to be owner of their own organization
+  test "should prevent organization owner from having non-owner role in membership" do
+    # Organization owner should not be able to have member or admin role
     owner_user = users(:owner)
     owned_org = organizations(:test_org)
 
+    # Try to create membership with member role
     membership = Membership.new(
       user: owner_user,
       organization: owned_org,
-      role: :owner,
+      role: :member,
       status: :active
     )
 
+    assert_not membership.valid?
+    assert_not_empty membership.errors[:user]
+
+    # Try to create membership with admin role
+    membership.role = :admin
     assert_not membership.valid?
     assert_not_empty membership.errors[:user]
   end
