@@ -2,6 +2,14 @@ class EvaluationParticipant < ApplicationRecord
   belongs_to :evaluation
   belongs_to :user
   has_many :responses, inverse_of: :evaluation_participant, dependent: :destroy
+  has_many :given_peer_reviews,
+           class_name: "PeerReview",
+           foreign_key: :reviewer_participant_id,
+           dependent: :destroy
+  has_many :received_peer_reviews,
+           class_name: "PeerReview",
+           foreign_key: :reviewee_participant_id,
+           dependent: :destroy
 
   enum :role, {
     self_evaluator: 0,    # 自己評価者

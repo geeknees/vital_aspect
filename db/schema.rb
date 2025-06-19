@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_07_122448) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_14_114940) do
   create_table "evaluation_participants", force: :cascade do |t|
     t.integer "evaluation_id", null: false
     t.integer "user_id", null: false
@@ -106,6 +106,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_07_122448) do
     t.index ["owner_id"], name: "index_organizations_on_owner_id"
   end
 
+  create_table "peer_reviews", force: :cascade do |t|
+    t.integer "evaluation_id", null: false
+    t.integer "reviewer_participant_id", null: false
+    t.integer "reviewee_participant_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["evaluation_id", "reviewer_participant_id", "reviewee_participant_id"], name: "index_peer_reviews_on_participants_and_evaluation", unique: true
+    t.index ["evaluation_id"], name: "index_peer_reviews_on_evaluation_id"
+    t.index ["reviewee_participant_id"], name: "index_peer_reviews_on_reviewee_participant_id"
+    t.index ["reviewer_participant_id"], name: "index_peer_reviews_on_reviewer_participant_id"
+  end
+
   create_table "question_templates", force: :cascade do |t|
     t.integer "organization_id", null: false
     t.text "content", null: false
@@ -170,6 +182,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_07_122448) do
   add_foreign_key "okrs", "organizations"
   add_foreign_key "okrs", "users"
   add_foreign_key "organizations", "users", column: "owner_id"
+  add_foreign_key "peer_reviews", "evaluation_participants", column: "reviewee_participant_id"
+  add_foreign_key "peer_reviews", "evaluation_participants", column: "reviewer_participant_id"
+  add_foreign_key "peer_reviews", "evaluations"
   add_foreign_key "question_templates", "organizations"
   add_foreign_key "questions", "evaluations"
   add_foreign_key "responses", "evaluation_participants", column: "participant_id"

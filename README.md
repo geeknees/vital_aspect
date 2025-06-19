@@ -27,7 +27,7 @@ AI-powered 360° Feedback & OKR Platform for psychologically safe teams
 ## Key Features
 | Area | Feature |
 |------|---------|
-| **Feedback** | Anonymous 360° surveys, bias-detection, AI tone rewrite |
+| **Feedback** | Anonymous 360° surveys, mutual peer reviews, bias-detection, AI tone rewrite |
 | **OKR** | Objectives → Key Results → Weekly Check-ins with Turbo Streams |
 | **Insight** | AI summary (strengths / growth areas) & TrustGauge score |
 | **Safety** | Opt-out questions, emotion detection, aggregated dashboard |
