@@ -18,21 +18,20 @@ class MembershipsController < ApplicationController
 
   def new
     @membership = @organization.memberships.build
+    @available_users = User.where.not(id: @organization.users.select(:id))
   end
 
   def create
     return unless authorize_member_management
 
-    email_address = normalize_email_address
-    return unless validate_email_address(email_address)
-
-    @user = User.find_by(email_address: email_address)
-    return unless validate_user_eligibility(@user, email_address)
+    user_id = membership_params[:user_id]
+    @user = User.find_by(id: user_id)
+    return unless validate_user_eligibility(@user)
 
     existing_membership = @organization.memberships.find_by(user: @user)
-    return unless handle_existing_membership(existing_membership, email_address)
+    return unless handle_existing_membership(existing_membership)
 
-    create_membership_invitation(email_address)
+    create_membership_invitation
   end
 
   def update
@@ -97,13 +96,8 @@ class MembershipsController < ApplicationController
   end
 
   def membership_params
-    # 招待時は email_address のみ許可し、role は管理者権限がある場合のみ許可
-    permitted_params = [ :email_address ]
-
-    if can_manage_members?
-      permitted_params << :role
-    end
-
+    permitted_params = [ :user_id ]
+    permitted_params << :role if can_manage_members?
     params.require(:membership).permit(permitted_params)
   end
 
@@ -168,39 +162,21 @@ class MembershipsController < ApplicationController
     false
   end
 
-  def normalize_email_address
-    membership_params[:email_address]&.strip&.downcase
-  end
-
-  def validate_email_address(email_address)
-    if email_address.blank?
-      render_membership_error(membership_params[:email_address], t("memberships.errors.email_required"))
-      return false
-    end
-
-    unless email_address.match?(URI::MailTo::EMAIL_REGEXP)
-      render_membership_error(email_address, t("memberships.errors.email_invalid"))
-      return false
-    end
-
-    true
-  end
-
-  def validate_user_eligibility(user, email_address)
+  def validate_user_eligibility(user)
     unless user
-      render_membership_error(email_address, t("memberships.errors.user_not_found", email: email_address))
+      render_membership_error(t("memberships.user_not_found"))
       return false
     end
 
     if user == @organization.owner
-      render_membership_error(email_address, t("memberships.errors.cannot_invite_owner"))
+      render_membership_error(t("memberships.errors.cannot_invite_owner"))
       return false
     end
 
     true
   end
 
-  def handle_existing_membership(existing_membership, email_address)
+  def handle_existing_membership(existing_membership)
     return true unless existing_membership
 
     case existing_membership.status
@@ -213,17 +189,17 @@ class MembershipsController < ApplicationController
                            email: @user.email_address)
       return false
     when "active"
-      render_membership_error(email_address, t("memberships.errors.already_active_member"))
+      render_membership_error(t("memberships.errors.already_active_member"))
     when "pending"
-      render_membership_error(email_address, t("memberships.errors.already_invited"))
+      render_membership_error(t("memberships.errors.already_invited"))
     when "suspended"
-      render_membership_error(email_address, t("memberships.errors.user_suspended"))
+      render_membership_error(t("memberships.errors.user_suspended"))
     end
 
     false
   end
 
-  def create_membership_invitation(email_address)
+  def create_membership_invitation
     @membership = @organization.memberships.build(
       user: @user,
       role: membership_params[:role] || "member",
@@ -236,15 +212,15 @@ class MembershipsController < ApplicationController
                            user_name: @user.email_address.split("@").first,
                            email: @user.email_address)
     else
-      @membership.email_address = email_address # フォーム再表示用
+      @available_users = User.where.not(id: @organization.users.select(:id))
       render :new, status: :unprocessable_entity
     end
   end
 
-  def render_membership_error(email_address, error_message)
+  def render_membership_error(error_message)
     @membership = @organization.memberships.build
-    @membership.email_address = email_address
     @membership.errors.add(:base, error_message)
+    @available_users = User.where.not(id: @organization.users.select(:id))
     render :new, status: :unprocessable_entity
   end
 end

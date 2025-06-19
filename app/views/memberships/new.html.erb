@@ -47,34 +47,21 @@
           </div>
         <% end %>
 
-        <div>
-          <%= f.label :email_address, t('memberships.email_address'), class: "block text-base font-medium text-gray-700 mb-2" %>
-          <%= f.email_field :email_address, value: @membership&.email_address || params.dig(:membership, :email_address),
-              class: "block w-full text-lg px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors #{'border-red-300 focus:ring-red-500 focus:border-red-500' if @membership&.errors&.include?(:email_address)}",
-              placeholder: "招待するユーザーのメールアドレス",
-              required: true %>
-          <% if @membership&.errors&.include?(:email_address) %>
-            <p class="mt-2 text-sm text-red-600">
-              <%= @membership.errors[:email_address].first %>
-            </p>
-          <% end %>
-          <% if @membership&.errors&.include?(:user) %>
-            <p class="mt-2 text-sm text-red-600">
-              <%= @membership.errors[:user].first %>
-            </p>
-          <% end %>
-          <p class="mt-3 text-base text-gray-500">
-            招待するユーザーはすでにシステムに登録済みである必要があります。
-          </p>
-          <div class="mt-2 text-sm text-blue-600 bg-blue-50 p-3 rounded-lg">
-            <strong>ヒント:</strong>
-            <ul class="mt-1 list-disc pl-5 space-y-1">
-              <li>ユーザーが見つからない場合は、先にユーザー登録を行ってもらってください</li>
-              <li>既にメンバーの場合は招待できません</li>
-              <li>組織の所有者は招待できません</li>
-            </ul>
+        <% if @available_users.empty? %>
+          <div class="text-center py-12">
+            <p class="text-gray-500 text-lg"><%= t('memberships.no_available_users') %></p>
           </div>
-        </div>
+        <% else %>
+          <div>
+            <%= f.label :user_id, t('memberships.select_user'), class: "block text-base font-medium text-gray-700 mb-2" %>
+            <%= f.collection_select :user_id, @available_users, :id, :email_address,
+                { prompt: t('memberships.select_user') },
+                class: 'block w-full text-lg px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition-colors' %>
+            <% if @membership.errors[:base].any? %>
+              <p class="mt-2 text-sm text-red-600"><%= @membership.errors[:base].first %></p>
+            <% end %>
+          </div>
+        <% end %>
 
         <div>
           <%= f.label :role, t('memberships.role'), class: "block text-base font-medium text-gray-700 mb-2" %>
